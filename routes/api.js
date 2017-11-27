@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.json({success:true, message:'Welcome to the api.'})
+  res.json({success: true, message: 'Welcome to the api.'});
 });
 
 module.exports = router;
