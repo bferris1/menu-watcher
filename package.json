@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev":"nodemon ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "lint": "eslint",
     "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
+    "eslint": "^4.12.0",
     "nodemon": "^1.12.1"
   }
 }
