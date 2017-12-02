@@ -9,6 +9,7 @@
     "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "body-parser": "~1.18.2",
     "convict": "^4.0.1",
     "cookie-parser": "~1.4.3",
@@ -17,10 +18,14 @@
     "mongoose": "^4.13.5",
     "morgan": "~1.9.0",
     "pug": "2.0.0-rc.4",
+    "request": "^2.83.0",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "eslint": "^4.12.0",
+    "mocha": "^4.0.1",
     "nodemon": "^1.12.1"
   }
 }
