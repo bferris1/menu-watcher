@@ -7,10 +7,6 @@ const User = require('../models/user');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-/*before(function () {
-  mongoose.connect('mongodb://localhost:27017/menu-tools', {useMongoClient: true});
-});*/
-
 after(function(){
   mongoose.connection.close();
 });
@@ -54,7 +50,7 @@ describe('User', function () {
       .catch(err => done(err));
   });
 
-  it('should be deleted successfully', function () {
+  it('should be deleted successfully', function (done) {
     User.remove({_id: testUser._id}).then(() =>{
       done();
     }).catch(err => {done(err)})
