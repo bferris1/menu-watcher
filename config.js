@@ -13,7 +13,7 @@ const config = convict({
   port: {
     doc: 'The port to bind.',
     format: 'port',
-    default: 3000,
+    default: 4000,
     env: 'PORT'
   },
 
@@ -27,7 +27,7 @@ const config = convict({
     url: {
       doc: 'The full url at which the app is hosted.',
       format: 'url',
-      default: 'https://localhost:3000',
+      default: 'https://localhost:4000',
       env: 'URL'
     }
   },
