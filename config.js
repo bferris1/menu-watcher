@@ -27,7 +27,7 @@ const config = convict({
     url: {
       doc: 'The full url at which the app is hosted.',
       format: 'url',
-      default: 'https://puclass.space',
+      default: 'https://localhost:3000',
       env: 'URL'
     }
   },
