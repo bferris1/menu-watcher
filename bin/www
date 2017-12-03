@@ -7,12 +7,13 @@
 let app = require('../app');
 let debug = require('debug')('cs252-lab6:server');
 let http = require('http');
+const config = require('../config');
 
 /**
  * Get port from environment and store in Express.
  */
 
-let port = normalizePort(process.env.PORT || '3000');
+let port = normalizePort(config.get('port') || '3000');
 app.set('port', port);
 
 /**

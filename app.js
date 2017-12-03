@@ -1,9 +1,15 @@
 let express = require('express');
 let path = require('path');
+const config = require('./config');
 // let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+mongoose.connect(config.get('db.url'), {
+  useMongoClient: true
+});
 
 const api = require('./routes/api');
 
