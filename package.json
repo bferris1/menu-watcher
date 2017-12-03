@@ -8,6 +8,9 @@
     "lint": "eslint",
     "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
   },
+  "engines": {
+    "node": "8.9.1"
+  },
   "dependencies": {
     "async": "^2.6.0",
     "bcrypt": "^1.0.3",
