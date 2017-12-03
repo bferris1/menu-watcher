@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 const checker = require('../util/menu-checker');
-const User = require('../models/User');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
@@ -42,14 +42,21 @@ describe('Menu API', function () {
 });
 
 describe('User', function () {
-  let user = {email: 'ben@test.com', password: 'asdffdsa'};
+  let testUser = {email: 'ben@test.com', password: 'asdffdsa'};
 
   it('should be created successfully', function (done) {
-    let newUser = new User(user);
+    let newUser = new User(testUser);
     newUser.save().then(user => {
       console.log(user);
+      testUser._id = user._id;
       done();
     })
       .catch(err => done(err));
+  });
+
+  it('should be deleted successfully', function () {
+    User.remove({_id: testUser._id}).then(() =>{
+      done();
+    }).catch(err => {done(err)})
   });
 });
