@@ -73,12 +73,6 @@ const config = convict({
     default: '',
     env: 'PUSHOVER'
   },
-  auth: {
-    google: {
-      clientID: {default: ''},
-      clientSecret: {default: ''}
-    }
-  }
 });
 
 // Load environment dependent configuration
