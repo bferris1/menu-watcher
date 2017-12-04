@@ -3,6 +3,7 @@ const router = express.Router();
 const checker = require('../util/menu-checker');
 const User = require('../models/user');
 const { check, validationResult } = require('express-validator/check');
+const jwt = require('jsonwebtoken');
 
 
 router.get('/', (req, res) => {
@@ -34,9 +35,16 @@ router.post('/auth', (req, res) => {
         });
       }
       if (isMatch){
-        return res.json({success: true});
+        jwt.sign({
+          email: user.email,
+          id: user._id
+        }, 'tempsecret', function (err, token) {
+          if (err) return res.status(500).json({success: false});
+          return res.json({success: true, token: token});
+        });
+      } else {
+        return res.status(401).json({success: false, error: 'Incorrect Password'});
       }
-      return res.status(401).json({success: false, error: 'Incorrect Password'});
     });
   });
 });
