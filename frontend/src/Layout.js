@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import {Route, NavLink} from 'react-router-dom';
 import {Row, Col} from 'reactstrap';
 import Home from './Home';
+import MenuWatcher from './MenuWatcher';
 
 
 export default class Layout extends Component{
@@ -28,6 +29,7 @@ export default class Layout extends Component{
             </Col>
             <Col sm={8}>
               <Route exact path={"/"} component={Home} />
+              <Route exact path={"/menu-watcher"} component={MenuWatcher} />
             </Col>
           </Row>
         </div>

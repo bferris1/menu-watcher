@@ -11,7 +11,7 @@ export default class MenuWatcher extends Component {
           itemId: '',
           itemName: ''
         }],
-        date : '',
+        date: moment.add(-1, 'days').format('ll'),
         mealTime: '',
         foodList: [{
           dinningCourt: '',
@@ -22,6 +22,7 @@ export default class MenuWatcher extends Component {
   }
 
   handleChange(e){
+      console.log(e.target.name + ": " + e.target.value);
       this.setState({[e.target.name]:e.target.value});
   }
 
@@ -31,6 +32,8 @@ export default class MenuWatcher extends Component {
       <div>
         <h1>Purdue Menu Watcher </h1>
         </hr>
+        <p>Today: {moment.format('ll')}</p>
+        <p>Yesterday: {this.state.date}</p>
       </div>
     );
   }
