@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Button, Col, Row} from 'reactstrap';
+import {Input, Button, Col, Row} from 'reactstrap';
 import moment from 'moment';
 
 import {DateStepper} from './SpecialForm';
+import {LabeledInput} from './form';
 
 export default class MenuWatcher extends Component {
 
@@ -38,7 +39,11 @@ export default class MenuWatcher extends Component {
       this.setState({date: newDate});
   }
 
+
+
   render() {
+
+    let meals = ["breakfast","lunch","dinner"];
 
     return (
       <div>
@@ -48,6 +53,13 @@ export default class MenuWatcher extends Component {
         <DateStepper name={"Enter Date:"} date={this.state.date}
           min={this.minDate} max={this.maxDate}
           onChange={newDate => {this.handleDateChange(newDate)}} />
+        <Input label="Choose Meal:" type="select" name="mealTime"
+          id="mealTime" value={this.state.mealTime}
+          onChange={e => {this.handleChange(e)}}>
+          <option>breakfast</option>
+          <option>breakfast</option>
+          <option>breakfast</option>
+        </Input>
       </div>
     );
   }
