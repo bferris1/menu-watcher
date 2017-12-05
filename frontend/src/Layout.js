@@ -25,6 +25,7 @@ export default class Layout extends Component{
               <h1>Navigation</h1>
               <ul className="nav flex-column nav-fill nav-pills">
                 <NavLink className="nav-link" exact to="/" activeClassName="active">Home</NavLink>
+                <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
               </ul>
             </Col>
             <Col sm={8}>

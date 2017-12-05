@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {Input, Button, Col, Row} from 'reactstrap';
 import moment from 'moment';
+import $ from 'jquery';
 
-import {DateStepper, CollapsibleCard} from './SpecialForm';
+//import {DateStepper, CollapsibleCard} from './SpecialForm';
+import {DateStepper} from './SpecialForm';
+import CollapsableCard from './CollapsableCard'
 import {LabeledInput} from './form';
 
 export default class MenuWatcher extends Component {
@@ -21,10 +24,19 @@ export default class MenuWatcher extends Component {
         }],
         date: today,
         mealTime: '',
+        /*diningCourts: [{
+          name: '',
+          meals: [
+            name: '',
+            favorites: []
+          ]
+        }]*/
+
         diningCourts: [{
           name: '',
           foodItems: []
         }]
+
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleDateChange = this.handleDateChange.bind(this);
@@ -62,7 +74,8 @@ export default class MenuWatcher extends Component {
     let diningCourtCards = this.state.diningCourts.map((diningCourt, index) => {
 
       return (
-        <CollapsibleCard headingId={"heading" + index} collapseId={"collapse" + index}
+        <CollapsableCard headingId={"heading-" + diningCourt.name.toLowerCase()}
+          collapseId={"collapse-" + diningCourt.name.toLowerCase()}
           diningCourt={diningCourt} />
       );
 
@@ -72,23 +85,30 @@ export default class MenuWatcher extends Component {
       <div>
         <h1>Purdue Menu Watcher </h1>
         <hr/>
+
         <div className="form">
-          <p>Today: {this.state.date.format('ll')}</p>
+          {/*<p>Today: {this.state.date.format('ll')}</p>*/}
+          <h3>Chose a Meal:</h3>
           <DateStepper name={"Enter Date:"} date={this.state.date}
             min={this.minDate} max={this.maxDate}
             onChange={newDate => {this.handleDateChange(newDate)}} />
-          <p className={"mb-2"}>Enter Meal Time:</p>
+          <p className={"mb-2"} style={{marginTop:'15px'}}>Enter Meal Time:</p>
           <Input label="Choose Meal:" type="select" name="mealTime"
             id="mealTime" value={this.state.mealTime}
             onChange={e => {this.handleChange(e)}}>
-            <option>breakfast</option>
-            <option>lunch</option>
-            <option>dinner</option>
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
           </Input>
         </div>
-        <div className="diningCourtCards" id="accordion" role="tablist">
-          {diningCourtCards}
+
+        <div style={{marginTop:'30px'}}>
+          <h3>Your Favorites:</h3>
+          <div style={{marginTop:'15px'}} className="diningCourtCards" id="accordion" role="tablist">
+            {diningCourtCards}
+          </div>
         </div>
+
 
       </div>
     );
