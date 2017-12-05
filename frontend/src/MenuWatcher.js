@@ -27,6 +27,7 @@ export default class MenuWatcher extends Component {
         }]
       };
       this.handleChange = this.handleChange.bind(this);
+      this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   handleChange(e){
@@ -49,17 +50,24 @@ export default class MenuWatcher extends Component {
       <div>
         <h1>Purdue Menu Watcher </h1>
         <hr/>
-        <p>Today: {this.state.date.format('ll')}</p>
-        <DateStepper name={"Enter Date:"} date={this.state.date}
-          min={this.minDate} max={this.maxDate}
-          onChange={newDate => {this.handleDateChange(newDate)}} />
-        <Input label="Choose Meal:" type="select" name="mealTime"
-          id="mealTime" value={this.state.mealTime}
-          onChange={e => {this.handleChange(e)}}>
-          <option>breakfast</option>
-          <option>breakfast</option>
-          <option>breakfast</option>
-        </Input>
+        <div className="form">
+          <p>Today: {this.state.date.format('ll')}</p>
+          <DateStepper name={"Enter Date:"} date={this.state.date}
+            min={this.minDate} max={this.maxDate}
+            onChange={newDate => {this.handleDateChange(newDate)}} />
+          <p className={"mb-2"}>Enter Meal Time:</p>
+          <Input label="Choose Meal:" type="select" name="mealTime"
+            id="mealTime" value={this.state.mealTime}
+            onChange={e => {this.handleChange(e)}}>
+            <option>breakfast</option>
+            <option>lunch</option>
+            <option>dinner</option>
+          </Input>
+        </div>
+
+
+
+
       </div>
     );
   }
