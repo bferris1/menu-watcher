@@ -101,10 +101,27 @@ router.get('/test', (req, res) => {
 
 router.get('/favorites', (req, res) => {
   Favorite.find({userID: req.user.id}).then(favorites => {
-    res.json({success: true, favorites});
+    return res.json({success: true, favorites});
   }).catch(err => {
-    res.json({success: false, error: err});
+    return res.json({success: false, error: err});
   });
+});
+
+router.post('/favorites', (req, res) => {
+  if (req.body.itemID && req.body.itemName){
+    let favorite = new Favorite({
+      itemID: req.body.itemID,
+      itemName: req.body.itemName,
+      userID: req.user.id
+    });
+    favorite.save().then(favorite => {
+      return res.json({success: true, favorite});
+    }).catch(err => {
+      return res.status(500).json({success: false, error: err});
+    });
+  } else {
+    res.status(400).json({success: false, error: 'Invalid id or name.'});
+  }
 });
 
 module.exports = router;
