@@ -4,6 +4,7 @@ const checker = require('../util/menu-checker');
 const User = require('../models/user');
 const { check, validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 
 router.get('/', (req, res) => {
@@ -22,6 +23,8 @@ router.get('/menus', (req, res) => {
   });
 });
 
+
+
 router.post('/auth', (req, res) => {
   User.findOne({email: req.body.email}).select('email, password').exec().then(user => {
     if (!user){
@@ -38,7 +41,7 @@ router.post('/auth', (req, res) => {
         jwt.sign({
           email: user.email,
           id: user._id
-        }, 'tempsecret', function (err, token) {
+        }, config.get('jwt.secret'), function (err, token) {
           if (err) return res.status(500).json({success: false});
           return res.json({success: true, token: token});
         });
@@ -69,6 +72,30 @@ router.post('/register', [
     res.status(500).json({success: false, error: reason});
   });
 
+});
+
+router.use((req, res, next) => {
+  let token = req.body.token || req.params.token || req.headers['x-access-token'];
+  if (token){
+    jwt.verify(token, config.get('jwt.secret'), function (err, decoded){
+      if (err){
+        return res.status(403).send({success: false, message: 'Failed to authenticate token'});
+      } else {
+        req.user = decoded;
+        next();
+      }
+    });
+  } else {
+    // no token provided
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided'
+    });
+  }
+});
+
+router.get('/test', (req, res) => {
+  return res.json({message: 'This is an authenticated route.', user: req.user});
 });
 
 module.exports = router;
