@@ -32,7 +32,7 @@ export const DateStepper = (props) => {
 
 export const CollapsibleCard = (props) => {
 
-  let foodList = props.dinningCourt.food.map((foodItem, index) => {
+  let foodList = props.diningCourt.foodItems.map((foodItem, index) => {
 
     return (<li>{foodItem}</li>);
 
@@ -42,8 +42,8 @@ export const CollapsibleCard = (props) => {
     <div className="card">
       <div className="card-header" role="tab" id={props.headingId}>
         <h5 className="mb-0">
-          <a data-toggle="collapse" href="#"{props.collapseId} aria-expanded="true" aria-controls={props.collapseId}>
-            {props.dinningCourt.name}
+          <a data-toggle="collapse" href={"#" + props.collapseId} aria-expanded="true" aria-controls={props.collapseId}>
+            {props.diningCourt.name}
           </a>
         </h5>
       </div>
