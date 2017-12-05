@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const checker = require('../util/menu-checker');
 const User = require('../models/user');
+const Favorite = require('../models/favorite');
 const { check, validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
@@ -96,6 +97,14 @@ router.use((req, res, next) => {
 
 router.get('/test', (req, res) => {
   return res.json({message: 'This is an authenticated route.', user: req.user});
+});
+
+router.get('/favorites', (req, res) => {
+  Favorite.find({userID: req.user.id}).then(favorites => {
+    res.json({success: true, favorites});
+  }).catch(err => {
+    res.json({success: false, error: err});
+  });
 });
 
 module.exports = router;
