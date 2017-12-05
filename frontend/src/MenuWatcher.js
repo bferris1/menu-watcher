@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Input, Button, Col, Row} from 'reactstrap';
 import moment from 'moment';
 
-import {DateStepper} from './SpecialForm';
+import {DateStepper, CollapsibleCard} from './SpecialForm';
 import {LabeledInput} from './form';
 
 export default class MenuWatcher extends Component {
@@ -21,13 +21,26 @@ export default class MenuWatcher extends Component {
         }],
         date: today,
         mealTime: '',
-        foodList: [{
-          dinningCourt: '',
+        diningCourts: [{
+          name: '',
           foodItems: []
         }]
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleDateChange = this.handleDateChange.bind(this);
+  }
+
+  componentDidMount(){
+    this.setState({diningCourts: [
+      {
+        name: "Ford",
+        foodItems: ["Cheese Burger", "Corn on the Cob", "Apple Pie"]
+      },
+      {
+        name: "Wiley",
+        foodItems: ["Baby Back Ribs", "Cole Slaw", "Choclate Cake"]
+      }
+    ]});
   }
 
   handleChange(e){
@@ -45,6 +58,15 @@ export default class MenuWatcher extends Component {
   render() {
 
     let meals = ["breakfast","lunch","dinner"];
+
+    let diningCourtCards = this.state.diningCourts.map((diningCourt, index) => {
+
+      return (
+        <CollapsibleCard headingId={"heading" + index} collapseId={"collapse" + index}
+          diningCourt={diningCourt} />
+      );
+
+    });
 
     return (
       <div>
@@ -64,9 +86,9 @@ export default class MenuWatcher extends Component {
             <option>dinner</option>
           </Input>
         </div>
-
-
-
+        <div className="diningCourtCards" id="accordion" role="tablist">
+          {diningCourtCards}
+        </div>
 
       </div>
     );
