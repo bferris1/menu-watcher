@@ -31,4 +31,34 @@ checker.getAllMenus = function (date, callback){
   });
 };
 
+
+checker.getFilteredFavorites = (menus, favorites, callback) => {
+  let meals = new Array(4);
+  for (let i = 0; i < meals.length; i++) {
+    meals[i] = {name: '', diningCourts: []};
+  }
+
+  let favoritesSet = new Set();
+  favorites.forEach(favorite => {
+    favoritesSet.add(favorite.itemID);
+  });
+  let diningCourts = [];
+
+  menus.forEach((diningCourt, courtIndex)=>{
+    diningCourts[courtIndex] = {name: diningCourt.Location, meals: []};
+    diningCourt.Meals.forEach((meal, mealIndex) => {
+      diningCourts[courtIndex].meals[mealIndex] = {name: meal.Name, favorites: []};
+      meal.Stations.forEach(station => {
+        station.Items.forEach(item => {
+          if (favoritesSet.has(item.ID)){
+            diningCourts[courtIndex].meals[mealIndex].favorites.push(item);
+            // meals[mealIndex].diningCourts[courtIndex].favorites.push(item);
+          }
+        });
+      });
+    });
+  });
+  callback(diningCourts);
+};
+
 module.exports = checker;
