@@ -29,3 +29,31 @@ export const DateStepper = (props) => {
         </div>
     );
 };
+
+export const CollapsibleCard = (props) => {
+
+  let foodList = props.dinningCourt.food.map((foodItem, index) => {
+
+    return (<li>{foodItem}</li>);
+
+  });
+
+  return(
+    <div className="card">
+      <div className="card-header" role="tab" id={props.headingId}>
+        <h5 className="mb-0">
+          <a data-toggle="collapse" href="#"{props.collapseId} aria-expanded="true" aria-controls={props.collapseId}>
+            {props.dinningCourt.name}
+          </a>
+        </h5>
+      </div>
+
+      <div id={props.collapseId} className="collapse show" role="tabpanel" aria-labelledby={props.headingId} data-parent="#accordion">
+        <div class="card-body">
+          {foodList}
+        </div>
+      </div>
+    </div>
+  );
+
+};
