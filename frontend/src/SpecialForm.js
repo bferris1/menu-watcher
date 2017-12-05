@@ -2,6 +2,7 @@ import React from 'react';
 import {FormGroup, Input, Label} from 'reactstrap';
 import moment from 'moment';
 
+
 export const DateStepper = (props) => {
     let inc = function () {
       let newDate = props.date;
@@ -42,7 +43,7 @@ export const CollapsibleCard = (props) => {
     <div className="card">
       <div className="card-header" role="tab" id={props.headingId}>
         <h5 className="mb-0">
-          <a data-toggle="collapse" href={"#" + props.collapseId} aria-expanded="true" aria-controls={props.collapseId}>
+          <a data-toggle="collapse" href={"#" + props.collapseId} aria-expanded="false" aria-controls={props.collapseId}>
             {props.diningCourt.name}
           </a>
         </h5>
