@@ -50,7 +50,7 @@ export const CollapsibleCard = (props) => {
       </div>
 
       <div id={props.collapseId} className="collapse show" role="tabpanel" aria-labelledby={props.headingId} data-parent="#accordion">
-        <div class="card-body">
+        <div className="card-body">
           {foodList}
         </div>
       </div>

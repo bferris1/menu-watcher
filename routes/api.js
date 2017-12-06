@@ -71,26 +71,34 @@ router.post('/auth', (req, res) => {
 });
 
 router.post('/register', [
-  check('email').isEmail().withMessage('Email address is invalid.').trim(),
-  check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')],
-(req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()){
-    return res.status(400).json({success: false, error: errors.mapped()});
-  }
-  let user = new User({
-    email: req.body.email,
-    password: req.body.password
-  });
-  user.save().then(user => {
-    console.log(user);
-    res.json({success: true, user});
-  }).catch(reason => {
-    console.log(reason);
-    res.status(500).json({success: false, error: reason});
-  });
+    check('email').isEmail().withMessage('Email address is invalid.').trim(),
+    check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()){
+      return res.status(400).json({success: false, error: errors.mapped()});
+    }
+    User.findOne({email: req.body.email}).then(existingUser => {
+      if (existingUser)
+        return res.status(400).json({success:false, error: 'A user with that email already exists.'});
 
-});
+      let user = new User({
+        email: req.body.email,
+        password: req.body.password
+      });
+      user.save().then(user => {
+        console.log(user);
+        return res.json({success: true, user});
+      }).catch(reason => {
+        console.log(reason);
+        return res.status(500).json({success: false, error: reason});
+      });
+    }).catch(err => {
+      return res.json({success: false, error: err})
+    })
+
+
+  });
 
 router.use((req, res, next) => {
   let token = req.body.token || req.params.token || req.headers['x-access-token'];
