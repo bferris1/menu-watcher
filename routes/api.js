@@ -15,7 +15,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/menus', (req, res) => {
-  checker.getAllMenus(new Date(), (err, menus) => {
+  let date = new Date();
+  let dateString = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+  checker.getAllMenus(dateString, (err, menus) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -143,6 +145,18 @@ router.post('/favorites', (req, res) => {
 
   });
 
+});
+
+
+router.get('/filtered/:date', (req, res) => {
+  checker.getAllMenus(req.params.date, (err, menus) => {
+    if (err) return res.status(500).json({error:err});
+    Favorite.find({userID: req.user.id}).then(favorites => {
+      checker.getFilteredFavorites(menus, favorites, filtered => {
+        return res.json({success:true, filtered});
+      })
+    })
+  })
 });
 
 

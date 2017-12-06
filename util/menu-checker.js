@@ -7,10 +7,10 @@ checker.getAllMenus = function (date, callback){
   let locations = ['Hillenbrand', 'Earhart', 'Windsor', 'Wiley', 'Ford', 'The%20Gathering%20Place'];
   let results = [];
 
-  let dateString = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+  // let dateString = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
   async.forEachOf(locations, (location, index, cb) => {
-    let fullURL = baseURL + location + '/' + dateString;
+    let fullURL = baseURL + location + '/' + date;
 
     let options = {
       url: fullURL,
