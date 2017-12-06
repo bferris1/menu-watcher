@@ -12,14 +12,14 @@ export default class Login extends Component {
     if (Auth.isLoggedIn()){
       this.props.history.push('/');
     }
-
   }
 
-  handleLogin(){
+  handleLogin(e){
+    e.preventDefault();
     console.log(this.state);
     Auth.login(this.state.email, this.state.password).then(res => {
       if (res.success){
-        this.props.history.push('/account');
+        this.props.history.push('/');
       }
     });
   }
@@ -32,10 +32,11 @@ export default class Login extends Component {
     return (
       <div className="row">
         <div className="col-sm-6 offset-sm-3">
+          <h1 className="mt-2">Log In</h1>
           <div className="form-group" onSubmit={this.handleLogin}>
-            <EmailInput value={this.state.email} onChange={this.handleChange}/>
-            <PasswordInput value={this.state.password} onChange={this.handleChange}/>
-            <button type={"submit"} className="btn btn-block btn-primary">Log In</button>
+            <EmailInput name={"email"} value={this.state.email} onChange={this.handleChange}/>
+            <PasswordInput name={"password"} value={this.state.password} onChange={this.handleChange}/>
+            <button type={"submit"} onClick={this.handleLogin} className="btn btn-block btn-primary">Log In</button>
             <div>
               <Link to="/signup">Sign Up</Link><br/>
               <Link to="/forgot">Forgot Password?</Link>

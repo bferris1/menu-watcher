@@ -8,6 +8,7 @@ export const EmailInput = (props) => {
              value={props.value}
              onChange={props.onChange}
              placeholder="Email Address"
+             name={props.name}
              autoFocus={props.autofocus}
       />
     </div>
@@ -22,6 +23,7 @@ export const PasswordInput = (props) => {
              value={props.value}
              onChange={props.onChange}
              placeholder={"Password"}
+             name={props.name}
              autoFocus={props.autofocus}/>
     </div>
   )
