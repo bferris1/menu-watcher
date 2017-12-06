@@ -1,5 +1,6 @@
 let express = require('express');
 let router = express.Router();
+let User = require('../models/user');
 
 router.get('/', (req, res) => {
   User.findById(req.user.id).then(user => {

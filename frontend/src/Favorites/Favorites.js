@@ -39,6 +39,13 @@ export default class Favorites extends Component {
     })
   }
 
+  handleDeleteFavorite(item){
+    Auth.delete('/api/favorites/'+item.itemID).then(res => {
+      console.log(res);
+      this.getFavorites();
+    })
+  }
+
   handleChange(e){
     this.setState({[e.target.name]:e.target.value});
   }
@@ -49,14 +56,18 @@ export default class Favorites extends Component {
 
   render() {
     let favoritesList = this.state.favorites.map((favorite, index)=>{
-      return <li className="list-group-item" key={index}>{favorite.itemName}</li>
+      return <li className="list-group-item" key={index}>
+      {favorite.itemName}
+      <button className="btn btn-danger float-right" 
+      onClick={e => {e.preventDefault(); this.handleDeleteFavorite(favorite)}}>Delete Favorite</button>
+      </li>
     });
 
     return (
       <div>
         <h1 className="my-2">Favorites</h1>
         <h2>Add favorite:</h2>
-        <AddFavoriteForm onAdd={this.handleAddFavorite}/>
+        <AddFavoriteForm onAdd={this.handleAddFavorite} onDelete={this.handleDeleteFavorite}/>
         <h2>Your Favorites</h2>
         <ul className="list-group my-2">
           {favoritesList}

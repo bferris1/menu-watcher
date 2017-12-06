@@ -8,6 +8,7 @@ const User = require('../models/user');
 const Favorite = require('../models/favorite');
 const { check, validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
+const accountRoutes = require('./account');
 
 
 router.get('/', (req, res) => {
@@ -110,6 +111,8 @@ router.use((req, res, next) => {
     });
   }
 });
+
+router.use('/account', accountRoutes);
 
 router.get('/test', (req, res) => {
   return res.json({message: 'This is an authenticated route.', user: req.user});

@@ -61,11 +61,9 @@ export default  {
   delete(endoint){
     let headers = new Headers();
     headers.append("x-access-token", localStorage.getItem("token"));
-    headers.append("Content-Type", "application/json");
-
     let options = {
       method:"DELETE",
-      headers:headers,
+      headers: headers,
     };
     return fetch(endoint, options).then((response)=>{
       if (response.status !== 401)
