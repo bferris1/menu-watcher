@@ -12,6 +12,8 @@ export default class Favorites extends Component {
     };
     this.getFavorites = this.getFavorites.bind(this);
     this.handleAddFavorite = this.handleAddFavorite.bind(this);
+    if (!Auth.isLoggedIn()) this.props.history.push('/login');
+
   }
 
   getFavorites(){

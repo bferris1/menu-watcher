@@ -9,6 +9,7 @@ export default class Import extends Component{
     this.state = {user: "", password: ""};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    if (!Auth.isLoggedIn()) this.props.history.push('/login');
   }
 
 
