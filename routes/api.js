@@ -144,7 +144,12 @@ router.post('/favorites', (req, res) => {
     });
 
   });
+});
 
+router.delete('/favorites/:favoriteID', (req, res) => {
+  Favorite.remove({_id: favoriteID}).then(() => {
+    return res.json({success: true});
+  })
 });
 
 
