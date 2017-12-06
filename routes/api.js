@@ -76,7 +76,7 @@ router.post('/register', [
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
-      return res.status(400).json({success: false, error: errors.mapped()});
+      return res.status(400).json({success: false, error: errors.array()[0].msg});
     }
     User.findOne({email: req.body.email}).then(existingUser => {
       if (existingUser)
@@ -96,7 +96,6 @@ router.post('/register', [
     }).catch(err => {
       return res.json({success: false, error: err})
     })
-
 
   });
 
