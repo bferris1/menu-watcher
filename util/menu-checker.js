@@ -31,6 +31,31 @@ checker.getAllMenus = function (date, callback){
   });
 };
 
+checker.getSearchResults = function (date, callback) {
+    let baseURL = 'https://api.hfs.purdue.edu/menus/v2/items/search/';
+    //get the parameters, replace spaces with %20 and add to base url later VVV
+    //req.param()
+    let fullURL = baseURL; //change this later
+
+    let results = [];
+    let options = {
+        url: fullURL,
+        headers: {
+            'Accept': 'text/json'
+        }
+    };
+    request(options, (error, request, body) => {
+        if (error)
+            cb(error);
+        results[index] = JSON.parse(body);
+        cb();
+    });
+}, (err)=>{
+    if (err)
+        console.log(err.message);
+    callback(null, results);
+});
+
 
 checker.getFilteredFavorites = (menus, favorites, callback) => {
   let meals = new Array(4);
@@ -60,5 +85,7 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
   });
   callback(diningCourts);
 };
+
+
 
 module.exports = checker;

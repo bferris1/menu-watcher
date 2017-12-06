@@ -24,6 +24,18 @@ router.get('/menus', (req, res) => {
   });
 });
 
+router.get('/search', (req, res) => {
+  checker.getSearchResults(new Date(), (err, searchResults) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        error: err
+      });
+    }
+    return res.json({success: true, searchResults});
+  });
+});
+
 
 
 router.post('/auth', (req, res) => {
