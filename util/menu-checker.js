@@ -6,12 +6,12 @@ checker.getAllMenus = function (date, callback){
   let baseURL = 'https://api.hfs.purdue.edu/menus/v2/locations/';
   let locations = ['Hillenbrand', 'Earhart', 'Windsor', 'Wiley', 'Ford', 'The%20Gathering%20Place'];
   let results = [];
-    
+
   let dateString = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-    
+
   async.forEachOf(locations, (location, index, cb) => {
     let fullURL = baseURL + location + '/' + dateString;
-    
+
     let options = {
       url: fullURL,
       headers: {
@@ -31,31 +31,26 @@ checker.getAllMenus = function (date, callback){
   });
 };
 
-checker.getSearchResults = function (date, callback) {
-    let baseURL = 'https://api.hfs.purdue.edu/menus/v2/items/search/';
-    //get the parameters, replace spaces with %20 and add to base url later VVV
-    //req.param()
-    let fullURL = baseURL; //change this later
+checker.getSearchResults = function (query, callback) {
+  let baseURL = 'https://api.hfs.purdue.edu/menus/v2/items/search/';
+  //get the parameters, replace spaces with %20 and add to base url later VVV
+  //req.param()
+  let fullURL = baseURL + query; //change this later
 
-    let results = [];
-    let options = {
-        url: fullURL,
-        headers: {
-            'Accept': 'text/json'
-        }
-    };
-    request(options, (error, request, body) => {
-        if (error)
-            cb(error);
-        results[index] = JSON.parse(body);
-        cb();
-    });
-}, (err)=>{
-    if (err)
-        console.log(err.message);
-    callback(null, results);
-});
 
+  let options = {
+    url: fullURL,
+    headers: {
+      'Accept': 'text/json'
+    }
+  };
+  request(options, (error, request, body) => {
+    if (error)
+      callback(error);
+    else
+      callback(null, JSON.parse(body));
+  });
+};
 
 checker.getFilteredFavorites = (menus, favorites, callback) => {
   let meals = new Array(4);

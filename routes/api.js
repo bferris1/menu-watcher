@@ -26,8 +26,8 @@ router.get('/menus', (req, res) => {
   });
 });
 
-router.get('/search', (req, res) => {
-  checker.getSearchResults(new Date(), (err, searchResults) => {
+router.get('/search/:query', (req, res) => {
+  checker.getSearchResults(req.params.query, (err, searchResults) => {
     if (err) {
       return res.status(500).json({
         success: false,
