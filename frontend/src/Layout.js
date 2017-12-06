@@ -35,12 +35,12 @@ export default class Layout extends Component{
 
   componentDidMount(){
     if (AuthCtrl.isLoggedIn())
-        AuthCtrl.get('/api/account').then((res)=>{
-            if (res.success)
-                this.setState({user:res.user});
-            else
-              console.log(res);
-        })
+      AuthCtrl.get('/api/account').then((res)=>{
+        if (res.success)
+          this.setState({user:res.user});
+        else
+          console.log(res);
+      })
   }
 
   toggle() {
@@ -52,13 +52,13 @@ export default class Layout extends Component{
   render(){
 
     let userAcc;
-    let logout;
+    let logout = null;
     if (this.state.user != null){
-      userAcc = "Loged in as: " + this.state.user.email;
+      userAcc = this.state.user.email;
       logout = <a onClick={e => {e.preventDefault(); AuthCtrl.logout(); this.props.history.push('/login')}} href={""}>Logout</a>
     }
     else{
-      userAcc = "You are not loged in"
+      userAcc = "You are not logged in"
     }
 
     return(
@@ -78,29 +78,48 @@ export default class Layout extends Component{
               <NavItem>
                 <NavLink className="nav-link" exact to="/import" activeClassName="active">Import</NavLink>
               </NavItem>
+              {logout != null ?
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  User Options
+                  {userAcc}
                 </DropdownToggle>
-                <DropdownMenu >
-                  <DropdownItem>
-                    {userAcc}
-                  </DropdownItem>
-                  <DropdownItem divider />
+                <DropdownMenu>
+
                   <DropdownItem>
                     {logout}
                   </DropdownItem>
+
                 </DropdownMenu>
-              </UncontrolledDropdown>
+
+                </UncontrolledDropdown>
+                :
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    Not Logged In
+                  </DropdownToggle>
+                  <DropdownMenu>
+
+                    <DropdownItem>
+                      <NavLink className="nav-link" exact to="/login" activeClassName="active">Log In</NavLink>
+                    </DropdownItem>
+
+                    <DropdownItem>
+                      <NavLink className="nav-link" exact to="/signup" activeClassName="active">Sign Up</NavLink>
+                    </DropdownItem>
+
+                  </DropdownMenu>
+
+                </UncontrolledDropdown>
+                }
             </Nav>
           </Collapse>
         </Navbar>
         <Route exact path={"/"} component={Home} />
         <div className="col-sm-8 offset-sm-2">
-        <Route exact path={"/menu-watcher"} component={MenuWatcher} />
-        <Route path={'/favorites'} component={Favorites}/>
-        <Route path={'/import'} component={Import}/>
-        <Route path={'/account'} component={Account}/>
+          <Route exact path={"/menu-watcher"} component={MenuWatcher} />
+          <Route path={'/favorites'} component={Favorites}/>
+          <Route path={'/import'} component={Import}/>
+          <Route path={'/account'} component={Account}/>
         </div>
       </div>
     )
