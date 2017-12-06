@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Route, NavLink} from 'react-router-dom';
-import {Row, Col} from 'reactstrap';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem } from 'reactstrap';
+
+
 import Home from './Home';
 import MenuWatcher from './MenuWatcher';
 
@@ -10,30 +22,61 @@ export default class Layout extends Component{
 
   constructor(props){
     super(props);
-    this.state = {user:null}
+    this.state = {
+      user:null,
+      isOpen: false
+    }
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount(){
 
   }
 
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
   render(){
     return(
-        <div className="mt-2">
-          <Row>
-            <Col sm={4}>
-              <h1>Navigation</h1>
-              <ul className="nav flex-column nav-fill nav-pills">
+
+      <div>
+        <Navbar color="faded" light expand="md">
+          <NavbarBrand href="/"> PMW </NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
                 <NavLink className="nav-link" exact to="/" activeClassName="active">Home</NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
-              </ul>
-            </Col>
-            <Col sm={8}>
-              <Route exact path={"/"} component={Home} />
-              <Route exact path={"/menu-watcher"} component={MenuWatcher} />
-            </Col>
-          </Row>
-        </div>
+              </NavItem>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Options
+                </DropdownToggle>
+                <DropdownMenu >
+                  <DropdownItem>
+                    Option 1
+                  </DropdownItem>
+                  <DropdownItem>
+                    Option 2
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>
+                    Reset
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+          </Collapse>
+        </Navbar>
+        <Route exact path={"/"} component={Home} />
+        <Route exact path={"/menu-watcher"} component={MenuWatcher} />
+      </div>
     )
   }
 }
