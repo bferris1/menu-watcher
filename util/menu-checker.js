@@ -87,6 +87,16 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
       })
     });
 
+  meals.forEach(diningCourts => {
+    diningCourts.sort((first, second) => {
+      if (first.favorites.length > second.favorites.length)
+        return -1;
+      if (first.favorites.length < second.favorites.length)
+        return 1;
+      return 0;
+    })
+  });
+
   callback(meals);
 };
 
