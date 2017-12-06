@@ -5,7 +5,7 @@ import moment from 'moment';
 //import {DateStepper, CollapsibleCard} from './SpecialForm';
 import {DateStepper} from './SpecialForm';
 import CollapsableCard from './CollapsableCard'
-import {LabeledInput} from './form';
+import Auth from './AuthCtrl';
 
 export default class MenuWatcher extends Component {
 
@@ -17,41 +17,18 @@ export default class MenuWatcher extends Component {
 
       this.state = {
         userID: '',
-        favFoods: [{
-          itemId: '',
-          itemName: ''
-        }],
         date: today,
-        mealTime: '',
-        /*diningCourts: [{
-          name: '',
-          meals: [
-            name: '',
-            favorites: []
-          ]
-        }]*/
-
-        diningCourts: [{
-          name: '',
-          foodItems: []
-        }]
-
+        mealIndex: 0,
+        meals: [[], [], [], []]
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleDateChange = this.handleDateChange.bind(this);
+      this.getFavorites = this.getFavorites.bind(this);
+      if (!Auth.isLoggedIn()) this.props.history.push('/login');
   }
 
   componentDidMount(){
-    this.setState({diningCourts: [
-      {
-        name: "Ford",
-        foodItems: ["Cheese Burger", "Corn on the Cob", "Apple Pie"]
-      },
-      {
-        name: "Wiley",
-        foodItems: ["Baby Back Ribs", "Cole Slaw", "Choclate Cake"]
-      }
-    ]});
+    this.getFavorites();
   }
 
   handleChange(e){
@@ -60,20 +37,28 @@ export default class MenuWatcher extends Component {
   }
 
   handleDateChange(newDate){
-      console.log("date: " + newDate.format('ll'));
-      this.setState({date: newDate});
+      console.log("date: " + newDate.format('MM-DD-YYYY'));
+      this.setState({date: newDate}, this.getFavorites);
+  }
+
+  getFavorites(){
+    Auth.get('/api/filtered/' + this.state.date.format('MM-DD-YYYY')).then(res => {
+      if (res.success) {
+        this.setState({
+          meals: res.filtered
+        })
+      }
+    })
   }
 
 
 
   render() {
 
-    let meals = ["breakfast","lunch","dinner"];
 
-    let diningCourtCards = this.state.diningCourts.map((diningCourt, index) => {
-
+    let diningCourtCards = this.state.meals[this.state.mealIndex].map((diningCourt, index) => {
       return (
-        <CollapsableCard headingId={"heading-" + diningCourt.name.toLowerCase()}
+        <CollapsableCard key={index} headingId={"heading-" + diningCourt.location.toLowerCase()}
           collapseId={"collapse-" + diningCourt.name.toLowerCase()}
           diningCourt={diningCourt} />
       );
@@ -92,12 +77,13 @@ export default class MenuWatcher extends Component {
             min={this.minDate} max={this.maxDate}
             onChange={newDate => {this.handleDateChange(newDate)}} />
           <p className={"mb-2"} style={{marginTop:'15px'}}>Enter Meal Time:</p>
-          <Input label="Choose Meal:" type="select" name="mealTime"
-            id="mealTime" value={this.state.mealTime}
+          <Input label="Choose Meal:" type="select" name="mealIndex"
+            id="mealIndex" value={this.state.mealIndex}
             onChange={e => {this.handleChange(e)}}>
-            <option>Breakfast</option>
-            <option>Lunch</option>
-            <option>Dinner</option>
+            <option value={0}>Breakfast</option>
+            <option value={1}>Lunch</option>
+            <option value={2}>Late Lunch</option>
+            <option value={3}>Dinner</option>
           </Input>
         </div>
 
