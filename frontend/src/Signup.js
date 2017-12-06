@@ -7,7 +7,7 @@ import {Form, Row, Col} from 'reactstrap';
 export default class Signup extends Component{
   constructor(props){
     super(props);
-    this.state = {firstName:"", lastName:"", password:"", email:""};
+    this.state = {password:"", email:""};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     if (Auth.isLoggedIn()){
@@ -19,7 +19,17 @@ export default class Signup extends Component{
     this.setState({[e.target.name]:e.target.value});
   }
   handleSubmit(e){
+    e.preventDefault();
     console.log(this.state);
+    Auth.post('/api/register', this.state).then(res => {
+      console.log(res);
+      if (res.success) {
+        // localStorage.setItem("token", res.token);
+        this.props.history.push('/login');
+      } else {
+        alert("An error occurred. Check your credentials.");
+      }
+    })
 
   }
 
@@ -27,28 +37,21 @@ export default class Signup extends Component{
     return (
       <div className="row mt-2">
         <div className="col-sm-6 offset-sm-3">
+          <h1>Sign Up</h1>
           <Form>
-            <Row>
-              <Col sm={6}>
-                <LabeledInput name="firstName" label={"First Name"} value={this.state.firstName} onChange={this.handleChange}/>
-              </Col>
-              <Col sm={6}>
-                <LabeledInput name="lastName" label={"Last Name"} value={this.state.lastName} onChange={this.handleChange} />
-              </Col>
-            </Row>
             <div className="row">
               <Col sm={12}>
-                <EmailInput value={this.state.email} onChange={this.handleChange}/>
+                <EmailInput name={"email"} value={this.state.email} onChange={this.handleChange}/>
               </Col>
             </div>
             <div className="row">
               <Col sm={12}>
-                <PasswordInput value={this.state.password} onChange={this.handleChange}/>
+                <PasswordInput name={"password"} value={this.state.password} onChange={this.handleChange}/>
               </Col>
             </div>
             <div className="row">
               <Col sm={12}>
-                <button type={"submit"} className="btn btn-block btn-primary">Log In</button>
+                <button onClick={this.handleSubmit} type={"submit"} className="btn btn-block btn-primary">Log In</button>
               </Col>
             </div>
           </Form>
