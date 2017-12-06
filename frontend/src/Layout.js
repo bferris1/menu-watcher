@@ -5,6 +5,7 @@ import {Row, Col} from 'reactstrap';
 import Home from './Home';
 import MenuWatcher from './MenuWatcher';
 import Favorites from './Favorites/Favorites';
+import Import from './Import';
 
 
 export default class Layout extends Component{
@@ -34,6 +35,7 @@ export default class Layout extends Component{
               <Route exact path={"/"} component={Home} />
               <Route exact path={"/menu-watcher"} component={MenuWatcher} />
               <Route path={'/favorites'} component={Favorites}/>
+              <Route path={'/import'} component={Import}/>
             </Col>
           </Row>
         </div>
