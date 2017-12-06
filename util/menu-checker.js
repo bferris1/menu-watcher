@@ -69,7 +69,8 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
       meal.Stations.forEach(station => {
         station.Items.forEach(item => {
           if (favoritesSet.has(item.ID)){
-            diningCourts[courtIndex].meals[mealIndex].favorites.push(item);
+            if (diningCourts[courtIndex].meals[mealIndex].favorites.filter(favorite => (favorite.Name === item.Name)).length===0)
+              diningCourts[courtIndex].meals[mealIndex].favorites.push(item);
             // meals[mealIndex].diningCourts[courtIndex].favorites.push(item);
           }
         });
