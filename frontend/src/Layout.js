@@ -16,6 +16,9 @@ import {
 
 import Home from './Home';
 import MenuWatcher from './MenuWatcher';
+import Favorites from './Favorites/Favorites';
+import Import from './Import';
+import Account from './Account';
 
 
 export default class Layout extends Component{

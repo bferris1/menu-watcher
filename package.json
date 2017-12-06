@@ -20,11 +20,13 @@
     "cookie-parser": "~1.4.3",
     "debug": "~3.1.0",
     "express": "~4.16.2",
-    "moment": "^2.19.3",
+    "express-validator": "^4.3.0",
+    "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.5",
     "morgan": "~1.9.0",
     "pug": "2.0.0-rc.4",
     "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
