@@ -39,7 +39,7 @@ export default class AddFavoriteForm extends Component {
 
 
   render () {
-    let resultsList = this.state.results.map((item, index)=>{
+    let resultsList = this.state.results.slice(0,10).map((item, index)=>{
       return <li className="list-group-item" key={index}>{item.Name}
       <button className="btn btn-success float-right" onClick={e => {e.preventDefault(); this.props.onAdd(item)}}>Add Favorite</button>
       </li>
@@ -49,7 +49,7 @@ export default class AddFavoriteForm extends Component {
         <Form>
           <DebounceInput className="form-control"
                          name={"query"}
-                         debounceTimeout={300}
+                         debounceTimeout={500}
                          onChange={this.handleChange}/>
         </Form>
         <br/><br/><br/>
