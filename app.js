@@ -12,6 +12,7 @@ mongoose.connect(config.get('db.url'), {
 });
 
 const api = require('./routes/api');
+let index = require('./routes/index');
 
 let app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 
 app.use('/api', api);
+app.use('/import', index);
 app.use((req, res) => {
   res.sendFile(path.join(__dirname+'/frontend/build/index.html'));
 });
