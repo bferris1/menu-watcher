@@ -33,7 +33,7 @@ export default class Login extends Component {
       <div className="row">
         <div className="col-sm-6 offset-sm-3">
           <h1 className="mt-2">Log In</h1>
-          <div className="form-group" onSubmit={this.handleLogin}>
+          <form onSubmit={this.handleLogin}>
             <EmailInput name={"email"} value={this.state.email} onChange={this.handleChange}/>
             <PasswordInput name={"password"} value={this.state.password} onChange={this.handleChange}/>
             <button type={"submit"} onClick={this.handleLogin} className="btn btn-block btn-primary">Log In</button>
@@ -41,7 +41,7 @@ export default class Login extends Component {
               <Link to="/signup">Sign Up</Link><br/>
               <Link to="/forgot">Forgot Password?</Link>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     )
