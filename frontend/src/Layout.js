@@ -4,6 +4,7 @@ import {Route, NavLink} from 'react-router-dom';
 import {Row, Col} from 'reactstrap';
 import Home from './Home';
 import MenuWatcher from './MenuWatcher';
+import Favorites from './Favorites';
 
 
 export default class Layout extends Component{
@@ -26,11 +27,13 @@ export default class Layout extends Component{
               <ul className="nav flex-column nav-fill nav-pills">
                 <NavLink className="nav-link" exact to="/" activeClassName="active">Home</NavLink>
                 <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
+                <NavLink className="nav-link" exact to="/favorites" activeClassName="active">Favorites</NavLink>
               </ul>
             </Col>
             <Col sm={8}>
               <Route exact path={"/"} component={Home} />
               <Route exact path={"/menu-watcher"} component={MenuWatcher} />
+              <Route path={'/favorites'} component={Favorites}/>
             </Col>
           </Row>
         </div>
