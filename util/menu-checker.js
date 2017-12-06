@@ -53,10 +53,6 @@ checker.getSearchResults = function (query, callback) {
 };
 
 checker.getFilteredFavorites = (menus, favorites, callback) => {
-  let meals = new Array(4);
-  for (let i = 0; i < meals.length; i++) {
-    meals[i] = {name: '', diningCourts: []};
-  }
 
   let favoritesSet = new Set();
   favorites.forEach(favorite => {
@@ -64,10 +60,12 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
   });
   let diningCourts = [];
 
+  //todo: combine these two stages?
+
   menus.forEach((diningCourt, courtIndex)=>{
     diningCourts[courtIndex] = {name: diningCourt.Location, meals: []};
     diningCourt.Meals.forEach((meal, mealIndex) => {
-      diningCourts[courtIndex].meals[mealIndex] = {name: meal.Name, favorites: []};
+      diningCourts[courtIndex].meals[mealIndex] = {location: diningCourt.Location, name: meal.Name, Order:meal.Order, favorites: []};
       meal.Stations.forEach(station => {
         station.Items.forEach(item => {
           if (favoritesSet.has(item.ID)){
@@ -78,7 +76,18 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
       });
     });
   });
-  callback(diningCourts);
+
+  let meals = [];
+  for (let i = 0; i < 4; i++) {
+    meals[i] = [];
+  }
+    diningCourts.forEach((diningCourt, courtIndex) => {
+      diningCourt.meals.forEach((meal, mealIndex) => {
+        meals[meal.Order-1].push(meal);
+      })
+    });
+
+  callback(meals);
 };
 
 

@@ -57,7 +57,7 @@ export default class Favorites extends Component {
         <h1 className="my-2">Favorites</h1>
         <h2>Add favorite:</h2>
         <AddFavoriteForm onAdd={this.handleAddFavorite}/>
-
+        <h2>Your Favorites</h2>
         <ul className="list-group my-2">
           {favoritesList}
         </ul>
