@@ -52,10 +52,13 @@ export default class Layout extends Component{
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink className="nav-link" exact to="/" activeClassName="active">Home</NavLink>
+                <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
+                <NavLink className="nav-link" exact to="/favorites" activeClassName="active">Favorites</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink className="nav-link" exact to="/import" activeClassName="active">Import</NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
@@ -79,6 +82,9 @@ export default class Layout extends Component{
         </Navbar>
         <Route exact path={"/"} component={Home} />
         <Route exact path={"/menu-watcher"} component={MenuWatcher} />
+        <Route path={'/favorites'} component={Favorites}/>
+        <Route path={'/import'} component={Import}/>
+        <Route path={'/account'} component={Account}/>
       </div>
     )
   }
