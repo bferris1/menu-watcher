@@ -29,6 +29,8 @@ export default class Layout extends Component{
                 <NavLink className="nav-link" exact to="/" activeClassName="active">Home</NavLink>
                 <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
                 <NavLink className="nav-link" exact to="/favorites" activeClassName="active">Favorites</NavLink>
+                <NavLink className="nav-link" exact to="/import" activeClassName="active">Import</NavLink>
+
               </ul>
             </Col>
             <Col sm={8}>

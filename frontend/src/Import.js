@@ -38,7 +38,7 @@ export default class Import extends Component{
           <Form>
             <div className="row">
               <Col sm={12}>
-                <LabeledInput name={"user"} label={"Purdue ID"} value={this.state.user} onChange={this.handleChange}/>
+                <LabeledInput name={"user"} label={"Purdue ID (not email)"} value={this.state.user} onChange={this.handleChange}/>
               </Col>
             </div>
             <div className="row">
@@ -48,7 +48,7 @@ export default class Import extends Component{
             </div>
             <div className="row">
               <Col sm={12}>
-                <button onClick={this.handleSubmit} type={"submit"} className="btn btn-block btn-primary">Log In</button>
+                <button onClick={this.handleSubmit} type={"submit"} className="btn btn-block btn-primary">Import Purdue Favorites</button>
               </Col>
             </div>
           </Form>
