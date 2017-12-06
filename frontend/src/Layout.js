@@ -96,10 +96,12 @@ export default class Layout extends Component{
           </Collapse>
         </Navbar>
         <Route exact path={"/"} component={Home} />
+        <div className="col-sm-8 offset-sm-2">
         <Route exact path={"/menu-watcher"} component={MenuWatcher} />
         <Route path={'/favorites'} component={Favorites}/>
         <Route path={'/import'} component={Import}/>
         <Route path={'/account'} component={Account}/>
+        </div>
       </div>
     )
   }
