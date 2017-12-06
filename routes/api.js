@@ -147,8 +147,10 @@ router.post('/favorites', (req, res) => {
 });
 
 router.delete('/favorites/:favoriteID', (req, res) => {
-  Favorite.remove({_id: favoriteID}).then(() => {
+  Favorite.remove({itemID: req.params.favoriteID}).then(() => {
     return res.json({success: true});
+  }).catch(err => {
+    return res.status(500).json({success:false, error: err});
   })
 });
 
