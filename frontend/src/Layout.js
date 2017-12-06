@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import AuthCtrl from './AuthCtrl';
 import {Route, NavLink} from 'react-router-dom';
 import {
   Collapse,
@@ -33,7 +34,13 @@ export default class Layout extends Component{
   }
 
   componentDidMount(){
-
+    if (AuthCtrl.isLoggedIn())
+        AuthCtrl.get('/api/account').then((res)=>{
+            if (res.success)
+                this.setState({user:res.user});
+            else
+              console.log(res);
+        })
   }
 
   toggle() {
@@ -43,6 +50,17 @@ export default class Layout extends Component{
   }
 
   render(){
+
+    let userAcc;
+    let logout;
+    if (this.state.user != null){
+      userAcc = "Loged in as: " + this.state.user.name;
+      logout = <a onClick={e => {e.preventDefault(); AuthCtrl.logout(); this.props.history.push('/login')}} href={""}>Logout</a>
+    }
+    else{
+      userAcc = "You are not loged in"
+    }
+
     return(
 
       <div>
@@ -62,18 +80,15 @@ export default class Layout extends Component{
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  Options
+                  User Options
                 </DropdownToggle>
                 <DropdownMenu >
                   <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
+                    {userAcc}
                   </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem>
-                    Reset
+                    {logout}
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
