@@ -54,7 +54,7 @@ export default class Layout extends Component{
     let userAcc;
     let logout;
     if (this.state.user != null){
-      userAcc = "Loged in as: " + this.state.user.name;
+      userAcc = "Loged in as: " + this.state.user.email;
       logout = <a onClick={e => {e.preventDefault(); AuthCtrl.logout(); this.props.history.push('/login')}} href={""}>Logout</a>
     }
     else{
