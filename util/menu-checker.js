@@ -33,9 +33,9 @@ checker.getAllMenus = function (date, callback){
 
 checker.getSearchResults = function (query, callback) {
   let baseURL = 'https://api.hfs.purdue.edu/menus/v2/items/search/';
-  //get the parameters, replace spaces with %20 and add to base url later VVV
-  //req.param()
-  let fullURL = baseURL + query; //change this later
+  // get the parameters, replace spaces with %20 and add to base url later VVV
+  // req.param()
+  let fullURL = baseURL + query; // change this later
 
 
   let options = {
@@ -60,12 +60,12 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
   });
   let diningCourts = [];
 
-  //todo: combine these two stages?
+  // todo: combine these two stages?
 
   menus.forEach((diningCourt, courtIndex)=>{
     diningCourts[courtIndex] = {name: diningCourt.Location, meals: []};
     diningCourt.Meals.forEach((meal, mealIndex) => {
-      diningCourts[courtIndex].meals[mealIndex] = {location: diningCourt.Location, name: meal.Name, Order:meal.Order, favorites: []};
+      diningCourts[courtIndex].meals[mealIndex] = {location: diningCourt.Location, name: meal.Name, Order: meal.Order, favorites: []};
       meal.Stations.forEach(station => {
         station.Items.forEach(item => {
           if (favoritesSet.has(item.ID)){
@@ -81,11 +81,11 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
   for (let i = 0; i < 4; i++) {
     meals[i] = [];
   }
-    diningCourts.forEach((diningCourt, courtIndex) => {
-      diningCourt.meals.forEach((meal, mealIndex) => {
-        meals[meal.Order-1].push(meal);
-      })
+  diningCourts.forEach((diningCourt) => {
+    diningCourt.meals.forEach((meal) => {
+      meals[meal.Order-1].push(meal);
     });
+  });
 
   meals.forEach(diningCourts => {
     diningCourts.sort((first, second) => {
@@ -94,7 +94,7 @@ checker.getFilteredFavorites = (menus, favorites, callback) => {
       if (first.favorites.length < second.favorites.length)
         return 1;
       return 0;
-    })
+    });
   });
 
   callback(meals);
