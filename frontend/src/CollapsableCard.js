@@ -14,9 +14,9 @@ class CollapsibleCard extends Component {
 
   render() {
 
-    let foodItems = this.props.diningCourt.foodItems.map((foodItem, index) => {
+    let foodItems = this.props.diningCourt.favorites.map((favorite, index) => {
 
-      return (<li>{foodItem}</li>);
+      return (<li>{favorite.Name}</li>);
 
     });
 
@@ -24,7 +24,7 @@ class CollapsibleCard extends Component {
       <div>
         <Card>
           <CardHeader>
-            <Button color="link" size="lg" onClick={this.toggle}>{this.props.diningCourt.name}</Button>
+            <Button color="link" size="lg" onClick={this.toggle}>{this.props.diningCourt.location}</Button>
           </CardHeader>
           <Collapse isOpen={this.state.collapse}>
               <CardBody>
