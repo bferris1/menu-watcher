@@ -46,7 +46,7 @@ router.get('/search/:query', (req, res) => {
 router.post('/auth', (req, res) => {
   User.findOne({email: req.body.email}).select('email, password').exec().then(user => {
     if (!user){
-      res.status(400).json({success: false, error: 'No user with that email address.'});
+      return res.status(400).json({success: false, error: 'No user with that email address.'});
     }
     user.comparePassword(req.body.password, function (err, isMatch) {
       if (err) {

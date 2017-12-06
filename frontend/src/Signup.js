@@ -28,10 +28,9 @@ export default class Signup extends Component{
         // localStorage.setItem("token", res.token);
         this.props.history.push('/login');
       } else {
-        // alert("An error occurred. Check your credentials.");
         this.setState({
           alerts: {danger: res.error}
-        })
+        });
         setTimeout(()=>{this.setState({alerts: []})}, 5000);
       }
     })

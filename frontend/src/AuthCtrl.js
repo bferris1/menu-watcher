@@ -15,7 +15,9 @@ export default  {
         this.logout();
         return {success: false, error: response};
       }
-    });
+    }).catch(reason => {
+      return {success: false, error: reason}
+    })
   },
 
   post(endoint, body){
@@ -91,7 +93,7 @@ export default  {
           return response.json();
         else {
           this.logout();
-          return {success: false, error: response};
+          return response.json();
         }
       })
       .then((response)=>{
