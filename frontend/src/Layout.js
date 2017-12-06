@@ -29,7 +29,7 @@ export default class Layout extends Component{
     this.state = {
       user:null,
       isOpen: false
-    }
+    };
     this.toggle = this.toggle.bind(this);
   }
 
@@ -55,7 +55,13 @@ export default class Layout extends Component{
     let logout = null;
     if (this.state.user != null){
       userAcc = this.state.user.email;
-      logout = <a onClick={e => {e.preventDefault(); AuthCtrl.logout(); this.props.history.push('/login')}} href={""}>Logout</a>
+      logout = <DropdownItem
+
+        onClick={e => {e.preventDefault(); AuthCtrl.logout(); this.props.history.push('/login')}}
+        href={""}>
+
+        Logout
+      </DropdownItem>
     }
     else{
       userAcc = "You are not logged in"
@@ -85,9 +91,7 @@ export default class Layout extends Component{
                 </DropdownToggle>
                 <DropdownMenu>
 
-                  <DropdownItem>
                     {logout}
-                  </DropdownItem>
 
                 </DropdownMenu>
 
