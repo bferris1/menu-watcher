@@ -9,19 +9,19 @@ import {
 
 const items = [
   {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Food-luxury-pasta.svg/2000px-Food-luxury-pasta.svg.png',
-    altText: 'Slide 1',
-    caption: 'Slide 1'
-  },
-  {
-    src: 'http://catalog.purdue.edu/mime/media/8/1018/_MDT7829.jpg',
-    altText: 'Slide 2',
-    caption: 'Slide 2'
+    src: 'http://mediad.publicbroadcasting.net/p/wbaa/files/styles/x_large/public/201512/_DSC2463-1.jpg',
+    altText: 'WELCOME TO PURDUE MENU WATCHER!',
+    caption: 'Track all of your dining court favorites.'
   },
   {
     src: 'http://mediad.publicbroadcasting.net/p/wbaa/files/styles/x_large/public/201512/_DSC2463-1.jpg',
-    altText: 'Slide 3',
-    caption: 'Slide 3'
+    altText: 'ADD TO YOUR FAVES!',
+    caption: 'Click on the Favorites tab to view and add to your favorites.'
+  },
+  {
+    src: 'http://mediad.publicbroadcasting.net/p/wbaa/files/styles/x_large/public/201512/_DSC2463-1.jpg',
+    altText: 'GET STARTED TODAY!',
+    caption: 'Click on the Import tab to login with your PurdueID.'
   }
 ];
 
@@ -84,7 +84,7 @@ export default class Home extends React.Component {
           src={item.src}
           altText={item.altText}
         >
-          <CarouselCaption className="text-dark" captionText={item.caption} captionHeader={item.caption} />
+          <CarouselCaption className="text" captionText={item.caption} captionHeader={item.altText} />
         </CarouselItem>
       );
     });
