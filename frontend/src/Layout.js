@@ -4,7 +4,7 @@ import {Route, NavLink} from 'react-router-dom';
 import {Row, Col} from 'reactstrap';
 import Home from './Home';
 import MenuWatcher from './MenuWatcher';
-import Favorites from './Favorites';
+import Favorites from './Favorites/Favorites';
 
 
 export default class Layout extends Component{
