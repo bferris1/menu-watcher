@@ -122,7 +122,14 @@ router.get('/favorites', (req, res) => {
 });
 
 router.post('/favorites', (req, res) => {
-  if (req.body.itemID && req.body.itemName){
+  if (!req.body.itemID && !req.body.itemName){
+    return res.status(400).json({success: false, message: 'Invalid id or name.'});
+  }
+  Favorite.find({itemID: req.body.itemID}).then(favorites => {
+    if (favorites.length > 0){
+      console.log(favorites);
+      return res.status(400).json({success: false, message: 'Item is already a favorite!'});
+    }
     let favorite = new Favorite({
       itemID: req.body.itemID,
       itemName: req.body.itemName,
@@ -133,16 +140,16 @@ router.post('/favorites', (req, res) => {
     }).catch(err => {
       return res.status(500).json({success: false, error: err});
     });
-  } else {
-    res.status(400).json({success: false, error: 'Invalid id or name.'});
-  }
+
+  });
+
 });
 
 
 
 router.post('/import', function (req, res) {
-  const validateURL = 'https://www.purdue.edu/apps/account/cas/serviceValidate';
-  const service = 'http://localhost:4000/import/CasRedirect';
+  // const validateURL = 'https://www.purdue.edu/apps/account/cas/serviceValidate';
+  // const service = 'http://localhost:4000/import/CasRedirect';
   const favoritesUrl = 'https://api.hfs.purdue.edu/menus/v2/favorites';
   const ticketURL = 'https://www.purdue.edu/apps/account/cas/v1/tickets';
 
@@ -196,13 +203,13 @@ router.post('/import', function (req, res) {
           newFavorite.save((err, created) => {
             if (err)
               cb(err);
-            else{
+            else {
               console.log(created);
               cb();
             }
-          })
+          });
         }, err => {
-          if (err) return res.status(500).json({success:false, error: err});
+          if (err) return res.status(500).json({success: false, error: err});
           return res.json({success: true});
         });
       });
