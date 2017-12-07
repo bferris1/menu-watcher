@@ -137,7 +137,7 @@ router.post('/favorites', (req, res) => {
   if (!req.body.itemID && !req.body.itemName){
     return res.status(400).json({success: false, message: 'Invalid id or name.'});
   }
-  Favorite.find({itemID: req.body.itemID}).then(favorites => {
+  Favorite.find({itemID: req.body.itemID, userID: req.user.id}).then(favorites => {
     if (favorites.length > 0){
       console.log(favorites);
       return res.status(400).json({success: false, message: 'Item is already a favorite!'});
