@@ -9,17 +9,17 @@ import {
 
 const items = [
   {
-    src: 'http://mediad.publicbroadcasting.net/p/wbaa/files/styles/x_large/public/201512/_DSC2463-1.jpg',
+    src: 'Purdue.jpg',
     altText: 'WELCOME TO PURDUE MENU WATCHER!',
     caption: 'Track all of your dining court favorites.'
   },
   {
-    src: 'http://mediad.publicbroadcasting.net/p/wbaa/files/styles/x_large/public/201512/_DSC2463-1.jpg',
+    src: 'Purdue.jpg',
     altText: 'ADD TO YOUR FAVES!',
     caption: 'Click on the Favorites tab to view and add to your favorites.'
   },
   {
-    src: 'http://mediad.publicbroadcasting.net/p/wbaa/files/styles/x_large/public/201512/_DSC2463-1.jpg',
+    src: 'Purdue.jpg',
     altText: 'GET STARTED TODAY!',
     caption: 'Click on the Import tab to login with your PurdueID.'
   }
