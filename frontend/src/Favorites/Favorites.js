@@ -38,7 +38,7 @@ export default class Favorites extends Component {
       console.log(res);
       if (res.success){
         this.setState({alerts: {success: 'Added successfully'}});
-        setTimeout(()=>{this.setState({alerts: []})}, 4000);
+        setTimeout(()=>{this.setState({alerts: []})}, 1000);
         this.getFavorites();
       }
     })
