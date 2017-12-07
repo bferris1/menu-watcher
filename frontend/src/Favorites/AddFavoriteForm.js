@@ -46,7 +46,7 @@ export default class AddFavoriteForm extends Component {
       if (!favorites.includes(item.ID))
         addButton = <button className="btn btn-success float-right" onClick={e => {e.preventDefault(); this.props.onAdd(item);}}>Add Favorite</button>;
       else
-        addButton = <p className="text-right float-right">Already Favorite</p>;
+        addButton = <p className="text-right float-right">Already A Favorite</p>;
       return <li className="list-group-item" key={index}>{item.Name}
         {addButton}
       </li>
