@@ -44,6 +44,14 @@ router.get('/search/:query', (req, res) => {
 
 
 router.post('/auth', (req, res) => {
+
+  if (!req.body.email || !req.body.password){
+    return res.status(400).json({
+      success: false,
+      error: 'Email and password are required.'
+    });
+  }
+
   User.findOne({email: req.body.email}).select('email, password').exec().then(user => {
     if (!user){
       return res.status(400).json({success: false, error: 'No user with that email address.'});
