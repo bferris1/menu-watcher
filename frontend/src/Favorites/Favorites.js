@@ -10,7 +10,7 @@ export default class Favorites extends Component {
     super (props);
     this.state = {
       favorites: [],
-      alerts: []
+      alerts: {}
     };
     this.getFavorites = this.getFavorites.bind(this);
     this.handleAddFavorite = this.handleAddFavorite.bind(this);
@@ -37,9 +37,10 @@ export default class Favorites extends Component {
       }).then(res => {
       console.log(res);
       if (res.success){
-        this.setState({alerts: {success: 'Added successfully'}});
-        setTimeout(()=>{this.setState({alerts: []})}, 1000);
+        this.setState({alerts: {}});
         this.getFavorites();
+      }else {
+        this.setState({alerts: {danger: res.error}});
       }
     })
   }
