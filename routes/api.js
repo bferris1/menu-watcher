@@ -106,8 +106,16 @@ router.use((req, res, next) => {
       if (err){
         return res.status(403).send({success: false, message: 'Failed to authenticate token'});
       } else {
-        req.user = decoded;
-        next();
+        User.findOne({_id: decoded.id}).then(user => {
+          if (!user) return res.status(401).json({success: false, error: 'Your user ID is invalid.'});
+          else {
+            req.user = decoded;
+            next();
+          }
+        }).catch(err => {
+          console.error(err);
+          return res.status(500).json({success: false, error: err});
+        });
       }
     });
   } else {
