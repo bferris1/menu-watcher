@@ -177,18 +177,16 @@ router.get('/filtered/:date', (req, res) => {
 });
 
 
-
+//todo: use promises (request-promise) to clean this up
 router.post('/import', function (req, res) {
-  // const validateURL = 'https://www.purdue.edu/apps/account/cas/serviceValidate';
-  // const service = 'http://localhost:4000/import/CasRedirect';
   const favoritesUrl = 'https://api.hfs.purdue.edu/menus/v2/favorites';
   const ticketURL = 'https://www.purdue.edu/apps/account/cas/v1/tickets';
 
-  // res.redirect('https://www.purdue.edu/apps/account/cas/login?service=https://api.hfs.purdue.edu%2FMenus%2FHome%2FCasRedirect%3FredirectUrl%3D' + encodeURIComponent(config.get('hosting.url')))
-  // let dest = 'https://www.purdue.edu/apps/account/cas/login?service='+ encodeURIComponent(service);
+  // user must enter username and password
   if (!req.body.user && !req.body.password){
     return res.status(400).json({success: false, message: 'Credentials required.'});
   }
+  // options to get ticket
   let options = {
     method: 'POST',
     uri: ticketURL,
@@ -197,6 +195,7 @@ router.post('/import', function (req, res) {
       password: req.body.password
     }
   };
+  // send credentials to request a ticket
   request(options, (err, response, body)=>{
     if (err) return res.status(500).json({err});
     // res.send(body);
@@ -208,9 +207,12 @@ router.post('/import', function (req, res) {
         service: favoritesUrl
       }
     };
+    // send another request to the endpoint returned by the previous request
+    // this request sends the service for the ticket which is returned in the response body
     request(ticketOptions, (ticketErr, ticketRes, ticketBody) => {
       if (ticketErr) return res.status(500).json({error: ticketErr});
-      // res.send(ticketBody);
+
+      // the ticket is sent as a query parameter with the favorites request
       let favoriteOptions = {
         method: 'GET',
         uri: favoritesUrl,
@@ -222,9 +224,12 @@ router.post('/import', function (req, res) {
         }
       };
 
+      // finally, send a request to the dining API with the ticket
       request(favoriteOptions, (fErr, fRes, fBody) => {
         console.log(fBody);
         let favorites = JSON.parse(fBody);
+        // save each favorite to the database
+        // todo: check for duplicates
         async.forEachOf(favorites.Favorite, (favorite, index, cb) => {
           let newFavorite = new Favorite({
             itemName: favorite.ItemName,
