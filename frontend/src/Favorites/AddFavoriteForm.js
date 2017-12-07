@@ -28,20 +28,27 @@ export default class AddFavoriteForm extends Component {
   }
 
   handleChange (e) {
-    if (e.target.value == ''){
+    if (e.target.value === ''){
       this.setState({
-        results: []
+        results: [],
+        query: ''
       });
-      return;
+    }else{
+      this.setState({[e.target.name]:e.target.value}, this.search);
     }
-    this.setState({[e.target.name]:e.target.value}, this.search);
   }
 
 
   render () {
+    let favorites = this.props.favorites;
     let resultsList = this.state.results.slice(0,10).map((item, index)=>{
+      let addButton;
+      if (!favorites.includes(item.ID))
+        addButton = <button className="btn btn-success float-right" onClick={e => {e.preventDefault(); this.props.onAdd(item);}}>Add Favorite</button>;
+      else
+        addButton = <p className="text-right float-right">Already Favorite</p>;
       return <li className="list-group-item" key={index}>{item.Name}
-      <button className="btn btn-success float-right" onClick={e => {e.preventDefault(); this.props.onAdd(item)}}>Add Favorite</button>
+        {addButton}
       </li>
     });
     return (
@@ -50,6 +57,7 @@ export default class AddFavoriteForm extends Component {
           <DebounceInput className="form-control"
                          name={"query"}
                          debounceTimeout={500}
+                         minLength={3}
                          onChange={this.handleChange}/>
         </Form>
         <br/><br/><br/>
