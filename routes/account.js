@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let User = require('../models/user');
+const Favorite = require('../models/favorite');
 
 router.get('/', (req, res) => {
   User.findById(req.user.id).then(user => {
@@ -31,6 +32,18 @@ router.post('/', (req, res) => {
       return res.status(500).json({success: false, error: err});
     });
   }
+});
+
+router.delete('/', (req, res) => {
+  User.remove({_id: req.user.id}).then(result => {
+    console.log(result);
+    return Favorite.remove({userID: req.user.id});
+  }).then(result => {
+    res.json({success: true, message: 'Your account has been deleted.'});
+  }).catch(err => {
+    console.error(err);
+    res.status(500).json({success: false, error: err});
+  });
 });
 
 
