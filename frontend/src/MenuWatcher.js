@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Input, Button, Col, Row} from 'reactstrap';
 import moment from 'moment';
 
-//import {DateStepper, CollapsibleCard} from './SpecialForm';
 import {DateStepper} from './SpecialForm';
 import CollapsableCard from './CollapsableCard'
 import Auth from './AuthCtrl';
@@ -11,14 +10,25 @@ export default class MenuWatcher extends Component {
 
   constructor(props){
       super (props);
-      let today = moment();
-      this.minDate = moment().startOf('day');
-      this.maxDate = moment().endOf('day').add(3, 'days');
+      let now = moment();
+      this.minDate = now.clone().startOf('day');
+      this.maxDate = now.clone().endOf('day').add(4, 'days');
+      let currentHour = now.hour();
+      let currentMealIndex = 0;
+      if (currentHour < 10) {
+        currentMealIndex = 0;
+      } else if(currentHour < 14) {
+        currentMealIndex = 1;
+      } else if (currentHour < 17) {
+        currentMealIndex = 2;
+      } else {
+        currentMealIndex = 3;
+      }
 
       this.state = {
         userID: '',
-        date: today,
-        mealIndex: 0,
+        date: now,
+        mealIndex: currentMealIndex,
         meals: [[], [], [], []]
       };
       this.handleChange = this.handleChange.bind(this);
