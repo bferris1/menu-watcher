@@ -39,7 +39,7 @@ export default class Import extends Component{
           <h6>Enter your Purdue credentials to import your favorites from the Purdue menu system.</h6>
           <p style={{fontSize: '14px'}} className="text-sm">
             Your Purdue credentials are not stored and are only used to retrieve your favorites from the Purdue dining favorites system.
-            (<a target={'_blank'} href={"https://github.com/moufee/menu-watcher/blob/72a40c875a884b943df7c90606e440dcda9a6f98/routes/api.js#L181"}>See for yourself.</a>)
+            (<a target={'_blank'} href={'https://github.com/moufee/menu-watcher/blob/develop/routes/api.js#L181'}>See for yourself.</a>)
           </p>
           <Form>
             <div className="row">
