@@ -1,4 +1,4 @@
-Welcome to the Purdue Menu Checker!
+# Purdue Menu Checker
 
 This application allows students to choose which dining court to go to based on their favorite meals.
 
