@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {LabeledInput, PasswordInput} from './form';
 import Auth from './AuthCtrl';
 import {Col, Form} from 'reactstrap';
+import { Alerts } from './Alerts';
 
 export default class Import extends Component{
   constructor(props) {
     super(props);
-    this.state = {user: "", password: ""};
+    this.state = {user: "", password: "", alerts:[]};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     if (!Auth.isLoggedIn()) this.props.history.push('/login');
@@ -18,14 +19,14 @@ export default class Import extends Component{
   }
   handleSubmit(e){
     e.preventDefault();
-    console.log(this.state);
     Auth.post('/api/import', this.state).then(res => {
       console.log(res);
       if (res.success) {
-
-        this.props.history.push('/favorites');
+        this.setState({alerts: {success: 'Imported successfully!'}});
+        setTimeout(() => {this.props.history.push('/favorites')}, 3000)
       } else {
-
+        this.setState({alerts: {danger: res.error}});
+        setTimeout(() => {this.setState({alerts: []})}, 5000);
       }
     })
 
@@ -36,6 +37,7 @@ export default class Import extends Component{
       <div className="mt-2">
         <div>
           <h1>Import Your Favorites</h1>
+          <Alerts alerts={this.state.alerts}/>
           <h6>Enter your Purdue credentials to import your favorites from the Purdue menu system.</h6>
           <p style={{fontSize: '14px'}} className="text-sm">
             Your Purdue credentials are not stored and are only used to retrieve your favorites from the Purdue dining favorites system.

@@ -71,33 +71,33 @@ router.post('/auth', (req, res) => {
 });
 
 router.post('/register', [
-    check('email').isEmail().withMessage('Email address is invalid.').trim(),
-    check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()){
-      return res.status(400).json({success: false, error: errors.array()[0].msg});
-    }
-    User.findOne({email: req.body.email}).then(existingUser => {
-      if (existingUser)
-        return res.status(400).json({success:false, error: 'A user with that email already exists.'});
+  check('email').isEmail().withMessage('Email address is invalid.').trim(),
+  check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')],
+(req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()){
+    return res.status(400).json({success: false, error: errors.array()[0].msg});
+  }
+  User.findOne({email: req.body.email}).then(existingUser => {
+    if (existingUser)
+      return res.status(400).json({success: false, error: 'A user with that email already exists.'});
 
-      let user = new User({
-        email: req.body.email,
-        password: req.body.password
-      });
-      user.save().then(user => {
-        console.log(user);
-        return res.json({success: true, user});
-      }).catch(reason => {
-        console.log(reason);
-        return res.status(500).json({success: false, error: reason});
-      });
-    }).catch(err => {
-      return res.json({success: false, error: err})
-    })
-
+    let user = new User({
+      email: req.body.email,
+      password: req.body.password
+    });
+    user.save().then(user => {
+      console.log(user);
+      return res.json({success: true, user});
+    }).catch(reason => {
+      console.log(reason);
+      return res.status(500).json({success: false, error: reason});
+    });
+  }).catch(err => {
+    return res.json({success: false, error: err});
   });
+
+});
 
 router.use((req, res, next) => {
   let token = req.body.token || req.params.token || req.headers['x-access-token'];
@@ -160,24 +160,24 @@ router.delete('/favorites/:favoriteID', (req, res) => {
   Favorite.remove({itemID: req.params.favoriteID}).then(() => {
     return res.json({success: true});
   }).catch(err => {
-    return res.status(500).json({success:false, error: err});
-  })
+    return res.status(500).json({success: false, error: err});
+  });
 });
 
 
 router.get('/filtered/:date', (req, res) => {
   checker.getAllMenus(req.params.date, (err, menus) => {
-    if (err) return res.status(500).json({error:err});
+    if (err) return res.status(500).json({error: err});
     Favorite.find({userID: req.user.id}).then(favorites => {
       checker.getFilteredFavorites(menus, favorites, filtered => {
-        return res.json({success:true, filtered});
-      })
-    })
-  })
+        return res.json({success: true, filtered});
+      });
+    });
+  });
 });
 
 
-//todo: use promises (request-promise) to clean this up
+// todo: use promises (request-promise) to clean this up
 router.post('/import', function (req, res) {
   const favoritesUrl = 'https://api.hfs.purdue.edu/menus/v2/favorites';
   const ticketURL = 'https://www.purdue.edu/apps/account/cas/v1/tickets';
@@ -195,9 +195,9 @@ router.post('/import', function (req, res) {
       password: req.body.password
     }
   };
-  // send credentials to request a ticket
-  request(options, (err, response, body)=>{
-    if (err) return res.status(500).json({err});
+  // send credentials to request a TGT
+  request(options, (err, response)=>{
+    if (err || response.statusCode != 201) return res.status(500).json({success: false, error: 'Incorrect Credentials'});
     // res.send(body);
     console.log(response.headers.location);
     let ticketOptions = {
@@ -207,10 +207,12 @@ router.post('/import', function (req, res) {
         service: favoritesUrl
       }
     };
-    // send another request to the endpoint returned by the previous request
+    // send another request to the endpoint returned by the previous request (with TGT)
     // this request sends the service for the ticket which is returned in the response body
     request(ticketOptions, (ticketErr, ticketRes, ticketBody) => {
-      if (ticketErr) return res.status(500).json({error: ticketErr});
+      console.log(ticketRes);
+      console.log(ticketRes.statusCode);
+      if (ticketErr) return res.status(500).json({error: 'Unable to access favorites API.'});
 
       // the ticket is sent as a query parameter with the favorites request
       let favoriteOptions = {
@@ -245,7 +247,7 @@ router.post('/import', function (req, res) {
             }
           });
         }, err => {
-          if (err) return res.status(500).json({success: false, error: err});
+          if (err) return res.status(500).json({success: false, error: 'Error saving favorites to database.'});
           return res.json({success: true});
         });
       });
