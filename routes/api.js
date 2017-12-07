@@ -87,8 +87,13 @@ router.post('/register', [
       password: req.body.password
     });
     user.save().then(user => {
-      console.log(user);
-      return res.json({success: true, user});
+      jwt.sign({
+        email: user.email,
+        id: user._id
+      }, config.get('jwt.secret'), function (err, token) {
+        if (err) return res.status(500).json({success: false});
+        return res.json({success: true, user, token});
+      });
     }).catch(reason => {
       console.log(reason);
       return res.status(500).json({success: false, error: reason});

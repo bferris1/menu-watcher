@@ -25,8 +25,8 @@ export default class Signup extends Component{
     Auth.post('/api/register', this.state).then(res => {
       console.log(res);
       if (res.success) {
-        // localStorage.setItem("token", res.token);
-        this.props.history.push('/login');
+        localStorage.setItem("token", res.token);
+        this.props.history.push('/favorites');
       } else {
         this.setState({
           alerts: {danger: res.error}
