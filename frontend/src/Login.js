@@ -11,7 +11,7 @@ export default class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {email:"", password:"", alerts:[]};
     if (Auth.isLoggedIn()){
-      this.props.history.push('/');
+      this.props.history.push('/menu-watcher');
     }
   }
 

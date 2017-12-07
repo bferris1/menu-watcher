@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
-import {Row, Col, Button, Form} from 'reactstrap';
+import {Row, Col, Button, Form, Alert} from 'reactstrap';
 import {PasswordInput, LabeledInput, EmailInput} from './form'
 import Auth from './AuthCtrl';
+import { Alerts } from './Alerts';
 
 export default class Account extends Component{
 
   constructor(props){
     super(props);
-    this.state={email:'', password:"", pushoverKey: ''};
+    this.state={email:'', password:'', pushoverKey: ''};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
     //fetch account information to populate form
+    Auth.get('/api/account').then(res => {
+      if (res.success){
+        this.setState(res.user);
+      }
+    })
   }
 
   handleChange(e){
@@ -22,12 +28,18 @@ export default class Account extends Component{
 
   handleSubmit(e){
     e.preventDefault();
-    // Auth.post('/api/account/profile', this.state).then(console.log);
+    Auth.post('/api/account', this.state).then(res => {
+      if(res.success){
+        this.setState({...res.user, alerts:{success: 'Updated Successfully'}});
+        setTimeout(()=>{this.setState({alerts:{}})}, 2000);     
+      }
+    });
   }
 
   render(){
     return (<div>
         <h1>Your Account</h1>
+        <Alerts alerts={this.state.alerts}/>
         <Form>
           <Row>
             <Col sm={12}>
@@ -47,7 +59,7 @@ export default class Account extends Component{
                             onChange={this.handleChange}/>
             </Col>
           </Row>
-          <Button type={"submit"} block={true} color={"primary"}>Save Changes</Button>
+          <Button type={"submit"} onClick={this.handleSubmit} block={true} color={"primary"}>Save Changes</Button>
         </Form>
       </div>
     )
