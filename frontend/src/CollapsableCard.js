@@ -16,7 +16,7 @@ class CollapsibleCard extends Component {
 
     let foodItems = this.props.diningCourt.favorites.map((favorite, index) => {
 
-      return (<li>{favorite.Name}</li>);
+      return (<li key={favorite.ID}>{favorite.Name}</li>);
 
     });
 

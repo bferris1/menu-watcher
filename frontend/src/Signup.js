@@ -40,8 +40,8 @@ export default class Signup extends Component{
   render(){
     return (
       <div className="row mt-2">
-        <div className="col-sm-6 offset-sm-3">
-          <h1>Sign Up</h1>
+        <div className="col-sm-10 offset-sm-1">
+        <h1>Sign Up</h1>
           <Alerts alerts={this.state.alerts}/>
           <Form>
             <div className="row">

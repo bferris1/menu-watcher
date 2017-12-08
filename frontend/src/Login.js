@@ -37,7 +37,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-sm-6 offset-sm-3">
+        <div className="col-sm-10 offset-sm-1">
           <h1 className="mt-2">Log In</h1>
           <Alerts alerts={this.state.alerts}/>
           <form onSubmit={this.handleLogin}>

@@ -24,7 +24,7 @@ export const DateStepper = (props) => {
             <p className={"mb-2"}>{props.name}</p>
             <div className={"d-flex justify-content-start"}>
                 <button className={"btn btn-danger"} onClick={e => {e.preventDefault(); dec()}}>-</button>
-                <Input className="text mx-2" type="text" value={props.date.format('ll')}/>
+                <Input readonly className="text mx-2" type="text" value={props.date.format('ddd MMM Do')}/>
                 <button className={"btn btn-success"} onClick={e => {e.preventDefault(); inc()}}>+</button>
             </div>
         </div>

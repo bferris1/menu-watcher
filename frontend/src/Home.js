@@ -75,12 +75,12 @@ export default class Home extends React.Component {
 
     const { activeIndex } = this.state;
 
-    const slides = items.map((item) => {
+    const slides = items.map((item, index) => {
       return (
         <CarouselItem
           onExiting={this.onExiting}
           onExited={this.onExited}
-          key={item.src}
+          key={index}
           src={item.src}
           altText={item.altText}
         >

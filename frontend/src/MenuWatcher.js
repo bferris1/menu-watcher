@@ -81,13 +81,12 @@ export default class MenuWatcher extends Component {
         <hr/>
 
         <div className="form">
-          {/*<p>Today: {this.state.date.format('ll')}</p>*/}
-          <h3>Chose a Meal:</h3>
+          <h3>Choose a Meal:</h3>
           <DateStepper name={"Enter Date:"} date={this.state.date}
             min={this.minDate} max={this.maxDate}
             onChange={newDate => {this.handleDateChange(newDate)}} />
-          <p className={"mb-2"} style={{marginTop:'15px'}}>Enter Meal Time:</p>
-          <Input label="Choose Meal:" type="select" name="mealIndex"
+          <p className={"mb-2"} style={{marginTop:'15px'}}>Meal:</p>
+          <Input label="Select Meal:" type="select" name="mealIndex"
             id="mealIndex" value={this.state.mealIndex}
             onChange={e => {this.handleChange(e)}}>
             <option value={0}>Breakfast</option>

@@ -11,6 +11,8 @@ export default class Account extends Component{
     this.state={email:'', password:'', pushoverKey: ''};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+
   }
 
   componentDidMount() {
@@ -34,6 +36,20 @@ export default class Account extends Component{
         setTimeout(()=>{this.setState({alerts:{}})}, 2000);     
       }
     });
+  }
+
+  handleDelete(e){
+    e.preventDefault();
+    //eslint-disable-next-line
+    if (confirm("Are you sure?")){
+      Auth.delete('/api/account').then(res => {
+        if (res.success){
+          this.setState({alerts:{success: 'Account Deleted'}});
+          Auth.logout();
+          setTimeout(()=>{this.props.history.push('/');}, 2000);
+        }
+      })
+    }
   }
 
   render(){
@@ -60,6 +76,7 @@ export default class Account extends Component{
             </Col>
           </Row>
           <Button type={"submit"} onClick={this.handleSubmit} block={true} color={"primary"}>Save Changes</Button>
+          <Button type={"submit"} onClick={this.handleDelete} block={true} color={"danger"}>Delete Account</Button>
         </Form>
       </div>
     )
