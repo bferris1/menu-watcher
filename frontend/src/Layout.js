@@ -96,7 +96,7 @@ export default class Layout extends Component{
 
       <div>
         <Navbar color="faded" light expand="md">
-          <NavbarBrand href="/"> PMW </NavbarBrand>
+        <Link className='navbar-brand' to='/'>PMW</Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
