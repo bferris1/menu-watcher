@@ -1,4 +1,5 @@
 # Purdue Menu Checker
+Final lab for CS 252: Systems Programming
 
 This application allows students to choose which dining court to go to based on their favorite meals.
 
