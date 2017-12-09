@@ -19,7 +19,7 @@ export default class MenuWatcher extends Component {
         currentMealIndex = 0;
       } else if(currentHour < 14) {
         currentMealIndex = 1;
-      } else if (currentHour < 17) {
+      } else if (currentHour < 17  && now.day()!= 6 && now.day() != 0) {
         currentMealIndex = 2;
       } else {
         currentMealIndex = 3;
