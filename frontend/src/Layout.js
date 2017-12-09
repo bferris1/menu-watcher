@@ -80,13 +80,12 @@ export default class Layout extends Component{
     let logout = null;
     if (this.state.user != null){
       userAcc = this.state.user.email;
-      logout = <DropdownItem
-
-        onClick={e => {e.preventDefault(); AuthCtrl.logout(); this.getUser(); this.props.history.push('/login')}}
-        href={""}>
+      logout = <Link to='/login' className="dropdown-item"
+        onClick={e => {AuthCtrl.logout(); this.getUser();}}
+        >
 
         Logout
-      </DropdownItem>
+      </Link>
     }
     else{
       userAcc = "You are not logged in"
