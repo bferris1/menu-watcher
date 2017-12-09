@@ -158,7 +158,7 @@ router.post('/favorites', (req, res) => {
   if (!req.body.itemID && !req.body.itemName){
     return res.status(400).json({success: false, message: 'Invalid id or name.'});
   }
-  Favorite.find({itemID: req.body.itemID, userID: req.user.id}).then(favorites => {
+  Favorite.find({itemID: req.body.itemID, userID: req.user.id}).sort('createdAt').exec().then(favorites => {
     if (favorites.length > 0){
       console.log(favorites);
       return res.status(400).json({success: false, message: 'Item is already a favorite!'});
@@ -249,23 +249,23 @@ router.post('/import', function (req, res) {
 
       // finally, send a request to the dining API with the ticket
       request(favoriteOptions, (fErr, fRes, fBody) => {
-        console.log(fBody);
         let favorites = JSON.parse(fBody);
         // save each favorite to the database
-        // todo: check for duplicates
         async.forEachOf(favorites.Favorite, (favorite, index, cb) => {
-          let newFavorite = new Favorite({
-            itemName: favorite.ItemName,
-            itemID: favorite.ItemId,
-            userID: req.user.id
-          });
-          newFavorite.save((err, created) => {
-            if (err)
-              cb(err);
-            else {
-              console.log(created);
-              cb();
-            }
+          Favorite.findOneAndUpdate(
+            {itemID: favorite.ItemId, userID: req.user.id}, 
+            {
+              itemName: favorite.ItemName,
+              itemID: favorite.ItemId,
+              userID: req.user.id
+            },
+            {upsert: true}
+          ).then(result =>{
+            console.log(result);
+            cb();
+          }).catch(err => {
+            console.error(err);
+            cb(err);
           });
         }, err => {
           if (err) return res.status(500).json({success: false, error: 'Error saving favorites to database.'});

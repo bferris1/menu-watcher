@@ -43,7 +43,7 @@ export default class Layout extends Component{
     this.getUser();
     // temporary fix for user getting out of sync
     //todo: global state (react-redux)
-    setInterval(this.getUser, 10000);
+    setInterval(this.getUser, 8000);
   }
 
 
