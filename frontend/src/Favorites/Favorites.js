@@ -22,7 +22,7 @@ export default class Favorites extends Component {
     Auth.get('/api/favorites').then(res => {
       if (res.success){
         this.setState({
-          favorites: res.favorites.reverse()
+          favorites: res.favorites
         })
       }
     })
