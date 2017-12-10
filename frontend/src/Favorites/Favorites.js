@@ -77,6 +77,7 @@ export default class Favorites extends Component {
         <AddFavoriteForm onAdd={this.handleAddFavorite}
                          onDelete={this.handleDeleteFavorite}
                          favorites={this.state.favorites.map(favorite => favorite.itemID)}/>
+                         <br/>
         <h2>Your Favorites</h2>
         <ul className="list-group my-2">
           {favoritesList}
