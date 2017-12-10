@@ -12,7 +12,7 @@ export default class MenuWatcher extends Component {
       super (props);
       let now = moment();
       this.minDate = now.clone().startOf('day');
-      this.maxDate = now.clone().endOf('day').add(4, 'days');
+      this.maxDate = now.clone().endOf('day').add(5, 'days');
       let currentHour = now.hour();
       let currentMealIndex = 0;
       if (currentHour < 10) {
