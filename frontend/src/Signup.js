@@ -4,8 +4,10 @@ import {EmailInput, PasswordInput, LabeledInput} from "./form";
 import Auth from './AuthCtrl';
 import {Form, Row, Col} from 'reactstrap';
 import Alerts from './Alerts';
+import {getUser} from './reducer/user/actions';
+import {connect} from 'react-redux';
 
-export default class Signup extends Component{
+class Signup extends Component{
   constructor(props){
     super(props);
     this.state = {password:"", email:"", alerts:[]};
@@ -26,6 +28,7 @@ export default class Signup extends Component{
       console.log(res);
       if (res.success) {
         localStorage.setItem("token", res.token);
+        this.props.onLogin();
         this.props.history.push('/favorites');
       } else {
         this.setState({
@@ -66,3 +69,17 @@ export default class Signup extends Component{
     )
   }
 }
+
+const mapStateToProps = () => {
+  return {}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: () => {
+      dispatch(getUser());
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

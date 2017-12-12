@@ -23,9 +23,11 @@ import Import from './Import';
 import Account from './Account';
 import Login from './Login'
 import Signup from './Signup'
+import {connect} from 'react-redux'
+import { logoutUser } from './reducer/user/actions';
 
 
-export default class Layout extends Component{
+class Layout extends Component{
 
   constructor(props){
     super(props);
@@ -36,29 +38,7 @@ export default class Layout extends Component{
     };
     this.toggle = this.toggle.bind(this);
     this.toggleSecondary = this.toggleSecondary.bind(this);
-    this.getUser = this.getUser.bind(this);
   }
-
-  componentDidMount(){
-    this.getUser();
-    // temporary fix for user getting out of sync
-    //todo: global state (react-redux)
-    setInterval(this.getUser, 8000);
-  }
-
-
-  getUser(){
-    if (AuthCtrl.isLoggedIn())
-      AuthCtrl.get('/api/account').then((res)=>{
-        if (res.success)
-          this.setState({user:res.user});
-        else
-          console.log(res);
-      });
-    else
-      this.setState({user: null});
-  }
-
 
   toggle() {
     this.setState({
@@ -78,10 +58,10 @@ export default class Layout extends Component{
 
     let userAcc;
     let logout = null;
-    if (this.state.user != null){
-      userAcc = this.state.user.email;
+    if (this.props.user != null){
+      userAcc = this.props.user.email;
       logout = <Link to='/login' className="dropdown-item"
-        onClick={e => {AuthCtrl.logout(); this.getUser();}}
+        onClick={e => {this.toggleSecondary(); this.props.onLogoutClick(); AuthCtrl.logout()}}
         >
 
         Logout
@@ -99,7 +79,7 @@ export default class Layout extends Component{
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              {this.state.user == null ||
+              {this.props.user == null ||
               [
                 <NavItem>
                   <NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
@@ -160,3 +140,16 @@ export default class Layout extends Component{
     )
   }
 }
+
+const mapStateToProps = ({user}) => {
+  return {user}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogoutClick: () => {
+      dispatch(logoutUser())
+    }
+  }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

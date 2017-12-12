@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom';
 import {EmailInput, PasswordInput} from './form';
 import Auth from './AuthCtrl';
 import Alerts from './Alerts';
-export default class Login extends Component {
+import {connect} from 'react-redux';
+import {getUser} from './reducer/user/actions';
+class Login extends Component {
 
   constructor(props){
     super (props);
@@ -20,7 +22,8 @@ export default class Login extends Component {
     console.log(this.state);
     Auth.login(this.state.email, this.state.password).then(res => {
       if (res.success){
-        this.props.history.push('/');
+        this.props.onLogin();
+        this.props.history.push('/menu-watcher');
       } else {
         console.error(res);
         this.setState({
@@ -53,3 +56,17 @@ export default class Login extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: () => {
+      dispatch(getUser());
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
