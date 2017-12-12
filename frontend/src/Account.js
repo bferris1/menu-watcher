@@ -3,8 +3,10 @@ import {Row, Col, Button, Form, Alert} from 'reactstrap';
 import {PasswordInput, LabeledInput, EmailInput} from './form'
 import Auth from './AuthCtrl';
 import { Alerts } from './Alerts';
+import {getUser, logoutUser} from './reducer/user/actions';
+import {connect} from 'react-redux'
 
-export default class Account extends Component{
+class Account extends Component{
 
   constructor(props){
     super(props);
@@ -33,6 +35,7 @@ export default class Account extends Component{
     Auth.post('/api/account', this.state).then(res => {
       if(res.success){
         this.setState({...res.user, alerts:{success: 'Updated Successfully'}});
+        this.props.onUpdateUser();
         setTimeout(()=>{this.setState({alerts:{}})}, 2000);     
       }
     });
@@ -45,6 +48,7 @@ export default class Account extends Component{
       Auth.delete('/api/account').then(res => {
         if (res.success){
           this.setState({alerts:{success: 'Account Deleted'}});
+          this.props.onDeleteAccount();
           Auth.logout();
           setTimeout(()=>{this.props.history.push('/');}, 2000);
         }
@@ -82,4 +86,21 @@ export default class Account extends Component{
     )
   }
 }
+
+const mapStateToProps = () => {
+  return {}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onUpdateUser: () => {
+      dispatch(getUser());
+    },
+    onDeleteAccount: () => {
+      dispatch (logoutUser());
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);
 
