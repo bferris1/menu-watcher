@@ -60,11 +60,10 @@ export default class AddFavoriteForm extends Component {
                          minLength={3}
                          onChange={this.handleChange}/>
         </Form>
-        <br/><br/><br/>
+        <br/><br/>
         <ul className="list-group my-2">
           {resultsList.length > 0 ? resultsList: <p>No results</p>}
         </ul>
-        <br/><br/>
       </div>
     );
   }
