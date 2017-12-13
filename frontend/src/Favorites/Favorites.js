@@ -4,7 +4,11 @@ import {EmailInput, PasswordInput} from '../form';
 import Auth from '../AuthCtrl';
 import AddFavoriteForm from './AddFavoriteForm';
 import Alerts from '../Alerts';
-export default class Favorites extends Component {
+import {connect} from 'react-redux'
+import {fetchFavorites} from '../reducer/favorites/actions';
+
+
+class Favorites extends Component {
 
   constructor(props){
     super (props);
@@ -19,13 +23,7 @@ export default class Favorites extends Component {
   }
 
   getFavorites(){
-    Auth.get('/api/favorites').then(res => {
-      if (res.success){
-        this.setState({
-          favorites: res.favorites
-        })
-      }
-    })
+    this.props.dispatch(fetchFavorites())
   }
 
   handleAddFavorite(item){
@@ -61,7 +59,7 @@ export default class Favorites extends Component {
   }
 
   render() {
-    let favoritesList = this.state.favorites.map((favorite, index)=>{
+    let favoritesList = this.props.favorites.map((favorite, index)=>{
       return <li className="list-group-item" key={index}>
         {favorite.itemName}
         <button className="btn btn-danger float-right"
@@ -76,7 +74,7 @@ export default class Favorites extends Component {
         <h2>Add favorite:</h2>
         <AddFavoriteForm onAdd={this.handleAddFavorite}
                          onDelete={this.handleDeleteFavorite}
-                         favorites={this.state.favorites.map(favorite => favorite.itemID)}/>
+                         favorites={this.props.favorites.map(favorite => favorite.itemID)}/>
                          <br/>
         <h2>Your Favorites</h2>
         <ul className="list-group my-2">
@@ -86,3 +84,9 @@ export default class Favorites extends Component {
     )
   }
 }
+
+const mapStateToProps = ({favorites}) => {
+  return {favorites}
+};
+
+export default connect(mapStateToProps)(Favorites);

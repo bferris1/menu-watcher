@@ -1,6 +1,10 @@
 import {combineReducers} from 'redux'
-import user from './user';
+import user from './user'
+import favorites from './favorites'
+import menus from './menus'
 
 export default combineReducers({
-  user
+  user,
+  favorites,
+  menus
 });

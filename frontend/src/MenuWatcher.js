@@ -5,8 +5,10 @@ import moment from 'moment';
 import {DateStepper} from './SpecialForm';
 import CollapsableCard from './CollapsableCard'
 import Auth from './AuthCtrl';
+import {connect} from 'react-redux'
+import {fetchMenus, setDate} from './reducer/menus/actions'
 
-export default class MenuWatcher extends Component {
+class MenuWatcher extends Component {
 
   constructor(props){
       super (props);
@@ -48,17 +50,12 @@ export default class MenuWatcher extends Component {
 
   handleDateChange(newDate){
       console.log("date: " + newDate.format('MM-DD-YYYY'));
+      this.props.dispatch(setDate(newDate));
       this.setState({date: newDate}, this.getFavorites);
   }
 
   getFavorites(){
-    Auth.get('/api/filtered/' + this.state.date.format('MM-DD-YYYY')).then(res => {
-      if (res.success) {
-        this.setState({
-          meals: res.filtered
-        })
-      }
-    })
+    this.props.dispatch(fetchMenus());
   }
 
 
@@ -66,7 +63,7 @@ export default class MenuWatcher extends Component {
   render() {
 
 
-    let diningCourtCards = this.state.meals[this.state.mealIndex].map((diningCourt, index) => {
+    let diningCourtCards = this.props.meals[this.state.mealIndex].map((diningCourt, index) => {
       return (
         <CollapsableCard key={index} headingId={"heading-" + diningCourt.location.toLowerCase()}
           collapseId={"collapse-" + diningCourt.name.toLowerCase()}
@@ -82,7 +79,7 @@ export default class MenuWatcher extends Component {
 
         <div className="form">
           <h3>Choose a Meal:</h3>
-          <DateStepper name={"Enter Date:"} date={this.state.date}
+          <DateStepper name={"Enter Date:"} date={this.props.date}
             min={this.minDate} max={this.maxDate}
             onChange={newDate => {this.handleDateChange(newDate)}} />
           <p className={"mb-2"} style={{marginTop:'15px'}}>Meal:</p>
@@ -107,5 +104,13 @@ export default class MenuWatcher extends Component {
       </div>
     );
   }
-
 }
+
+function mapStateToProps ({menus}) {
+  return {
+    meals: menus.filtered,
+    date: menus.date
+  }
+}
+
+export default connect(mapStateToProps)(MenuWatcher);
