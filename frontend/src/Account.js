@@ -1,16 +1,21 @@
-import React, { Component } from 'react';
-import {Row, Col, Button, Form, Alert} from 'reactstrap';
-import {PasswordInput, LabeledInput, EmailInput} from './form'
+import React, {Component} from 'react';
+import {Button, Col, Form, Row} from 'reactstrap';
+import {EmailInput, LabeledInput, PasswordInput} from './form';
 import Auth from './AuthCtrl';
-import { Alerts } from './Alerts';
+import {Alerts} from './Alerts';
 import {getUser, logoutUser} from './reducer/user/actions';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 class Account extends Component{
 
   constructor(props){
     super(props);
     this.state={email:'', password:'', pushoverKey: ''};
+    if (this.props.user)
+      this.state = this.props.user;
+    else
+      this.state={email:'', password:'', pushoverKey: ''};
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -87,8 +92,10 @@ class Account extends Component{
   }
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = ({user}) => {
+  return {
+    user
+  }
 };
 
 const mapDispatchToProps = dispatch => {
