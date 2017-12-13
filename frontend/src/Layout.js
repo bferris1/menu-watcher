@@ -1,19 +1,8 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React, {Component} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import AuthCtrl from './AuthCtrl';
-import {Route, NavLink, Link} from 'react-router-dom';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  Dropdown,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+import {Link, NavLink, Route} from 'react-router-dom';
+import {Collapse, Dropdown, DropdownMenu, DropdownToggle, Nav, Navbar, NavbarToggler, NavItem} from 'reactstrap';
 
 
 import Home from './Home';
@@ -21,10 +10,10 @@ import MenuWatcher from './MenuWatcher';
 import Favorites from './Favorites/Favorites';
 import Import from './Import';
 import Account from './Account';
-import Login from './Login'
-import Signup from './Signup'
-import {connect} from 'react-redux'
-import { logoutUser } from './reducer/user/actions';
+import Login from './Login';
+import Signup from './Signup';
+import {connect} from 'react-redux';
+import {logoutUser} from './reducer/user/actions';
 
 
 class Layout extends Component{

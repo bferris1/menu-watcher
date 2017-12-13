@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Collapse, Button, CardBody, CardHeader, Card } from 'reactstrap';
+import React, {Component} from 'react';
+import {Button, Card, CardBody, CardHeader, Collapse} from 'reactstrap';
 
 class CollapsibleCard extends Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class CollapsibleCard extends Component {
         <Card>
           <CardHeader>
             <Button color="link" size="lg" onClick={this.toggle}>
-            {this.props.diningCourt.location} - {this.props.diningCourt.favorites.length} {this.props.diningCourt.favorites.length == 1 ? "Favorite" : "Favorites"}
+            {this.props.diningCourt.location} - {this.props.diningCourt.favorites.length} {this.props.diningCourt.favorites.length === 1 ? "Favorite" : "Favorites"}
             </Button>
           </CardHeader>
           <Collapse isOpen={this.state.collapse}>

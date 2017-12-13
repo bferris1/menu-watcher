@@ -1,4 +1,4 @@
-import {SET_FAVORITES} from './actions'
+import {SET_FAVORITES} from './actions';
 
 const initialState = [];
 

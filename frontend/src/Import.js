@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {LabeledInput, PasswordInput} from './form';
 import Auth from './AuthCtrl';
 import {Col, Form} from 'reactstrap';
-import { Alerts } from './Alerts';
+import {Alerts} from './Alerts';
 
 export default class Import extends Component{
   constructor(props) {

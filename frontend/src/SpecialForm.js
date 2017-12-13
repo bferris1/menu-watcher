@@ -1,6 +1,5 @@
 import React from 'react';
-import {FormGroup, Input, Label} from 'reactstrap';
-import moment from 'moment';
+import {Input} from 'reactstrap';
 
 
 export const DateStepper = (props) => {

@@ -5,6 +5,7 @@ import Auth from './AuthCtrl';
 import Alerts from './Alerts';
 import {connect} from 'react-redux';
 import {getUser} from './reducer/user/actions';
+
 class Login extends Component {
 
   constructor(props){

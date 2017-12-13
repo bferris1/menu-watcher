@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {Input, Button, Col, Row} from 'reactstrap';
+import {Input} from 'reactstrap';
 import moment from 'moment';
 
 import {DateStepper} from './SpecialForm';
-import CollapsableCard from './CollapsableCard'
+import CollapsableCard from './CollapsableCard';
 import Auth from './AuthCtrl';
-import {connect} from 'react-redux'
-import {fetchMenus, setDate, setMeal, updateDate} from './reducer/menus/actions'
+import {connect} from 'react-redux';
+import {fetchMenus, setMeal, updateDate} from './reducer/menus/actions';
 
 class MenuWatcher extends Component {
 

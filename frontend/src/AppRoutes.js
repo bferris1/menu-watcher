@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
-import {
-  Switch,
-  Route,
-} from 'react-router-dom'
-import Layout from './Layout'
-
+import React, {Component} from 'react';
+import {Route, Switch} from 'react-router-dom';
+import Layout from './Layout';
 
 
 export default class AppRoutes extends Component{

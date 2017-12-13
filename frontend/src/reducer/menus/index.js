@@ -1,5 +1,5 @@
-import {SET_DATE, SET_MEAL, SET_MENUS, getCurrentMealIndex} from './actions';
-import moment from 'moment'
+import {getCurrentMealIndex, SET_DATE, SET_MEAL, SET_MENUS} from './actions';
+import moment from 'moment';
 
 const initialState = {date: moment(), filtered: [[], [], [], []], meal: getCurrentMealIndex()};
 

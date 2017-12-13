@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import AppRoutes from "./AppRoutes";
+import AppRoutes from './AppRoutes';
 import {BrowserRouter as Router} from 'react-router-dom';
-import {createStore, applyMiddleware, compose} from 'redux'
-import {Provider} from 'react-redux'
-import reducer from './reducer'
+import {applyMiddleware, compose, createStore} from 'redux';
+import {Provider} from 'react-redux';
+import reducer from './reducer';
 import thunk from 'redux-thunk';
 import {getUser} from './reducer/user/actions';
 

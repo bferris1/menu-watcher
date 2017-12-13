@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Form} from 'reactstrap';
-import {LabeledInput} from '../form';
-import {DebounceInput} from 'react-debounce-input'
+import {DebounceInput} from 'react-debounce-input';
 import Auth from '../AuthCtrl';
 
 export default class AddFavoriteForm extends Component {

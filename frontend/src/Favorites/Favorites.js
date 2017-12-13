@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {EmailInput, PasswordInput} from '../form';
 import Auth from '../AuthCtrl';
 import AddFavoriteForm from './AddFavoriteForm';
 import Alerts from '../Alerts';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import {fetchFavorites} from '../reducer/favorites/actions';
 
 

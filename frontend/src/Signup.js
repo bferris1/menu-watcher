@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {EmailInput, PasswordInput, LabeledInput} from "./form";
+import {EmailInput, PasswordInput} from './form';
 import Auth from './AuthCtrl';
-import {Form, Row, Col} from 'reactstrap';
+import {Col, Form} from 'reactstrap';
 import Alerts from './Alerts';
 import {getUser} from './reducer/user/actions';
 import {connect} from 'react-redux';
