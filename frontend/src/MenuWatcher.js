@@ -36,6 +36,7 @@ class MenuWatcher extends Component {
   handleDateChange(newDate){
     console.log("date: " + newDate.format('MM-DD-YYYY'));
     this.props.dispatch(setDate(newDate));
+    this.getFavorites();
   }
 
   getFavorites(){

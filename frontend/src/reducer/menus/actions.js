@@ -32,6 +32,12 @@ export function fetchMenus () {
   }
 }
 
+export function updateDate (date) {
+  return dispatch => {
+    
+  }
+}
+
 export function setDate(date){
   return {
     type: SET_DATE,
