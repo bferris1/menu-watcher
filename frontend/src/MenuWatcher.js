@@ -6,7 +6,7 @@ import {DateStepper} from './SpecialForm';
 import CollapsableCard from './CollapsableCard'
 import Auth from './AuthCtrl';
 import {connect} from 'react-redux'
-import {fetchMenus, setDate, setMeal} from './reducer/menus/actions'
+import {fetchMenus, setDate, setMeal, updateDate} from './reducer/menus/actions'
 
 class MenuWatcher extends Component {
 
@@ -35,8 +35,7 @@ class MenuWatcher extends Component {
 
   handleDateChange(newDate){
     console.log("date: " + newDate.format('MM-DD-YYYY'));
-    this.props.dispatch(setDate(newDate));
-    this.getFavorites();
+    this.props.dispatch(updateDate(newDate));
   }
 
   getFavorites(){

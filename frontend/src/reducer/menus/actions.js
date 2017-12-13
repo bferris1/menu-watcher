@@ -22,9 +22,11 @@ export const getCurrentMealIndex = () => {
   return currentMealIndex;
 };
 
-export function fetchMenus () {
+export function fetchMenus (date) {
+
   return (dispatch, getState) => {
-    Auth.get('/api/filtered/' + getState().menus.date.format('MM-DD-YYYY')).then(res => {
+    let actualDate = getState().menus.date || date;
+    Auth.get('/api/filtered/' + actualDate.format('MM-DD-YYYY')).then(res => {
       if (res.success) {
         dispatch(setMenus(res.filtered));
       }
@@ -34,7 +36,8 @@ export function fetchMenus () {
 
 export function updateDate (date) {
   return dispatch => {
-    
+    dispatch(setDate(date));
+    dispatch(fetchMenus(date))
   }
 }
 
