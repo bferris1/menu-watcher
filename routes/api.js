@@ -221,7 +221,6 @@ router.post('/import', function (req, res) {
       success: false,
       error: 'Incorrect Credentials'
     });
-    // res.send(body);
     console.log(response.headers.location);
     let ticketOptions = {
       method: 'POST',
