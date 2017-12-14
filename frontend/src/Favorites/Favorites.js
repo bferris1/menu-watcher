@@ -8,8 +8,8 @@ import {fetchFavorites} from '../reducer/favorites/actions';
 
 class Favorites extends Component {
 
-  constructor(props){
-    super (props);
+  constructor (props) {
+    super(props);
     this.state = {
       favorites: [],
       alerts: {}
@@ -20,11 +20,11 @@ class Favorites extends Component {
 
   }
 
-  getFavorites(){
-    this.props.dispatch(fetchFavorites())
+  getFavorites () {
+    this.props.dispatch(fetchFavorites());
   }
 
-  handleAddFavorite(item){
+  handleAddFavorite (item) {
     console.log(item);
     Auth.post('/api/favorites',
       {
@@ -32,37 +32,41 @@ class Favorites extends Component {
         itemID: item.ID
       }).then(res => {
       console.log(res);
-      if (res.success){
+      if (res.success) {
         this.setState({alerts: {}});
         this.getFavorites();
-      }else {
+      } else {
         this.setState({alerts: {danger: res.error}});
       }
-    })
+    });
   }
 
-  handleDeleteFavorite(item){
-    Auth.delete('/api/favorites/'+item.itemID).then(res => {
+  handleDeleteFavorite (item) {
+    Auth.delete('/api/favorites/' + item.itemID).then(res => {
       console.log(res);
       this.getFavorites();
-    })
+    });
   }
 
-  handleChange(e){
-    this.setState({[e.target.name]:e.target.value});
+  handleChange (e) {
+    this.setState({[e.target.name]: e.target.value});
   }
 
-  componentDidMount(){
+  componentDidMount () {
     this.getFavorites();
   }
 
-  render() {
-    let favoritesList = this.props.favorites.map((favorite, index)=>{
+  render () {
+    let favoritesList = this.props.favorites.map((favorite, index) => {
       return <li className="list-group-item" key={index}>
         {favorite.itemName}
         <button className="btn btn-danger float-right"
-                onClick={e => {e.preventDefault(); this.handleDeleteFavorite(favorite)}}>Delete Favorite</button>
-      </li>
+                onClick={e => {
+                  e.preventDefault();
+                  this.handleDeleteFavorite(favorite);
+                }}>Delete Favorite
+        </button>
+      </li>;
     });
 
     return (
@@ -73,18 +77,18 @@ class Favorites extends Component {
         <AddFavoriteForm onAdd={this.handleAddFavorite}
                          onDelete={this.handleDeleteFavorite}
                          favorites={this.props.favorites.map(favorite => favorite.itemID)}/>
-                         <br/>
+        <br/>
         <h2>Your Favorites</h2>
         <ul className="list-group my-2">
           {favoritesList}
         </ul>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = ({favorites}) => {
-  return {favorites}
+  return {favorites};
 };
 
 export default connect(mapStateToProps)(Favorites);

@@ -10,8 +10,8 @@ import {fetchMenus, setMeal, updateDate} from './reducer/menus/actions';
 
 class MenuWatcher extends Component {
 
-  constructor(props){
-    super (props);
+  constructor (props) {
+    super(props);
     let now = moment();
     this.minDate = now.clone().startOf('day');
     this.maxDate = now.clone().endOf('day').add(5, 'days');
@@ -22,36 +22,35 @@ class MenuWatcher extends Component {
     if (!Auth.isLoggedIn()) this.props.history.push('/login');
   }
 
-  componentDidMount(){
+  componentDidMount () {
     this.getFavorites();
   }
 
-  handleChange(e){
-    if (e.target.name === 'mealIndex'){
-      this.props.dispatch(setMeal(e.target.value))
+  handleChange (e) {
+    if (e.target.name === 'mealIndex') {
+      this.props.dispatch(setMeal(e.target.value));
     } else
-      this.setState({[e.target.name]:e.target.value});
+      this.setState({[e.target.name]: e.target.value});
   }
 
-  handleDateChange(newDate){
-    console.log("date: " + newDate.format('MM-DD-YYYY'));
+  handleDateChange (newDate) {
+    console.log('date: ' + newDate.format('MM-DD-YYYY'));
     this.props.dispatch(updateDate(newDate));
   }
 
-  getFavorites(){
+  getFavorites () {
     this.props.dispatch(fetchMenus());
   }
 
 
-
-  render() {
+  render () {
 
 
     let diningCourtCards = this.props.meals[this.props.mealIndex].map((diningCourt, index) => {
       return (
-        <CollapsableCard key={index} headingId={"heading-" + diningCourt.location.toLowerCase()}
-                         collapseId={"collapse-" + diningCourt.name.toLowerCase()}
-                         diningCourt={diningCourt} />
+        <CollapsableCard key={index} headingId={'heading-' + diningCourt.location.toLowerCase()}
+                         collapseId={'collapse-' + diningCourt.name.toLowerCase()}
+                         diningCourt={diningCourt}/>
       );
 
     });
@@ -63,13 +62,17 @@ class MenuWatcher extends Component {
 
         <div className="form">
           <h3>Choose a Meal:</h3>
-          <DateStepper name={"Enter Date:"} date={this.props.date}
+          <DateStepper name={'Enter Date:'} date={this.props.date}
                        min={this.minDate} max={this.maxDate}
-                       onChange={newDate => {this.handleDateChange(newDate)}} />
-          <p className={"mb-2"} style={{marginTop:'15px'}}>Meal:</p>
+                       onChange={newDate => {
+                         this.handleDateChange(newDate);
+                       }}/>
+          <p className={'mb-2'} style={{marginTop: '15px'}}>Meal:</p>
           <Input label="Select Meal:" type="select" name="mealIndex"
                  id="mealIndex" value={this.props.mealIndex}
-                 onChange={e => {this.handleChange(e)}}>
+                 onChange={e => {
+                   this.handleChange(e);
+                 }}>
             <option value={0}>Breakfast</option>
             <option value={1}>Lunch</option>
             <option value={2}>Late Lunch</option>
@@ -77,9 +80,9 @@ class MenuWatcher extends Component {
           </Input>
         </div>
 
-        <div style={{marginTop:'30px'}}>
+        <div style={{marginTop: '30px'}}>
           <h3>Your Favorites:</h3>
-          <div style={{marginTop:'15px'}} className="diningCourtCards" id="accordion" role="tablist">
+          <div style={{marginTop: '15px'}} className="diningCourtCards" id="accordion" role="tablist">
             {diningCourtCards}
           </div>
         </div>
@@ -93,7 +96,7 @@ function mapStateToProps ({menus}) {
     meals: menus.filtered,
     date: menus.date,
     mealIndex: menus.meal
-  }
+  };
 }
 
 export default connect(mapStateToProps)(MenuWatcher);

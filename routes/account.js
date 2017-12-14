@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
   let pushoverKey = req.body.pushoverKey;
-  if (!(email || password || pushoverKey)){
+  if (!(email || password || pushoverKey)) {
     return res.json({success: false, message: 'No changes made.'});
   } else {
     User.findById(req.user.id).then(user => {

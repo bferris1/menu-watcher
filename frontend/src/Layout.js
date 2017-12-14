@@ -16,12 +16,12 @@ import {connect} from 'react-redux';
 import {logoutUser} from './reducer/user/actions';
 
 
-class Layout extends Component{
+class Layout extends Component {
 
-  constructor(props){
+  constructor (props) {
     super(props);
     this.state = {
-      user:null,
+      user: null,
       isOpen: false,
       isSecondaryOpen: false
     };
@@ -29,43 +29,46 @@ class Layout extends Component{
     this.toggleSecondary = this.toggleSecondary.bind(this);
   }
 
-  toggle() {
+  toggle () {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
 
-  toggleSecondary(){
+  toggleSecondary () {
     this.setState({
       isSecondaryOpen: !this.state.isSecondaryOpen
-    })
+    });
   }
 
 
-
-  render(){
+  render () {
 
     let userAcc;
     let logout = null;
-    if (this.props.user != null){
+    if (this.props.user != null) {
       userAcc = this.props.user.email;
       logout = <Link to='/login' className="dropdown-item"
-        onClick={e => {this.toggleSecondary(); this.props.onLogoutClick(); AuthCtrl.logout()}}
-        >
+                     onClick={e => {
+                       this.toggleSecondary();
+                       this.props.onLogoutClick();
+                       AuthCtrl.logout();
+                     }}
+      >
 
         Logout
-      </Link>
+      </Link>;
     }
-    else{
-      userAcc = "You are not logged in"
+    else {
+      userAcc = 'You are not logged in';
     }
 
-    return(
+    return (
 
       <div>
         <Navbar color="faded" light expand="md">
-        <Link className='navbar-brand' to='/'>PMW</Link>
-          <NavbarToggler onClick={this.toggle} />
+          <Link className='navbar-brand' to='/'>PMW</Link>
+          <NavbarToggler onClick={this.toggle}/>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               {this.props.user == null ||
@@ -91,7 +94,7 @@ class Layout extends Component{
                     {userAcc}
                   </DropdownToggle>
                   <DropdownMenu>
-                    <Link onClick={this.toggleSecondary} className="dropdown-item"  to="/account">Account</Link>
+                    <Link onClick={this.toggleSecondary} className="dropdown-item" to="/account">Account</Link>
                     {logout}
 
                   </DropdownMenu>
@@ -116,9 +119,9 @@ class Layout extends Component{
             </Nav>
           </Collapse>
         </Navbar>
-        <Route exact path={"/"} component={Home} />
+        <Route exact path={'/'} component={Home}/>
         <div className="col-sm-8 offset-sm-2">
-          <Route exact path={"/menu-watcher"} component={MenuWatcher} />
+          <Route exact path={'/menu-watcher'} component={MenuWatcher}/>
           <Route path={'/favorites'} component={Favorites}/>
           <Route path={'/import'} component={Import}/>
           <Route path={'/account'} component={Account}/>
@@ -126,19 +129,19 @@ class Layout extends Component{
           <Route path="/signup" component={Signup}/>
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = ({user}) => {
-  return {user}
+  return {user};
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLogoutClick: () => {
-      dispatch(logoutUser())
+      dispatch(logoutUser());
     }
-  }
+  };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

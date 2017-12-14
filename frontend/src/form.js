@@ -12,33 +12,33 @@ export const EmailInput = (props) => {
              autoFocus={props.autofocus}
       />
     </div>
-  )
+  );
 };
 
 export const PasswordInput = (props) => {
   return (
     <div className="form-group">
       <label>Password</label>
-      <input className="form-control" type={"password"}
+      <input className="form-control" type={'password'}
              value={props.value}
              onChange={props.onChange}
-             placeholder={"Password"}
+             placeholder={'Password'}
              name={props.name}
              autoFocus={props.autofocus}/>
     </div>
-  )
+  );
 };
 
 export const LabeledInput = (props) => {
   return (
-    <div className="form-group" >
+    <div className="form-group">
       <label>{props.label}</label>
-      <input  className="form-control"
-              name={props.name} type={props.type} id={props.id}
-              value={props.value} onChange={props.onChange}
-              placeholder={props.label} autoFocus={props.autofocus}>
+      <input className="form-control"
+             name={props.name} type={props.type} id={props.id}
+             value={props.value} onChange={props.onChange}
+             placeholder={props.label} autoFocus={props.autofocus}>
         {props.children}
       </input>
     </div>
-  )
+  );
 };

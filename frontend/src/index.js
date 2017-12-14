@@ -17,5 +17,5 @@ const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 
 store.dispatch(getUser());
 
-ReactDOM.render(<Provider store={store}><Router><AppRoutes /></Router></Provider>, document.getElementById('root'));
+ReactDOM.render(<Provider store={store}><Router><AppRoutes/></Router></Provider>, document.getElementById('root'));
 registerServiceWorker();
