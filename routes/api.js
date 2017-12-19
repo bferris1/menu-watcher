@@ -77,9 +77,11 @@ router.post('/auth', (req, res) => {
 	});
 });
 
-router.post('/register', [
+router.post('/register',
+	[
 		check('email').isEmail().withMessage('Email address is invalid.').trim(),
-		check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')],
+		check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')
+	],
 	(req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
