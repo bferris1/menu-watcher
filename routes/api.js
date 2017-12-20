@@ -18,26 +18,25 @@ router.get('/', (req, res) => {
 router.get('/menus', (req, res) => {
 	let date = new Date();
 	let dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-	checker.getAllMenus(dateString, (err, menus) => {
-		if (err) {
-			return res.status(500).json({
-				success: false,
-				error: err
-			});
-		}
+	checker.getAllMenus(dateString).then(menus => {
 		return res.json({success: true, menus});
+
+	}).catch(err => {
+		return res.status(500).json({
+			success: false,
+			error: err
+		});
 	});
 });
 
 router.get('/search/:query', (req, res) => {
-	checker.getSearchResults(req.params.query, (err, searchResults) => {
-		if (err) {
-			return res.status(500).json({
-				success: false,
-				error: err
-			});
-		}
+	checker.getSearchResults(req.params.query).then(searchResults => {
 		return res.json({success: true, searchResults});
+	}).catch(err => {
+		return res.status(500).json({
+			success: false,
+			error: err
+		});
 	});
 });
 
@@ -188,13 +187,16 @@ router.delete('/favorites/:favoriteID', (req, res) => {
 
 
 router.get('/filtered/:date', (req, res) => {
-	checker.getAllMenus(req.params.date, (err, menus) => {
-		if (err) return res.status(500).json({error: err});
-		Favorite.find({userID: req.user.id}).then(favorites => {
-			checker.getFilteredFavorites(menus, favorites, filtered => {
-				return res.json({success: true, filtered});
-			});
-		});
+
+	Promise.all([checker.getAllMenus(req.params.date), Favorite.find({userID: req.user.id})]).then(results => {
+		let menus = results[0];
+		let favorites = results[1];
+		return checker.getFilteredFavorites(menus, favorites);
+	}).then(filtered => {
+		return res.json({success: true, filtered});
+	}).catch(err => {
+		console.log(err);
+		return res.status(500).json({success: false, error: err});
 	});
 });
 
@@ -219,7 +221,7 @@ router.post('/import', function (req, res) {
 	};
 	// send credentials to request a TGT
 	request(options, (err, response) => {
-		if (err || response.statusCode != 201) return res.status(500).json({
+		if (err || response.statusCode !== 201) return res.status(500).json({
 			success: false,
 			error: 'Incorrect Credentials'
 		});
