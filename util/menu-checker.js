@@ -50,6 +50,10 @@ checker.getSearchResults = function (query) {
 	return rp(options);
 };
 
+checker.getFilteredFavoritesForDate = (dateString, favorites) => {
+	return checker.getAllMenus(dateString).then(menus => checker.getFilteredFavorites(menus, favorites));
+};
+
 checker.getFilteredFavorites = (menus, favorites) => {
 
 	return new Promise((resolve, reject) => {

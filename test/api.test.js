@@ -37,6 +37,12 @@ describe('Menu Checker', function () {
 			done();
 		}).catch(err => done(err));
 	});
+	it('should filter favorites for a date', function (done) {
+		checker.getFilteredFavoritesForDate(TEST_DATE_STRING, testFavorites).then(filtered => {
+			expect(filtered).to.be.an('array').that.has.length(4);
+			done();
+		}).catch(err => done(err));
+	});
 });
 
 describe('Menu API', function () {
