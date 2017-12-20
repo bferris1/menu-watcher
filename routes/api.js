@@ -188,15 +188,13 @@ router.delete('/favorites/:favoriteID', (req, res) => {
 
 router.get('/filtered/:date', (req, res) => {
 
-	Promise.all([checker.getAllMenus(req.params.date), Favorite.find({userID: req.user.id})]).then(results => {
-		let menus = results[0];
-		let favorites = results[1];
-		return checker.getFilteredFavorites(menus, favorites);
+	Favorite.find({userID: req.user.id}).then(favorites => {
+		return checker.getFilteredFavoritesForDate(req.params.date, favorites);
 	}).then(filtered => {
 		return res.json({success: true, filtered});
 	}).catch(err => {
-		console.log(err);
-		return res.status(500).json({success: false, error: err});
+		console.error(err);
+		return res.status(500).json({success: false, error: err.toString()});
 	});
 });
 
