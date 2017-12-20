@@ -12,7 +12,8 @@ after(function () {
 });
 
 describe('Menu Checker', function () {
-	let testFavorites = [
+	const TEST_DATE_STRING = '2017-12-5';
+	const testFavorites = [
 		{itemID: 'df0929e6-59f6-4938-a2f3-b681cd5b10c4'},
 		{itemID: '24d7a7f9-fd9e-45ff-a604-a8c36a300094'},
 		{itemID: '3b0a8ba6-f1c5-44da-bb4a-10b6261dac75'},
@@ -21,21 +22,20 @@ describe('Menu Checker', function () {
 
 	it('should get all menus successfully', function (done) {
 		this.timeout(5000);
-		checker.getAllMenus(new Date(), (err, menus) => {
-			if (err) done(err);
+		checker.getAllMenus(TEST_DATE_STRING).then(menus => {
+			console.log(menus);
 			expect(menus).to.be.an('array').that.has.length(6);
 			done();
-		});
+		}).catch(err => done(err));
 	});
 	it('should filter favorites successfully', function (done) {
-		checker.getAllMenus(new Date(), (err, menus) => {
-			if (err) done(err);
+		checker.getAllMenus(TEST_DATE_STRING).then(menus => {
 			expect(menus).to.be.an('array').that.has.length(6);
-			checker.getFilteredFavorites(menus, testFavorites, (result) => {
-				console.log(JSON.stringify(result));
-				done();
-			});
-		});
+			return checker.getFilteredFavorites(menus, testFavorites);
+		}).then(filtered => {
+			expect(filtered).to.be.an('array').that.has.length(4);
+			done();
+		}).catch(err => done(err));
 	});
 });
 
