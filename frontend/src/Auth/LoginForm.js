@@ -13,7 +13,7 @@ export default class LoginForm extends Component {
 
 	handleLogin (e) {
 		e.preventDefault();
-		this.props.handleLogin(this.state);
+		this.props.onLogin(this.state);
 		console.log(this.state);
 	}
 

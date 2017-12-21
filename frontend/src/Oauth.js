@@ -69,9 +69,10 @@ class Oauth extends Component {
 		let form;
 		if (!this.props.user) {
 			form = <LoginForm onLogin={this.handleLogin}/>;
-		} else {
+		} else if (isValid) {
 			form = <OauthForm service={clientID} onResult={this.handleOauth}/>;
-		}
+		} else
+			form = <p>Invalid request</p>;
 
 
 		return (
