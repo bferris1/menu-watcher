@@ -61,7 +61,7 @@ class Oauth extends Component {
 		let redirectURI = params.get('redirect_uri');
 		let state = params.get('state');
 		let responseType = params.get('response_type');
-		let isValid = (clientID && redirectURI && state && responseType);
+		let isValid = (clientID && redirectURI);
 		//todo: check redirectURI against clientID
 		if (!isValid) {
 			// this.props.history.push('/');
