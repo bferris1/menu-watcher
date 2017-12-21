@@ -41,7 +41,6 @@ class Oauth extends Component {
 	}
 
 	handleOauth (result) {
-		if (!result) return;
 		let params = new URLSearchParams(this.props.location.search);
 		console.log(result);
 		let redirectURL = params.get('redirect_uri');
@@ -49,7 +48,10 @@ class Oauth extends Component {
 		let authToken = Auth.getToken();
 		let finalURL = redirectURL + `#access_token=${authToken}&token_type=bearer&state=${state}`;
 		// this.props.history.push('https://google.com');
-		window.location = finalURL;
+		if (result === true)
+			window.location = finalURL;
+		else
+			window.location = redirectURL;
 	}
 
 	render () {
