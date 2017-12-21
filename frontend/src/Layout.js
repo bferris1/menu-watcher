@@ -14,6 +14,7 @@ import Login from './Login';
 import Signup from './Signup';
 import {connect} from 'react-redux';
 import {logoutUser} from './reducer/user/actions';
+import Oauth from './Oauth';
 
 
 class Layout extends Component {
@@ -86,7 +87,7 @@ class Layout extends Component {
 							}
 
 							{logout != null ?
-								<Dropdown isOpen={this.state.isSecondaryOpen} toggle={this.toggleSecondary} nav inNavbar>
+								<Dropdown isOpen={this.state.isSecondaryOpen} toggle={this.toggleSecondary} nav>
 									<DropdownToggle nav caret
 																	onClick={this.toggleSecondary}
 																	data-toggle="dropdown"
@@ -127,6 +128,7 @@ class Layout extends Component {
 					<Route path={'/account'} component={Account}/>
 					<Route path="/login" component={Login}/>
 					<Route path="/signup" component={Signup}/>
+					<Route path="/auth" component={Oauth}/>
 				</div>
 			</div>
 		);
