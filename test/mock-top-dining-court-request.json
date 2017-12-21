@@ -1,0 +1,36 @@
+{
+  "id": "f3a41867-07ae-4fc3-8d09-32b0aef73cc0",
+  "timestamp": "2017-12-20T22:10:35.453Z",
+  "lang": "en",
+  "result": {
+    "source": "agent",
+    "resolvedQuery": "where should I eat dinner today",
+    "action": "get_top_dining_court",
+    "actionIncomplete": false,
+    "parameters": {
+      "meal": "dinner",
+      "date": "2017-12-20"
+    },
+    "contexts": [
+      {
+        "name": "diningcourt-selected",
+        "parameters": {
+          "date": "2017-12-05",
+          "meal": "dinner",
+          "date.original": "today",
+          "meal.original": "dinner"
+        },
+        "lifespan": 2
+      }
+    ],
+    "metadata": {
+      "intentId": "a2ed27f9-6918-45ff-8ae7-e475946f1779",
+      "webhookUsed": "true",
+      "webhookForSlotFillingUsed": "false",
+      "webhookResponseTime": 145,
+      "intentName": "Get Top Dining Court"
+    },
+    "score": 1
+  },
+  "sessionId": "09996c04-3091-4df4-bfe1-15f57f7277bf"
+}

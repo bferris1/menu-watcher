@@ -9,11 +9,13 @@ const Favorite = require('../models/favorite');
 const {check, validationResult} = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const accountRoutes = require('./account');
-
+const webhookRoutes = require('./webhooks');
 
 router.get('/', (req, res) => {
 	res.json({success: true, message: 'Welcome to the api.'});
 });
+
+router.use('/webhooks', webhookRoutes);
 
 router.get('/menus', (req, res) => {
 	let date = new Date();
