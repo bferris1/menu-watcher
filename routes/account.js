@@ -16,6 +16,7 @@ router.post('/', (req, res) => {
 	let email = req.body.email;
 	let password = req.body.password;
 	let pushoverKey = req.body.pushoverKey;
+	let telegramUsername = req.body.telegramUsername;
 	if (!(email || password || pushoverKey)) {
 		return res.json({success: false, message: 'No changes made.'});
 	} else {
@@ -23,7 +24,9 @@ router.post('/', (req, res) => {
 			if (email) user.email = email;
 			if (password) user.password = password;
 			if (pushoverKey) user.pushoverKey = pushoverKey;
+			if (telegramUsername) user.telegramUsername = telegramUsername;
 			if (pushoverKey === '') user.pushoverKey = undefined;
+			if (telegramUsername === '') user.telegramUsername = undefined;
 			return user.save();
 		}).then(user => {
 			user.password = '';
@@ -38,7 +41,7 @@ router.delete('/', (req, res) => {
 	User.remove({_id: req.user.id}).then(result => {
 		console.log(result);
 		return Favorite.remove({userID: req.user.id});
-	}).then(result => {
+	}).then(() => {
 		res.json({success: true, message: 'Your account has been deleted.'});
 	}).catch(err => {
 		console.error(err);

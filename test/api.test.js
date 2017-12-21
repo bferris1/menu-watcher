@@ -61,12 +61,14 @@ describe('Menu API', function () {
 });
 
 describe('User', function () {
-	let testUser = {email: 'ben@test.com', password: 'asdffdsa'};
+	let testUser = {email: 'ben@test.com', password: 'asdffdsa', telegramUsername: 'coolUsername'};
 
 	it('should be created successfully', function (done) {
 		let newUser = new User(testUser);
 		newUser.save().then(user => {
 			console.log(user);
+			delete testUser.password;
+			expect(user).to.include(testUser);
 			testUser._id = user._id;
 			done();
 		})

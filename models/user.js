@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 const userSchema = new Schema({
 	email: {type: String, required: true},
 	password: {type: String, required: true, select: false},
-	pushoverKey: String
+	pushoverKey: String,
+	telegramUsername: String
 });
 
 userSchema.pre('save', function (next) {
