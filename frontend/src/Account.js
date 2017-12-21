@@ -10,7 +10,7 @@ class Account extends Component {
 
 	constructor (props) {
 		super(props);
-		this.state = {email: '', password: '', pushoverKey: ''};
+		this.state = {email: '', password: '', pushoverKey: '', telegramUsername: ''};
 		if (this.props.user)
 			this.state = this.props.user;
 		else
@@ -86,6 +86,17 @@ class Account extends Component {
 														value={this.state.pushoverKey}
 														name={'pushoverKey'}
 														onChange={this.handleChange}/>
+						</Col>
+					</Row>
+					<Row>
+						<Col sm={12}>
+							<LabeledInput label={'Telegram Username'}
+														value={this.state.telegramUsername}
+														name={'telegramUsername'}
+														onChange={this.handleChange}
+														helpText={<a target={'_blank'} href={'http://t.me/purdue_menu_bot'}>Telegram Bot</a>}
+							/>
+							<span className={'help-block'}>For chatting with the telegram bot.</span>
 						</Col>
 					</Row>
 					<Button type={'submit'} onClick={this.handleSubmit} block={true} color={'primary'}>Save Changes</Button>
