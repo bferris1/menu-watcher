@@ -8,6 +8,7 @@ const dialogActions = require('../util/dialog-actions');
 router.use((req, res, next) => {
 	console.log(req.headers);
 	let token = req.headers['Authorization'];
+	console.log(req.body);
 	if (token) {
 		jwt.verify(token, config.get('jwt.secret'), function (err, decoded) {
 			if (err) {
