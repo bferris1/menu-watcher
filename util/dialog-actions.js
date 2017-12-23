@@ -63,7 +63,7 @@ actions.getBestDiningCourt = (request) => {
 			.then(user => getFavoritesForUser(user))
 			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
 			.then(filtered => formatFiltered(filtered, mealIndex));
-	} else if (originalRequest && originalRequest.source === 'google') {
+	} else if (originalRequest && originalRequest.source === 'google' && request.user) {
 		// this is a google request
 		console.log('handling google request');
 		return getFavoritesForUser(request.user)
