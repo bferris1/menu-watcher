@@ -7,8 +7,14 @@ const dialogActions = require('../util/dialog-actions');
 
 router.use((req, res, next) => {
 	console.log(req.headers);
-	let token = req.headers['Authorization'];
+	let token;
 	console.log(req.body);
+	if (req.body.originalRequest && req.body.originalRequest.data.user && req.body.originalRequest.data.user.access_token) {
+		console.log(req.body.originalRequest.data);
+		let token = req.body.originalRequest.data.user.access_token;
+		console.log(`Got access token: ${token}`);
+	}
+
 	if (token) {
 		jwt.verify(token, config.get('jwt.secret'), function (err, decoded) {
 			if (err) {
@@ -17,7 +23,7 @@ router.use((req, res, next) => {
 				User.findOne({_id: decoded.id}).then(user => {
 					if (!user) next();
 					else {
-						req.user = decoded;
+						req.user = user;
 						next();
 					}
 				}).catch(err => {
@@ -31,7 +37,7 @@ router.use((req, res, next) => {
 
 router.post('/', (req, res) => {
 	if (req.body.result.action === 'get_top_dining_court') {
-		dialogActions.getBestDiningCourt(req.body)
+		dialogActions.getBestDiningCourt(req)
 			.then(response => res.json(response))
 			.catch(() => res.status(500).json({speech: 'An error occurred'}));
 	} else {

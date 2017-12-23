@@ -23,12 +23,23 @@ let telegramSource = {
 		}
 	}
 };
-mockRequest.originalRequest = telegramSource;
+
+let googleSource = {
+	source: 'google',
+	data: {
+		user: {
+			user_id: 'myuserID',
+			access_token: ''
+		}
+	}
+
+};
 
 describe('Telegram Dialog Actions', function () {
 	this.timeout(10000);
+	mockRequest.originalRequest = telegramSource;
 	it('should get top dining court for current meal', function (done) {
-		let promise = dialog.getBestDiningCourt(mockRequest);
+		let promise = dialog.getBestDiningCourt({body: mockRequest});
 		assert.ok((promise instanceof Promise));
 		promise.then(result => {
 			console.log(result);
@@ -36,6 +47,24 @@ describe('Telegram Dialog Actions', function () {
 			done();
 		}).catch(err => done(err));
 	});
+	it('should get top dining court over HTTP API', function (done) {
+		chai.request(app)
+			.post('/api/webhooks')
+			.send(mockRequest)
+			.end((err, res) => {
+				if (err) return done(err);
+				expect(res.body).to.be.an('object').that.has.property('speech');
+				console.log(res.body);
+				done();
+			});
+	});
+});
+
+
+describe('Google Dialog Actions', function () {
+	let googleBody = {};
+	Object.assign(googleBody, mockRequest);
+	googleBody.originalRequest = googleSource;
 	it('should get top dining court over HTTP API', function (done) {
 		chai.request(app)
 			.post('/api/webhooks')

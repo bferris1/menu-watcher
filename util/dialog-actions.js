@@ -46,7 +46,8 @@ const formatFiltered = (filtered, mealIndex) => {
 
 
 // takes favorites and parameters from DialogFlow, and returns a DialogFlow response object
-actions.getBestDiningCourt = (requestBody) => {
+actions.getBestDiningCourt = (request) => {
+	let requestBody = request.body;
 	let date = requestBody.result.parameters.date || getCurrentDateString();
 	let mealIndex = convertMealIndex(requestBody.result.parameters.meal);
 
@@ -60,6 +61,12 @@ actions.getBestDiningCourt = (requestBody) => {
 		let telegramUser = originalRequest.data.message.from.username;
 		return User.findOne({telegramUsername: telegramUser}).exec()
 			.then(user => getFavoritesForUser(user))
+			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
+			.then(filtered => formatFiltered(filtered, mealIndex));
+	} else if (originalRequest && originalRequest.source === 'google') {
+		// this is a google request
+		console.log('handling google request');
+		return getFavoritesForUser(request.user)
 			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
 			.then(filtered => formatFiltered(filtered, mealIndex));
 	} else {
