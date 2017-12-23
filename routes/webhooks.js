@@ -6,7 +6,6 @@ const User = require('../models/user');
 const dialogActions = require('../util/dialog-actions');
 
 router.use((req, res, next) => {
-	console.log(req.headers);
 	let token;
 	console.log(req.body);
 	if (req.body.originalRequest && req.body.originalRequest.data.user && req.body.originalRequest.data.user.access_token) {
