@@ -7,7 +7,7 @@ const dialogActions = require('../util/dialog-actions');
 
 router.use((req, res, next) => {
 	let token;
-	console.log(req.body);
+	console.log(JSON.stringify(req.body));
 	if (req.body.originalRequest && req.body.originalRequest.data.user && req.body.originalRequest.data.user.access_token) {
 		console.log(JSON.stringify(req.body.originalRequest.data));
 		let token = req.body.originalRequest.data.user.accessToken;
