@@ -39,6 +39,10 @@ router.post('/', (req, res) => {
 		dialogActions.getBestDiningCourt(req)
 			.then(response => res.json(response))
 			.catch(() => res.status(500).json({speech: 'An error occurred'}));
+	} else if (req.body.result.action === 'get_favorites') {
+		dialogActions.getFavoritesForDiningCourt(req)
+			.then(response => res.json(response))
+			.catch(() => res.status(500).json({speech: 'An error occurred'}));
 	} else {
 		return res.json({speech: 'Only top dining court actions are supported right now.'});
 	}

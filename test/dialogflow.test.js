@@ -6,6 +6,7 @@ const expect = chai.expect;
 const assert = chai.assert;
 const dialog = require('../util/dialog-actions');
 const mongoose = require('mongoose');
+const config = require('../config');
 mongoose.Promise = global.Promise;
 
 after(function () {
@@ -29,7 +30,7 @@ let googleSource = {
 	data: {
 		user: {
 			userId: 'myuserID',
-			accessToken: ''
+			accessToken: config.get('testing.token')
 		}
 	}
 
@@ -68,7 +69,22 @@ describe('Google Dialog Actions', function () {
 	it('should get top dining court over HTTP API', function (done) {
 		chai.request(app)
 			.post('/api/webhooks')
-			.send(mockRequest)
+			.send(googleBody)
+			.end((err, res) => {
+				if (err) return done(err);
+				expect(res.body).to.be.an('object').that.has.property('speech');
+				console.log(res.body);
+				done();
+			});
+	});
+	it('should get favorites for dining court over HTTP', function (done) {
+		let getFavoritesRequest = {};
+		Object.assign(getFavoritesRequest, mockRequest);
+		getFavoritesRequest.originalRequest = googleSource;
+		getFavoritesRequest.result.action = 'get_favorites';
+		chai.request(app)
+			.post('/api/webhooks')
+			.send(getFavoritesRequest)
 			.end((err, res) => {
 				if (err) return done(err);
 				expect(res.body).to.be.an('object').that.has.property('speech');

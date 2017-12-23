@@ -72,6 +72,14 @@ const config = convict({
 		format: '*',
 		default: '',
 		env: 'PUSHOVER'
+	},
+
+	testing: {
+		token: {
+			doc: 'Token to use for testing',
+			format: '*',
+			default: ''
+		}
 	}
 });
 

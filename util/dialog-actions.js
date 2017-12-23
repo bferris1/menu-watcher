@@ -44,6 +44,26 @@ const formatFiltered = (filtered, mealIndex) => {
 
 };
 
+const formatFavoritesListSpeech = (filtered, mealIndex, location) => {
+	console.log(`Getting favorites for meal ${mealIndex} at ${location}`);
+	let best;
+	console.log(JSON.stringify(filtered[mealIndex]));
+	if (location)
+		best = filtered[mealIndex].filter(diningCourt => diningCourt.location.toLowerCase() === location.toLowerCase());
+	else
+		best = [filtered[mealIndex][0]];
+	console.log(JSON.stringify(best));
+	let speech;
+	if (best.length !== 1) {
+		console.log(`Length of best was ${best.length}`);
+		speech = `It looks like ${location} isn't serving that meal.`;
+	} else {
+		best = best[0];
+		speech = `Your favorites for ${best.name} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}`;
+	}
+	return {speech};
+};
+
 
 // takes favorites and parameters from DialogFlow, and returns a DialogFlow response object
 actions.getBestDiningCourt = (request) => {
@@ -70,13 +90,28 @@ actions.getBestDiningCourt = (request) => {
 			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
 			.then(filtered => formatFiltered(filtered, mealIndex));
 	} else {
-		return Promise.resolve({speech: 'Non-telegram methods are not supported yet.'});
+		return Promise.resolve({speech: 'Sorry, the request method appears to be invalid.'});
 	}
 
 };
 
 
-actions.getFavoritesForDiningCourt = () => {
+actions.getFavoritesForDiningCourt = (request) => {
+	let requestBody = request.body;
+	let date = requestBody.result.parameters.date || getCurrentDateString();
+	let mealIndex = convertMealIndex(requestBody.result.parameters.meal);
+	let diningCourt = requestBody.result.parameters.diningCourt;
+
+	date = '2017-12-05';
+
+	if (request.user) {
+		// user is authenticated with JWT
+		return getFavoritesForUser(request.user)
+			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
+			.then(filtered => formatFavoritesListSpeech(filtered, mealIndex, diningCourt));
+	} else {
+		return Promise.resolve({speech: 'Invalid request.'});
+	}
 
 
 };
