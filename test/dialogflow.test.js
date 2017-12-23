@@ -28,8 +28,8 @@ let googleSource = {
 	source: 'google',
 	data: {
 		user: {
-			user_id: 'myuserID',
-			access_token: ''
+			userId: 'myuserID',
+			accessToken: ''
 		}
 	}
 
