@@ -22,11 +22,11 @@ export default class OauthForm extends Component {
 					this.handleResult(true);
 				}} className="btn btn-block btn-success">Accept
 				</button>
-				<button onClick={(e) => {
+				{/*<button onClick={(e) => {
 					e.preventDefault();
 					this.handleResult(false);
 				}} className="btn btn-block btn-danger">Decline
-				</button>
+				</button>*/}
 			</div>
 		);
 	}
