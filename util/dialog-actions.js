@@ -59,9 +59,27 @@ const formatFavoritesListSpeech = (filtered, mealIndex, location) => {
 		speech = `It looks like ${location} isn't serving that meal.`;
 	} else {
 		best = best[0];
-		speech = `Your favorites for ${best.name} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}`;
+		if (best.favorites.length === 0) {
+			speech = `${best.location} is not serving any of your favorites for ${best.name}.`;
+		}
+		else if (best.favorites.length === 1) {
+			speech = `You favorite for ${best.name} at ${best.location} is ${best.favorites[0].Name}`;
+		} else
+			speech = `Your favorites for ${best.name} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}`;
 	}
 	return {speech};
+};
+
+const getUserForRequest = (request) => {
+	let originalRequest = request.body.originalRequest;
+
+	if (request.user) return Promise.resolve(request.user);
+	else if (originalRequest && originalRequest.source === 'telegram') {
+		let telegramUser = originalRequest.data.message.from.username;
+		return User.findOne({telegramUsername: telegramUser}).exec();
+	} else {
+		return Promise.reject('Couldn\'t find user. Possibly invalid request method.');
+	}
 };
 
 
@@ -74,25 +92,10 @@ actions.getBestDiningCourt = (request) => {
 	// temporary because there are no menus over break
 	date = '2017-12-05';
 
-
-	let originalRequest = requestBody.originalRequest;
-	if (originalRequest && originalRequest.source === 'telegram') {
-		// this is a telegram request
-		let telegramUser = originalRequest.data.message.from.username;
-		return User.findOne({telegramUsername: telegramUser}).exec()
-			.then(user => getFavoritesForUser(user))
-			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
-			.then(filtered => formatFiltered(filtered, mealIndex));
-	} else if (request.user) {
-		// this is a google request
-		console.log('handling google request');
-		return getFavoritesForUser(request.user)
-			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
-			.then(filtered => formatFiltered(filtered, mealIndex));
-	} else {
-		return Promise.resolve({speech: 'Sorry, the request method appears to be invalid.'});
-	}
-
+	return getUserForRequest(request)
+		.then(user => getFavoritesForUser(user))
+		.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
+		.then(filtered => formatFiltered(filtered, mealIndex));
 };
 
 
@@ -104,15 +107,11 @@ actions.getFavoritesForDiningCourt = (request) => {
 
 	date = '2017-12-05';
 
-	if (request.user) {
-		// user is authenticated with JWT
-		return getFavoritesForUser(request.user)
-			.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
-			.then(filtered => formatFavoritesListSpeech(filtered, mealIndex, diningCourt));
-	} else {
-		return Promise.resolve({speech: 'Invalid request.'});
-	}
-
+	// user is authenticated with JWT
+	return getUserForRequest(request)
+		.then(user => getFavoritesForUser(user))
+		.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
+		.then(filtered => formatFavoritesListSpeech(filtered, mealIndex, diningCourt));
 
 };
 
