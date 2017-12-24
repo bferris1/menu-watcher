@@ -12,3 +12,4 @@ Things to do:
 - [ ] add support for Pushover notifications
 - [ ] add support for web push notifications
 - [ ] integrate with Purdue Authentication (for user accounts)
+- [ ] Dialog interface (Google Assistant / Alexa integration)
