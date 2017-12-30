@@ -5,6 +5,7 @@ import Auth from './AuthCtrl';
 import Alerts from './Alerts';
 import {connect} from 'react-redux';
 import {getUser} from './reducer/user/actions';
+import LoginForm from './Auth/LoginForm';
 
 class Login extends Component {
 
@@ -18,10 +19,8 @@ class Login extends Component {
 		}
 	}
 
-	handleLogin (e) {
-		e.preventDefault();
-		console.log(this.state);
-		Auth.login(this.state.email, this.state.password).then(res => {
+	handleLogin ({email, password}) {
+		Auth.login(email, password).then(res => {
 			if (res.success) {
 				this.props.onLogin();
 				this.props.history.push('/menu-watcher');
@@ -44,14 +43,7 @@ class Login extends Component {
 				<div className="col-sm-10 offset-sm-1">
 					<h1 className="mt-2">Log In</h1>
 					<Alerts alerts={this.state.alerts}/>
-					<form onSubmit={this.handleLogin}>
-						<EmailInput name={'email'} value={this.state.email} onChange={this.handleChange}/>
-						<PasswordInput name={'password'} value={this.state.password} onChange={this.handleChange}/>
-						<button type={'submit'} onClick={this.handleLogin} className="btn btn-block btn-primary">Log In</button>
-						<div>
-							<Link to="/signup">Sign Up</Link><br/>
-						</div>
-					</form>
+					<LoginForm onLogin={this.handleLogin}/>
 				</div>
 			</div>
 		);
