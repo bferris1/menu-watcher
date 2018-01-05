@@ -13,8 +13,8 @@ class MenuWatcher extends Component {
 	constructor (props) {
 		super(props);
 		let now = moment();
-		this.minDate = now.clone().startOf('day').subtract(30, 'days');
-		this.maxDate = now.clone().endOf('day').add(5, 'days');
+		this.minDate = now.clone().startOf('day');
+		this.maxDate = now.clone().endOf('day').add(10, 'days');
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleDateChange = this.handleDateChange.bind(this);
