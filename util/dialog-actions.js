@@ -26,8 +26,8 @@ const convertMealIndex = (mealName) => {
 };
 
 const getCurrentDateString = () => {
-	// todo: actually format current date
-	return '2017-12-05';
+	let now = new Date();
+	return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 };
 
 const getFavoritesForUser = (user) => {
@@ -35,6 +35,8 @@ const getFavoritesForUser = (user) => {
 };
 
 const formatFiltered = (filtered, mealIndex) => {
+	if (filtered[mealIndex] == null || filtered[mealIndex].length === 0 || filtered[mealIndex][0] === null)
+		return `It looks like there aren't any dining courts serving that meal.`;
 	let best = filtered[mealIndex][0];
 	let speech = `Your top dining court for ${best.name} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}`;
 
@@ -89,8 +91,6 @@ actions.getBestDiningCourt = (request) => {
 	let date = requestBody.result.parameters.date || getCurrentDateString();
 	let mealIndex = convertMealIndex(requestBody.result.parameters.meal);
 
-	// temporary because there are no menus over break
-	date = '2017-12-05';
 
 	return getUserForRequest(request)
 		.then(user => getFavoritesForUser(user))
@@ -105,9 +105,7 @@ actions.getFavoritesForDiningCourt = (request) => {
 	let mealIndex = convertMealIndex(requestBody.result.parameters.meal);
 	let diningCourt = requestBody.result.parameters.diningCourt;
 
-	date = '2017-12-05';
 
-	// user is authenticated with JWT
 	return getUserForRequest(request)
 		.then(user => getFavoritesForUser(user))
 		.then(favorites => checker.getFilteredFavoritesForDate(date, favorites))
