@@ -65,7 +65,7 @@ const formatFavoritesListSpeech = (filtered, mealIndex, location) => {
 			speech = `${best.location} is not serving any of your favorites for ${best.name}.`;
 		}
 		else if (best.favorites.length === 1) {
-			speech = `You favorite for ${best.name} at ${best.location} is ${best.favorites[0].Name}`;
+			speech = `Your favorite for ${best.name} at ${best.location} is ${best.favorites[0].Name}`;
 		} else
 			speech = `Your favorites for ${best.name} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}`;
 	}
