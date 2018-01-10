@@ -94,9 +94,10 @@ class Account extends Component {
 														value={this.state.telegramUsername}
 														name={'telegramUsername'}
 														onChange={this.handleChange}
-														helpText={<a target={'_blank'} href={'http://t.me/purdue_menu_bot'}>Telegram Bot</a>}
+														helpText={<a target={'_blank'} href={'http://t.me/purdue_menu_bot'}>Telegram bot</a>}
 							/>
-							<span className={'help-block'}>For chatting with the telegram bot.</span>
+							<span className={'help-block'}>For chatting with the <a target={'_blank'}
+																																			href={'http://t.me/purdue_menu_bot'}>Telegram Bot</a>.</span>
 						</Col>
 					</Row>
 					<Button type={'submit'} onClick={this.handleSubmit} block={true} color={'primary'}>Save Changes</Button>
