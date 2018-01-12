@@ -59,8 +59,7 @@ class Oauth extends Component {
 		let params = new URLSearchParams(this.props.location.search);
 		let clientID = params.get('client_id');
 		let redirectURI = params.get('redirect_uri');
-		let state = params.get('state');
-		let responseType = params.get('response_type');
+		// let responseType = params.get('response_type');
 		let isValid = (clientID && redirectURI);
 		//todo: check redirectURI against clientID
 		if (!isValid) {

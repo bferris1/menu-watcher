@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {EmailInput, PasswordInput} from './form';
 import Auth from './AuthCtrl';
 import Alerts from './Alerts';
 import {connect} from 'react-redux';
@@ -50,7 +48,7 @@ class Login extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
 	return {};
 };
 
