@@ -7,6 +7,7 @@ const assert = chai.assert;
 const dialog = require('../util/dialog-actions');
 const mongoose = require('mongoose');
 const config = require('../config');
+const moment = require('moment');
 mongoose.Promise = global.Promise;
 
 after(function () {
@@ -91,5 +92,17 @@ describe('Google Dialog Actions', function () {
 				console.log(res.body);
 				done();
 			});
+	});
+
+	describe('Dialog utility functions', function () {
+		it('should format date correctly', function () {
+			let today = moment();
+			let todayText = today.format('YYYY-MM-DD');
+			let tomorrow = today.clone().add(1, 'd').format('YYYY-MM-DD');
+			let yesterday = today.clone().subtract(1, 'd').format('YYYY-MM-DD');
+			expect(dialog.formatDateText(todayText)).to.equal('Today');
+			expect(dialog.formatDateText(tomorrow)).to.equal('Tomorrow');
+			expect(dialog.formatDateText(yesterday)).to.equal('Yesterday');
+		});
 	});
 });
