@@ -38,7 +38,7 @@ const formatFiltered = (filtered, mealIndex) => {
 	if (filtered[mealIndex] == null || filtered[mealIndex].length === 0 || filtered[mealIndex][0] === null)
 		return `It looks like there aren't any dining courts serving that meal.`;
 	let best = filtered[mealIndex][0];
-	let speech = `Your top dining court for ${best.name} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}`;
+	let speech = `Your top dining court for ${best.name} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}.`;
 
 	return {
 		speech
@@ -65,9 +65,9 @@ const formatFavoritesListSpeech = (filtered, mealIndex, location) => {
 			speech = `${best.location} is not serving any of your favorites for ${best.name}.`;
 		}
 		else if (best.favorites.length === 1) {
-			speech = `Your favorite for ${best.name} at ${best.location} is ${best.favorites[0].Name}`;
+			speech = `Your favorite for ${best.name} at ${best.location} is ${best.favorites[0].Name}.`;
 		} else
-			speech = `Your favorites for ${best.name} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}`;
+			speech = `Your favorites for ${best.name} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}.`;
 	}
 	return {speech};
 };
