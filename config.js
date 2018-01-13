@@ -29,6 +29,12 @@ const config = convict({
 			format: 'url',
 			default: 'https://localhost:4000',
 			env: 'URL'
+		},
+		localhost: {
+			doc: 'whether ot listen on localhost or not (for reverse-proxy)',
+			format: 'Boolean',
+			default: true,
+			env: 'LISTEN_LOCALHOST'
 		}
 	},
 
