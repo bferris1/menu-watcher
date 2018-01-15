@@ -52,6 +52,7 @@ const formatFiltered = (filtered, mealIndex, date) => {
 		speech = `Your top dining court for ${best.name} ${date} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}.`;
 	}
 
+	speech += 'Would you like to know anything else?';
 
 	return {
 		speech
@@ -94,6 +95,9 @@ const formatFavoritesListSpeech = (filtered, mealIndex, location, date = getCurr
 		} else
 			speech = `Your favorites for ${best.name} ${date} at ${best.location} are ${best.favorites.map(favorite => favorite.Name).slice(0, -1).join(', ')}, and ${best.favorites[best.favorites.length - 1].Name}.`;
 	}
+
+	speech += 'Would you like to know anything else?';
+
 	return {speech};
 };
 
