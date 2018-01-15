@@ -37,7 +37,10 @@ router.use((req, res, next) => {
 router.post('/', (req, res) => {
 	if (req.body.result.action === 'get_top_dining_court') {
 		dialogActions.getBestDiningCourt(req)
-			.then(response => res.json(response))
+			.then(response => {
+				console.log(response);
+				res.json(response);
+			})
 			.catch(() => res.status(500).json({speech: 'An error occurred'}));
 	} else if (req.body.result.action === 'get_favorites') {
 		dialogActions.getFavoritesForDiningCourt(req)
