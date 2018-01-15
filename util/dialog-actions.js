@@ -49,7 +49,10 @@ const formatFiltered = (filtered, mealIndex, date) => {
 
 	} else {
 		let best = filtered[mealIndex][0];
-		speech = `Your top dining court for ${best.name} ${date} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}.`;
+		if (best.favorites.length === 0)
+			speech = `It doesn't look like any of your favorites are being served for ${best.name} ${date}`;
+		else
+			speech = `Your top dining court for ${best.name} ${date} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}.`;
 	}
 
 	speech += ' Would you like to know anything else?';
