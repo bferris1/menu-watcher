@@ -62,13 +62,13 @@ actions.formatDateText = (dateString) => {
 const formatFavoritesListSpeech = (filtered, mealIndex, location, date = getCurrentDateString()) => {
 	console.log(`Getting favorites for meal ${mealIndex} at ${location} ${date}`);
 	let best;
-	console.log(JSON.stringify(filtered[mealIndex]));
+	// console.log(JSON.stringify(filtered[mealIndex]));
 	if (location)
 		best = filtered[mealIndex].filter(diningCourt => diningCourt.location.toLowerCase() === location.toLowerCase());
 	else
 		best = [filtered[mealIndex][0]];
 	console.log(JSON.stringify(best));
-	let speech;
+	let speech = `It looks like ${location} isn't serving that meal ${date}`;
 	if (best.length !== 1) {
 		console.log(`Length of best was ${best.length}`);
 		speech = `It looks like ${location} isn't serving that meal ${date}.`;

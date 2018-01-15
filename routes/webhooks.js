@@ -7,9 +7,9 @@ const dialogActions = require('../util/dialog-actions');
 
 router.use((req, res, next) => {
 	let token;
-	console.log(JSON.stringify(req.body));
+	// console.log(JSON.stringify(req.body));
 	if (req.body.originalRequest && req.body.originalRequest.data.user && req.body.originalRequest.data.user.accessToken) {
-		console.log(JSON.stringify(req.body.originalRequest.data));
+		// console.log(JSON.stringify(req.body.originalRequest.data));
 		token = req.body.originalRequest.data.user.accessToken;
 		console.log(`Got access token: ${token}`);
 	}
@@ -41,10 +41,13 @@ router.post('/', (req, res) => {
 			.catch(() => res.status(500).json({speech: 'An error occurred'}));
 	} else if (req.body.result.action === 'get_favorites') {
 		dialogActions.getFavoritesForDiningCourt(req)
-			.then(response => res.json(response))
+			.then(response => {
+				console.log(response);
+				res.json(response);
+			})
 			.catch(() => res.status(500).json({speech: 'An error occurred'}));
 	} else {
-		return res.json({speech: 'Only top dining court actions are supported right now.'});
+		return res.json({speech: 'Unsupported action..'});
 	}
 });
 
