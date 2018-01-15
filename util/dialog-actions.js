@@ -26,6 +26,13 @@ const convertMealIndex = (mealName) => {
 	return index;
 };
 
+const getMealName = (mealIndex) => {
+	if (mealIndex < 0 || mealIndex > 3)
+		return 'Unknown Meal';
+	const meals = ['breakfast', 'lunch', 'late lunch', 'dinner'];
+	return meals[mealIndex];
+};
+
 const getCurrentDateString = () => {
 	let now = new Date();
 	return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
@@ -36,10 +43,15 @@ const getFavoritesForUser = (user) => {
 };
 
 const formatFiltered = (filtered, mealIndex, date) => {
-	if (filtered[mealIndex] == null || filtered[mealIndex].length === 0 || filtered[mealIndex][0] === null)
-		return `It looks like there aren't any dining courts serving that meal.`;
-	let best = filtered[mealIndex][0];
-	let speech = `Your top dining court for ${best.name} ${date} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}.`;
+	let speech = `It looks like there aren't any dining courts serving that meal.`;
+	if (filtered[mealIndex] == null || filtered[mealIndex].length === 0 || filtered[mealIndex][0] === null) {
+		speech = `It looks like there aren't any dining courts serving ${getMealName(mealIndex)} ${date}.`;
+
+	} else {
+		let best = filtered[mealIndex][0];
+		speech = `Your top dining court for ${best.name} ${date} is ${best.location}, with ${best.favorites.length} ${best.favorites.length === 1 ? 'favorite' : 'favorites'}.`;
+	}
+
 
 	return {
 		speech
@@ -52,7 +64,7 @@ actions.formatDateText = (dateString) => {
 	return date.calendar(null, {
 		sameDay: '[Today]',
 		nextDay: '[Tomorrow]',
-		nextWeek: 'dddd',
+		nextWeek: '[on] dddd',
 		lastDay: '[Yesterday]',
 		lastWeek: '[Last] dddd',
 		sameElse: 'YYYY-MM-DD'
