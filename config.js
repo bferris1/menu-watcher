@@ -86,6 +86,13 @@ const config = convict({
 			format: '*',
 			default: ''
 		}
+	},
+
+	webhooks: {
+		password: {
+			doc: 'Password being sent in auth header',
+			default: ''
+		}
 	}
 });
 

@@ -70,6 +70,7 @@ describe('Google Dialog Actions', function () {
 	it('should get top dining court over HTTP API', function (done) {
 		chai.request(app)
 			.post('/api/webhooks')
+			.set('auth', config.get('webhooks.password'))
 			.send(googleBody)
 			.end((err, res) => {
 				if (err) return done(err);

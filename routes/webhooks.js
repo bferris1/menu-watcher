@@ -6,6 +6,18 @@ const User = require('../models/user');
 const dialogActions = require('../util/dialog-actions');
 
 router.use((req, res, next) => {
+	let password = req.headers['auth'];
+
+	if (password != null && password === config.get('webhooks.password')){
+		next();
+	} else {
+		let err = new Error('Invalid Webhooks Password');
+		err.status = 401;
+		next(err);
+	}
+});
+
+router.use((req, res, next) => {
 	let token;
 	// console.log(JSON.stringify(req.body));
 	if (req.body.originalRequest && req.body.originalRequest.data.user && req.body.originalRequest.data.user.accessToken) {
