@@ -17,6 +17,7 @@ export default class OauthForm extends Component {
 		return (
 			<div>
 				<p>{this.props.service} would like to access your account.</p>
+				<p>This app will be able to view and edit your favorites.</p>
 				<button onClick={(e) => {
 					e.preventDefault();
 					this.handleResult(true);
