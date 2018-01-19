@@ -50,7 +50,7 @@ const formatFiltered = (filtered, mealIndex, date) => {
 	} else {
 		let best = filtered[mealIndex][0];
 		if (best.favorites.length === 0)
-			speech = `It doesn't look like any of your favorites are being served for ${best.name} ${date}.`;
+			speech = `It doesn't look like any of your favorites are being served for ${best.name} ${date}. You can always add more favorites on the website.`;
 		else
 			speech = `Your top dining court for ${best.name} ${date} is ${best.location}, serving ${best.favorites.length} of your favorites.`;
 	}
