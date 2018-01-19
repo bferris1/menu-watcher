@@ -48,6 +48,8 @@ class Signup extends Component {
 			<div className="row mt-2">
 				<div className="col-sm-10 offset-sm-1">
 					<h1>Sign Up</h1>
+					<p>Your are signing up for an account on this website, which is not affiliated with Purdue. Please do not use
+						your Purdue credentials.</p>
 					<Alerts alerts={this.state.alerts}/>
 					<Form>
 						<div className="row">
