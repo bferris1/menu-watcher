@@ -8,8 +8,8 @@ After signing up, users can then import favorites from their Purdue account if t
 After adding or importing favorites, users can then select a date and meal time and view which of the dining courts have their favorite foods.
 
 Things to do:
-- [ ] add redux
-- [ ] add support for Pushover notifications
-- [ ] add support for web push notifications
-- [ ] integrate with Purdue Authentication (for user accounts)
-- [ ] Dialog interface (Google Assistant / Alexa integration)
+- [ ] Add support for Pushover notifications
+- [ ] Add support for web push notifications
+- [ ] Integrate with Purdue Authentication (for user accounts)
+- [x] Add redux
+- [x] Dialog interface (Google Assistant / Alexa integration)
