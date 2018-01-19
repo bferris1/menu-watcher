@@ -8,7 +8,9 @@ let bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.get('db.url'), {
-	useMongoClient: true
+	useMongoClient: true,
+	reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+	reconnectInterval: 5000 // Reconnect every 5 sec
 });
 
 const api = require('./routes/api');
