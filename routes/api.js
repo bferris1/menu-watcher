@@ -149,7 +149,7 @@ router.get('/test', (req, res) => {
 });
 
 router.get('/favorites', (req, res) => {
-	Favorite.find({userID: req.user.id}).then(favorites => {
+	Favorite.find({userID: req.user.id}).sort('createdAt').exec().then(favorites => {
 		return res.json({success: true, favorites});
 	}).catch(err => {
 		return res.json({success: false, error: err});
@@ -160,7 +160,7 @@ router.post('/favorites', (req, res) => {
 	if (!req.body.itemID && !req.body.itemName) {
 		return res.status(400).json({success: false, message: 'Invalid id or name.'});
 	}
-	Favorite.find({itemID: req.body.itemID, userID: req.user.id}).sort('createdAt').exec().then(favorites => {
+	Favorite.find({itemID: req.body.itemID, userID: req.user.id}).then(favorites => {
 		if (favorites.length > 0) {
 			console.log(favorites);
 			return res.status(400).json({success: false, message: 'Item is already a favorite!'});
