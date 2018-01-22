@@ -7,7 +7,7 @@
     "dev": "npm-run-all -p backend frontend",
     "backend": "nodemon ./bin/www",
     "frontend": "cd frontend && yarn start",
-    "lint": "eslint",
+    "lint": "eslint .",
     "test": "mocha --timeout 5000 --exit",
     "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
   },
