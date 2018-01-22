@@ -8,7 +8,7 @@ const dialogActions = require('../util/dialog-actions');
 router.use((req, res, next) => {
 	let password = req.headers['auth'];
 
-	if (password != null && password === config.get('webhooks.password')){
+	if (password != null && password === config.get('webhooks.password')) {
 		next();
 	} else {
 		let err = new Error('Invalid Webhooks Password');
@@ -53,14 +53,20 @@ router.post('/', (req, res) => {
 				console.log(response);
 				res.json(response);
 			})
-			.catch(() => res.status(500).json({speech: 'An error occurred'}));
+			.catch((err) => {
+				console.error(err);
+				res.status(500).json({speech: 'An error occurred'});
+			});
 	} else if (req.body.result.action === 'get_favorites') {
 		dialogActions.getFavoritesForDiningCourt(req)
 			.then(response => {
 				console.log(response);
 				res.json(response);
 			})
-			.catch(() => res.status(500).json({speech: 'An error occurred'}));
+			.catch((err) => {
+				console.error(err);
+				res.status(500).json({speech: 'An error occurred'});
+			});
 	} else {
 		return res.json({speech: 'Unsupported action..'});
 	}

@@ -52,6 +52,7 @@ describe('Telegram Dialog Actions', function () {
 	it('should get top dining court over HTTP API', function (done) {
 		chai.request(app)
 			.post('/api/webhooks')
+			.set('auth', config.get('webhooks.password'))
 			.send(mockRequest)
 			.end((err, res) => {
 				if (err) return done(err);
@@ -86,6 +87,7 @@ describe('Google Dialog Actions', function () {
 		getFavoritesRequest.result.action = 'get_favorites';
 		chai.request(app)
 			.post('/api/webhooks')
+			.set('auth', config.get('webhooks.password'))
 			.send(getFavoritesRequest)
 			.end((err, res) => {
 				if (err) return done(err);
