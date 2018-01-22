@@ -149,7 +149,7 @@ router.get('/test', (req, res) => {
 });
 
 router.get('/favorites', (req, res) => {
-	Favorite.find({userID: req.user.id}).sort('createdAt').exec().then(favorites => {
+	Favorite.find({userID: req.user.id}).sort('-createdAt').exec().then(favorites => {
 		return res.json({success: true, favorites});
 	}).catch(err => {
 		return res.json({success: false, error: err});
