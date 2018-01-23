@@ -58,7 +58,7 @@ checker.getFilteredFavorites = (menus, favorites) => {
 
 	return new Promise((resolve, reject) => {
 		if (!menus || !favorites) {
-			reject('Invalid parameters.');
+			reject(new Error('Invalid parameters.'));
 		}
 
 		let favoritesSet = new Set();

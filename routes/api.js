@@ -10,6 +10,7 @@ const {check, validationResult} = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const accountRoutes = require('./account');
 const webhookRoutes = require('./webhooks');
+const APIError = require('../util/api-error');
 
 router.get('/', (req, res) => {
 	res.json({success: true, message: 'Welcome to the api.'});
@@ -17,44 +18,35 @@ router.get('/', (req, res) => {
 
 router.use('/webhooks', webhookRoutes);
 
-router.get('/menus', (req, res) => {
+router.get('/menus', (req, res, next) => {
 	let date = new Date();
 	let dateString = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 	checker.getAllMenus(dateString).then(menus => {
 		return res.json({success: true, menus});
 
 	}).catch(err => {
-		return res.status(500).json({
-			success: false,
-			error: err
-		});
+		next(err);
 	});
 });
 
-router.get('/search/:query', (req, res) => {
+router.get('/search/:query', (req, res, next) => {
 	checker.getSearchResults(req.params.query).then(searchResults => {
 		return res.json({success: true, searchResults});
 	}).catch(err => {
-		return res.status(500).json({
-			success: false,
-			error: err
-		});
+		next(err);
 	});
 });
 
 
-router.post('/auth', (req, res) => {
+router.post('/auth', (req, res, next) => {
 
 	if (!req.body.email || !req.body.password) {
-		return res.status(400).json({
-			success: false,
-			error: 'Email and password are required.'
-		});
+		throw new APIError('Email and password are required.', 400);
 	}
 
 	User.findOne({email: req.body.email}).select('email, password').exec().then(user => {
 		if (!user) {
-			return res.status(400).json({success: false, error: 'No user with that email address.'});
+			throw new APIError('No user with that email address.', 400);
 		}
 		user.comparePassword(req.body.password, function (err, isMatch) {
 			if (err) {
@@ -68,14 +60,14 @@ router.post('/auth', (req, res) => {
 					email: user.email,
 					id: user._id
 				}, config.get('jwt.secret'), function (err, token) {
-					if (err) return res.status(500).json({success: false});
+					if (err) throw new APIError('Error authenticating token', 500);
 					return res.json({success: true, token: token});
 				});
 			} else {
-				return res.status(401).json({success: false, error: 'Incorrect Password'});
+				throw new APIError('Incorrect Password', 401);
 			}
 		});
-	});
+	}).catch(err => next(err));
 });
 
 router.post('/register',
@@ -83,15 +75,16 @@ router.post('/register',
 		check('email').isEmail().withMessage('Email address is invalid.').trim(),
 		check('password').isLength({min: 8}).withMessage('Password must be at least 8 characters.')
 	],
-	(req, res) => {
+	(req, res, next) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return res.status(400).json({success: false, error: errors.array()[0].msg});
+			throw new APIError(errors.array()[0].msg, 400);
 		}
+
+		// todo: flatten promises
 		User.findOne({email: req.body.email}).then(existingUser => {
 			if (existingUser)
-				return res.status(400).json({success: false, error: 'A user with that email already exists.'});
-
+				throw new APIError('A user with that email address already exists.', 400);
 			let user = new User({
 				email: req.body.email,
 				password: req.body.password
@@ -105,11 +98,10 @@ router.post('/register',
 					return res.json({success: true, user, token});
 				});
 			}).catch(reason => {
-				console.log(reason);
-				return res.status(500).json({success: false, error: reason});
+				next(reason);
 			});
 		}).catch(err => {
-			return res.status(500).json({success: false, error: err});
+			next(err);
 		});
 
 	});
@@ -119,26 +111,22 @@ router.use((req, res, next) => {
 	if (token) {
 		jwt.verify(token, config.get('jwt.secret'), function (err, decoded) {
 			if (err) {
-				return res.status(403).send({success: false, message: 'Failed to authenticate token'});
+				throw new APIError('Failed to authenticate token.', 403);
 			} else {
 				User.findOne({_id: decoded.id}).then(user => {
-					if (!user) return res.status(401).json({success: false, error: 'Your user ID is invalid.'});
+					if (!user) throw new APIError('Your user ID is invalid.', 401);
 					else {
 						req.user = decoded;
 						next();
 					}
 				}).catch(err => {
-					console.error(err);
-					return res.status(500).json({success: false, error: err});
+					next(err);
 				});
 			}
 		});
 	} else {
 		// no token provided
-		return res.status(403).send({
-			success: false,
-			message: 'No token provided'
-		});
+		throw new APIError('No token provided.', 401);
 	}
 });
 
@@ -156,14 +144,14 @@ router.get('/favorites', (req, res) => {
 	});
 });
 
-router.post('/favorites', (req, res) => {
+router.post('/favorites', (req, res, next) => {
 	if (!req.body.itemID && !req.body.itemName) {
-		return res.status(400).json({success: false, message: 'Invalid id or name.'});
+		throw new APIError('Invalid id or name.', 400);
 	}
 	Favorite.find({itemID: req.body.itemID, userID: req.user.id}).then(favorites => {
 		if (favorites.length > 0) {
 			console.log(favorites);
-			return res.status(400).json({success: false, message: 'Item is already a favorite!'});
+			throw new APIError('Item is already a favorite!', 400);
 		}
 		let favorite = new Favorite({
 			itemID: req.body.itemID,
@@ -173,30 +161,29 @@ router.post('/favorites', (req, res) => {
 		favorite.save().then(favorite => {
 			return res.json({success: true, favorite});
 		}).catch(err => {
-			return res.status(500).json({success: false, error: err});
+			next(err);
 		});
 
 	});
 });
 
-router.delete('/favorites/:favoriteID', (req, res) => {
+router.delete('/favorites/:favoriteID', (req, res, next) => {
 	Favorite.remove({itemID: req.params.favoriteID}).then(() => {
 		return res.json({success: true});
 	}).catch(err => {
-		return res.status(500).json({success: false, error: err});
+		next(err);
 	});
 });
 
 
-router.get('/filtered/:date', (req, res) => {
+router.get('/filtered/:date', (req, res, next) => {
 
 	Favorite.find({userID: req.user.id}).then(favorites => {
 		return checker.getFilteredFavoritesForDate(req.params.date, favorites);
 	}).then(filtered => {
 		return res.json({success: true, filtered});
 	}).catch(err => {
-		console.error(err);
-		return res.status(500).json({success: false, error: err.toString()});
+		next(err);
 	});
 });
 
@@ -208,7 +195,7 @@ router.post('/import', function (req, res) {
 
 	// user must enter username and password
 	if (!req.body.user && !req.body.password) {
-		return res.status(400).json({success: false, message: 'Credentials required.'});
+		throw new APIError('Credentials Required.', 400);
 	}
 	// options to get ticket
 	let options = {
@@ -238,7 +225,7 @@ router.post('/import', function (req, res) {
 		request(ticketOptions, (ticketErr, ticketRes, ticketBody) => {
 			console.log(ticketRes);
 			console.log(ticketRes.statusCode);
-			if (ticketErr) return res.status(500).json({error: 'Unable to access favorites API.'});
+			if (ticketErr) throw new APIError('Unable to access Purdue favorites API.', 500);
 
 			// the ticket is sent as a query parameter with the favorites request
 			let favoriteOptions = {
@@ -273,7 +260,7 @@ router.post('/import', function (req, res) {
 						cb(err);
 					});
 				}, err => {
-					if (err) return res.status(500).json({success: false, error: 'Error saving favorites to database.'});
+					if (err) throw new APIError('Error saving favorites to database.', 500);
 					return res.json({success: true});
 				});
 			});
@@ -281,5 +268,16 @@ router.post('/import', function (req, res) {
 	});
 });
 
+
+// eslint-disable-next-line no-unused-vars
+router.use((err, req, res, next) => {
+	let status = err.status || 500;
+	let message = err.message || 'An unknown error occurred.';
+	if (status === 500)
+		console.error(err);
+	else
+		console.log(err);
+	res.status(err.status || 500).json({success: false, error: message});
+});
 
 module.exports = router;

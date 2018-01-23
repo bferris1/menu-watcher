@@ -37,15 +37,13 @@ router.post('/', (req, res) => {
 	}
 });
 
-router.delete('/', (req, res) => {
-	User.remove({_id: req.user.id}).then(result => {
-		console.log(result);
+router.delete('/', (req, res, next) => {
+	User.remove({_id: req.user.id}).then(() => {
 		return Favorite.remove({userID: req.user.id});
 	}).then(() => {
 		res.json({success: true, message: 'Your account has been deleted.'});
 	}).catch(err => {
-		console.error(err);
-		res.status(500).json({success: false, error: err});
+		next(err);
 	});
 });
 

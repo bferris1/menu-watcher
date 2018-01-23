@@ -6,6 +6,10 @@ const checker = require('../util/menu-checker');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+let should = require('chai').should();
+let app = require('../app');
+let testUser = {email: 'ben@test.com', password: 'asdffdsa', telegramUsername: 'coolUsername'};
+
 
 after(function () {
 	mongoose.connection.close();
@@ -46,22 +50,93 @@ describe('Menu Checker', function () {
 });
 
 describe('Menu API', function () {
-	let app = require('../app');
-	it('should get all menus', function (done) {
-		chai.request(app)
-			.get('/api/menus')
-			.end((err, res) => {
-				if (err) done(err);
-				expect(res).to.have.status(200);
-				expect(res.body).to.be.an('object').that.has.property('success').that.equals(true);
-				expect(res.body).to.have.property('menus').that.is.an('array').that.has.length(6);
-				done();
-			});
+	describe('Public Functions', function () {
+		it('should get all menus', function (done) {
+			chai.request(app)
+				.get('/api/menus')
+				.end((err, res) => {
+					if (err) done(err);
+					expect(res).to.have.status(200);
+					expect(res.body).to.be.an('object').that.has.property('success').that.equals(true);
+					expect(res.body).to.have.property('menus').that.is.an('array').that.has.length(6);
+					done();
+				});
+		});
 	});
+	describe('Authenticated Functionality', function () {
+		it('should reject unauthenticated requests to account endpoint', function (done) {
+			chai.request(app)
+				.get('/api/account')
+				.end((err, res) => {
+					res.should.have.status(401);
+					res.body.should.be.an('object').that.has.property('success').that.equals(false);
+					done();
+				});
+		});
+		it('should require email and password when logging in', function (done) {
+			chai.request(app)
+				.post('/api/auth')
+				.end((err, res) => {
+					res.should.have.status(400);
+					res.body.should.be.an('object').that.has.property('success').that.equals(false);
+					done();
+				});
+		});
+		it('should register user successfully', function (done) {
+			chai.request(app)
+				.post('/api/register')
+				.send(testUser)
+				.end((err, res) => {
+					console.log(res.body);
+					res.should.have.status(200);
+					testUser.token = res.body.token;
+					done();
+				});
+		});
+		it('should get user favorites', function (done) {
+			chai.request(app)
+				.get('/api/favorites')
+				.set('x-access-token', testUser.token)
+				.end((err, res) => {
+					console.log(res.body);
+					res.should.have.status(200);
+					res.body.should.be.an('object')
+						.that.has.property('favorites')
+						.that.is.an('array')
+						.that.has.length(0);
+					done();
+				});
+		});
+		it('should add favorite', function (done) {
+			let testFavorite = {itemName: 'test', itemID: 'testing'};
+			chai.request(app)
+				.post('/api/favorites')
+				.send(testFavorite)
+				.set('x-access-token', testUser.token)
+				.end((err, res) => {
+					console.log(res.body);
+					res.should.have.status(200);
+					res.body.should.be.an('object')
+						.that.has.property('favorite').that.includes(testFavorite);
+					done();
+				});
+		});
+		it('should delete user successfully', function (done) {
+			chai.request(app)
+				.delete('/api/account')
+				.set('x-access-token', testUser.token)
+				.end((err, res) => {
+					res.should.have.status(200);
+					console.log(res.body);
+					delete testUser.token;
+					done();
+				});
+		});
+	});
+
 });
 
 describe('User', function () {
-	let testUser = {email: 'ben@test.com', password: 'asdffdsa', telegramUsername: 'coolUsername'};
 
 	it('should be created successfully', function (done) {
 		let newUser = new User(testUser);
@@ -76,7 +151,7 @@ describe('User', function () {
 	});
 
 	it('should be deleted successfully', function (done) {
-		User.remove({_id: testUser._id}).then(() => {
+		User.remove({email: testUser.email}).then(() => {
 			done();
 		}).catch(err => {
 			done(err);
