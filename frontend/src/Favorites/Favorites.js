@@ -3,7 +3,7 @@ import Auth from '../AuthCtrl';
 import AddFavoriteForm from './AddFavoriteForm';
 import Alerts from '../Alerts';
 import {connect} from 'react-redux';
-import {fetchFavorites} from '../reducer/favorites/actions';
+import {addFavorite, fetchFavorites} from '../reducer/favorites/actions';
 import PropTypes from 'prop-types';
 
 
@@ -16,7 +16,6 @@ class Favorites extends Component {
 			alerts: {}
 		};
 		this.getFavorites = this.getFavorites.bind(this);
-		this.handleAddFavorite = this.handleAddFavorite.bind(this);
 		if (!Auth.isLoggedIn()) this.props.history.push('/login');
 
 	}
@@ -25,22 +24,7 @@ class Favorites extends Component {
 		this.props.dispatch(fetchFavorites());
 	}
 
-	handleAddFavorite (item) {
-		console.log(item);
-		Auth.post('/api/favorites',
-			{
-				itemName: item.Name,
-				itemID: item.ID
-			}).then(res => {
-			console.log(res);
-			if (res.success) {
-				this.setState({alerts: {}});
-				this.getFavorites();
-			} else {
-				this.setState({alerts: {danger: res.error}});
-			}
-		});
-	}
+
 
 	handleDeleteFavorite (item) {
 		Auth.delete('/api/favorites/' + item.itemID).then(res => {
@@ -75,7 +59,7 @@ class Favorites extends Component {
 				<h1 className="my-2">Favorites</h1>
 				<Alerts alerts={this.state.alerts}/>
 				<h2>Add favorite:</h2>
-				<AddFavoriteForm onAdd={this.handleAddFavorite}
+				<AddFavoriteForm onAdd={this.props.handleAddFavorite}
 												 onDelete={this.handleDeleteFavorite}
 												 favorites={this.props.favorites.map(favorite => favorite.itemID)}/>
 				<br/>
@@ -96,4 +80,11 @@ const mapStateToProps = ({favorites}) => {
 	return {favorites};
 };
 
-export default connect(mapStateToProps)(Favorites);
+const mapDispatchToProps = dispatch => {
+	return {
+		handleAddFavorite: favorite => dispatch(addFavorite(favorite)),
+		dispatch
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
