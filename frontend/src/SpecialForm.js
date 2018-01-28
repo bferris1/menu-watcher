@@ -27,7 +27,7 @@ export const DateStepper = (props) => {
 					dec();
 				}}>-
 				</button>
-				<Input readonly className="text mx-2" type="text" value={props.date.format('ddd MMM Do')}/>
+				<Input readOnly className="text mx-2" type="text" value={props.date.format('ddd MMM Do')}/>
 				<button className={'btn btn-success'} onClick={e => {
 					e.preventDefault();
 					inc();
