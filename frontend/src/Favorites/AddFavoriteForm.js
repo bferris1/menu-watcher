@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Form} from 'reactstrap';
 import {DebounceInput} from 'react-debounce-input';
 import Auth from '../AuthCtrl';
+import PropTypes from 'prop-types';
 
 export default class AddFavoriteForm extends Component {
 
@@ -71,3 +72,8 @@ export default class AddFavoriteForm extends Component {
 	}
 
 }
+
+AddFavoriteForm.propTypes = {
+	favorites: PropTypes.array,
+	onAdd: PropTypes.func
+};

@@ -4,6 +4,7 @@ import AddFavoriteForm from './AddFavoriteForm';
 import Alerts from '../Alerts';
 import {connect} from 'react-redux';
 import {fetchFavorites} from '../reducer/favorites/actions';
+import PropTypes from 'prop-types';
 
 
 class Favorites extends Component {
@@ -86,6 +87,10 @@ class Favorites extends Component {
 		);
 	}
 }
+
+AddFavoriteForm.propTypes = {
+	favorites: PropTypes.array
+};
 
 const mapStateToProps = ({favorites}) => {
 	return {favorites};

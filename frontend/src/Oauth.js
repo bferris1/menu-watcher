@@ -6,6 +6,7 @@ import {getUser} from './reducer/user/actions';
 import LoginForm from './Auth/LoginForm';
 import OauthForm from './Auth/OauthForm';
 
+
 class Oauth extends Component {
 
 	constructor (props) {

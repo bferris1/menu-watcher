@@ -7,6 +7,7 @@ import CollapsableCard from './CollapsableCard';
 import Auth from './AuthCtrl';
 import {connect} from 'react-redux';
 import {fetchMenus, setMeal, updateDate} from './reducer/menus/actions';
+import PropTypes from 'prop-types';
 
 class MenuWatcher extends Component {
 
@@ -90,6 +91,12 @@ class MenuWatcher extends Component {
 		);
 	}
 }
+
+MenuWatcher.propTypes = {
+	meals: PropTypes.array,
+	date: PropTypes.object,
+	mealIndex: PropTypes.number
+};
 
 function mapStateToProps ({menus}) {
 	return {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {EmailInput, PasswordInput} from '../form';
+import PropTypes from 'prop-types';
 
 export default class LoginForm extends Component {
 
@@ -34,3 +35,7 @@ export default class LoginForm extends Component {
 		);
 	}
 }
+
+LoginForm.propTypes = {
+	onLogin: PropTypes.func.isRequired
+};

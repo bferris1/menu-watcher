@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Card, CardBody, CardHeader, Collapse} from 'reactstrap';
+import PropTypes from 'prop-types';
 
 class CollapsibleCard extends Component {
 	constructor (props) {
@@ -39,5 +40,9 @@ class CollapsibleCard extends Component {
 		);
 	}
 }
+
+CollapsibleCard.propTypes = {
+	diningCourt: PropTypes.object.isRequired
+};
 
 export default CollapsibleCard;
