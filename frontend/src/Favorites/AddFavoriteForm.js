@@ -41,7 +41,7 @@ export default class AddFavoriteForm extends Component {
 
 	render () {
 		let favorites = this.props.favorites;
-		let resultsList = this.state.results.slice(0, 10).map((item, index) => {
+		let resultsList = this.state.results.slice(0, 20).map((item, index) => {
 			let addButton;
 			if (!favorites.includes(item.ID))
 				addButton = <button className="btn btn-success float-right" onClick={e => {
