@@ -56,14 +56,8 @@ class Favorites extends Component {
 
 		return (
 			<div>
-				<h1 className="my-2">Favorites</h1>
+				<h1 className="my-2">Your Favorites</h1>
 				<Alerts alerts={this.state.alerts}/>
-				<h2>Add favorite:</h2>
-				<AddFavoriteForm onAdd={this.props.handleAddFavorite}
-												 onDelete={this.handleDeleteFavorite}
-												 favorites={this.props.favorites.map(favorite => favorite.itemID)}/>
-				<br/>
-				<h2>Your Favorites</h2>
 				<ul className="list-group my-2">
 					{favoritesList}
 				</ul>
