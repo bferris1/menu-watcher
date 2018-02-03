@@ -6,8 +6,6 @@ export default {
 			method: 'GET',
 			headers: headers
 		};
-		//todo: better error handling
-		//ideally the API would always return JSON, but it doesn't for auth errors
 		return fetch(endpoint, options).then((response) => {
 			if (response.status !== 401)
 				return response.json();
