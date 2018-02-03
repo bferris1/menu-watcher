@@ -13,7 +13,8 @@ class Search extends React.Component {
 	render () {
 		return (
 			<div>
-				<h2>Search for items:</h2>
+				<h1>Search for items:</h1>
+				<hr/>
 				<AddFavoriteForm onAdd={this.props.handleAddFavorite}
 												 favorites={this.props.favorites.map(favorite => favorite.itemID)}/>
 			</div>

@@ -57,6 +57,7 @@ class Favorites extends Component {
 		return (
 			<div>
 				<h1 className="my-2">Your Favorites</h1>
+				<hr/>
 				<Alerts alerts={this.state.alerts}/>
 				<ul className="list-group my-2">
 					{favoritesList}
