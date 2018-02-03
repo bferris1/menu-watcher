@@ -50,7 +50,8 @@ export default class AddFavoriteForm extends Component {
 				}}>Add Favorite</button>;
 			else
 				addButton = <p className="text-right float-right">In Favorites</p>;
-			return <li className="list-group-item" key={index}>{item.Name}
+			return <li className="list-group-item" key={index}>{item.Name} {item.IsVegetarian ?
+				<img height={'14px'} src="/vegetarian-mark.svg"/> : ''}
 				{addButton}
 			</li>;
 		});
