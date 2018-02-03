@@ -27,7 +27,8 @@ export default class FavoritesSearchResult extends Component {
 		return (
 
 			<li className={'list-group-item'}>{this.props.item.Name} {this.props.item.IsVegetarian ?
-				<img height={'14px'} width={'14px'} src="/vegetarian-mark.svg"/> : ''} {addButton}</li>
+				<img height={'14px'} width={'14px'} alt={'vegetarian indicator'}
+						 src="/vegetarian-mark.svg"/> : ''} {addButton}</li>
 
 
 		);
