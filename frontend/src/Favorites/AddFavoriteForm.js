@@ -3,6 +3,7 @@ import {Form} from 'reactstrap';
 import {DebounceInput} from 'react-debounce-input';
 import Auth from '../AuthCtrl';
 import PropTypes from 'prop-types';
+import FavoritesSearchResult from './FavoritesSearchResult';
 
 export default class AddFavoriteForm extends Component {
 
@@ -41,18 +42,10 @@ export default class AddFavoriteForm extends Component {
 
 	render () {
 		let favorites = this.props.favorites;
-		let resultsList = this.state.results.slice(0, 20).map((item, index) => {
-			let addButton;
-			if (!favorites.includes(item.ID))
-				addButton = <button className="btn btn-success float-right" onClick={e => {
-					e.preventDefault();
-					this.props.onAdd(item);
-				}}>Add Favorite</button>;
-			else
-				addButton = <p className="text-right float-right">In Favorites</p>;
-			return <li className="list-group-item" key={index}>{item.Name}
-				{addButton}
-			</li>;
+		let resultsList = this.state.results.map((item, index) => {
+			return <FavoritesSearchResult key={item.ID} item={item}
+																		isFavorite={favorites.includes(item.ID)}
+																		onAdd={this.props.onAdd}/>;
 		});
 		return (
 			<div>

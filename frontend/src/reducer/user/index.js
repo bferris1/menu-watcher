@@ -1,6 +1,6 @@
 import {LOGOUT, SET_USER} from './actions';
 
-const initialState = {};
+const initialState = null;
 
 
 export default (state = initialState, action) => {

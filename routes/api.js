@@ -48,27 +48,18 @@ router.post('/auth', (req, res, next) => {
 		if (!user) {
 			throw new APIError('No user with that email address.', 400);
 		}
-		user.comparePassword(req.body.password, function (err, isMatch) {
-			if (err) {
-				return res.status(500).json({
-					success: false,
-					error: err
-				});
-			}
-			if (isMatch) {
-				jwt.sign({
-					email: user.email,
-					id: user._id
-				}, config.get('jwt.secret'), function (err, token) {
-					if (err) throw new APIError('Error authenticating token', 500);
-					return res.json({success: true, token: token});
-				});
-			} else {
-				throw new APIError('Incorrect Password', 401);
-			}
-		});
+		return user.comparePassword(req.body.password);
+	}).then(({isValid, user}) => {
+		if (isValid) {
+			// correct password
+			let token = jwt.sign({email: user.email, id: user._id}, config.get('jwt.secret'));
+			return res.json({success: true, token});
+		} else {
+			throw new APIError('Incorrect Password', 401);
+		}
 	}).catch(err => next(err));
-});
+})
+;
 
 router.post('/register',
 	[

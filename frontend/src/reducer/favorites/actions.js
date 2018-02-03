@@ -14,8 +14,22 @@ export function fetchFavorites () {
 	};
 }
 
-export function addFavorite () {
-
+export function addFavorite (item) {
+	return dispatch => {
+		console.log('adding favorite');
+		Auth.post('/api/favorites',
+			{
+				itemName: item.Name,
+				itemID: item.ID
+			}).then(res => {
+			console.log(res);
+			if (res.success) {
+				dispatch(addFavoriteItem(res.favorite));
+			} else {
+				console.err('error adding favorite');
+			}
+		});
+	};
 }
 
 export function deleteFavorite (index) {
@@ -29,5 +43,13 @@ export function setFavorites (favorites) {
 	return {
 		type: SET_FAVORITES,
 		favorites
+	};
+
+}
+
+export function addFavoriteItem (item) {
+	return {
+		type: ADD_FAVORITE,
+		item
 	};
 }

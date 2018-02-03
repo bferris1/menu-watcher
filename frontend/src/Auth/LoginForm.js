@@ -15,7 +15,6 @@ export default class LoginForm extends Component {
 	handleLogin (e) {
 		e.preventDefault();
 		this.props.onLogin(this.state);
-		console.log(this.state);
 	}
 
 	handleChange (e) {
@@ -26,7 +25,8 @@ export default class LoginForm extends Component {
 		return (
 			<form onSubmit={this.handleLogin}>
 				<EmailInput name={'email'} value={this.state.email} onChange={this.handleChange}/>
-				<PasswordInput name={'password'} value={this.state.password} onChange={this.handleChange}/>
+				<PasswordInput name={'password'} value={this.state.password}
+											 autoComplete={'current-password'} onChange={this.handleChange}/>
 				<button type={'submit'} onClick={this.handleLogin} className="btn btn-block btn-primary">Log In</button>
 				<div>
 					<Link to="/signup">Sign Up</Link><br/>

@@ -59,7 +59,8 @@ class Signup extends Component {
 						</div>
 						<div className="row">
 							<Col sm={12}>
-								<PasswordInput name={'password'} value={this.state.password} onChange={this.handleChange}/>
+								<PasswordInput autoComplete={'new-password'} name={'password'} value={this.state.password}
+															 onChange={this.handleChange}/>
 							</Col>
 						</div>
 						<div className="row">

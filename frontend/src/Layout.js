@@ -14,7 +14,9 @@ import Login from './Login';
 import Signup from './Signup';
 import {connect} from 'react-redux';
 import {logoutUser} from './reducer/user/actions';
+import {fetchFavorites} from './reducer/favorites/actions';
 import Oauth from './Oauth';
+import Search from './Search';
 
 
 class Layout extends Component {
@@ -40,6 +42,11 @@ class Layout extends Component {
 		this.setState({
 			isSecondaryOpen: !this.state.isSecondaryOpen
 		});
+	}
+
+	componentDidMount () {
+		if (this.props.user && AuthCtrl.isLoggedIn())
+			this.props.getFavorites();
 	}
 
 
@@ -74,13 +81,16 @@ class Layout extends Component {
 						<Nav className="ml-auto" navbar>
 							{this.props.user == null ||
 							[
-								<NavItem>
+								<NavItem key='watcher'>
 									<NavLink className="nav-link" exact to="/menu-watcher" activeClassName="active">Menu Watcher</NavLink>
 								</NavItem>,
-								<NavItem>
+								<NavItem key='search'>
+									<NavLink className="nav-link" exact to="/search" activeClassName="active">Search</NavLink>
+								</NavItem>,
+								<NavItem key='favorites'>
 									<NavLink className="nav-link" exact to="/favorites" activeClassName="active">Favorites</NavLink>
 								</NavItem>,
-								<NavItem>
+								<NavItem key='import'>
 									<NavLink className="nav-link" exact to="/import" activeClassName="active">Import</NavLink>
 								</NavItem>
 							]
@@ -102,7 +112,7 @@ class Layout extends Component {
 
 								</Dropdown>
 								:
-								<Dropdown isOpen={this.state.isSecondaryOpen} toggle={this.toggleSecondary} nav inNavbar>
+								<Dropdown isOpen={this.state.isSecondaryOpen} toggle={this.toggleSecondary} nav innavbar={'true'}>
 									<DropdownToggle nav caret
 																	onClick={this.toggleSecondary}
 																	data-toggle="dropdown"
@@ -124,6 +134,7 @@ class Layout extends Component {
 				<div className="col-sm-8 offset-sm-2">
 					<Route exact path={'/menu-watcher'} component={MenuWatcher}/>
 					<Route path={'/favorites'} component={Favorites}/>
+					<Route path={'/search'} component={Search}/>
 					<Route path={'/import'} component={Import}/>
 					<Route path={'/account'} component={Account}/>
 					<Route path="/login" component={Login}/>
@@ -143,6 +154,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onLogoutClick: () => {
 			dispatch(logoutUser());
+		},
+		getFavorites: () => {
+			dispatch(fetchFavorites());
 		}
 	};
 };
