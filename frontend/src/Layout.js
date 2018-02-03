@@ -14,6 +14,7 @@ import Login from './Login';
 import Signup from './Signup';
 import {connect} from 'react-redux';
 import {logoutUser} from './reducer/user/actions';
+import {fetchFavorites} from './reducer/favorites/actions';
 import Oauth from './Oauth';
 import Search from './Search';
 
@@ -41,6 +42,11 @@ class Layout extends Component {
 		this.setState({
 			isSecondaryOpen: !this.state.isSecondaryOpen
 		});
+	}
+
+	componentDidMount () {
+		if (this.props.user && AuthCtrl.isLoggedIn())
+			this.props.getFavorites();
 	}
 
 
@@ -106,7 +112,7 @@ class Layout extends Component {
 
 								</Dropdown>
 								:
-								<Dropdown isOpen={this.state.isSecondaryOpen} toggle={this.toggleSecondary} nav inNavbar>
+								<Dropdown isOpen={this.state.isSecondaryOpen} toggle={this.toggleSecondary} nav innavbar={'true'}>
 									<DropdownToggle nav caret
 																	onClick={this.toggleSecondary}
 																	data-toggle="dropdown"
@@ -148,6 +154,9 @@ const mapDispatchToProps = dispatch => {
 	return {
 		onLogoutClick: () => {
 			dispatch(logoutUser());
+		},
+		getFavorites: () => {
+			dispatch(fetchFavorites());
 		}
 	};
 };
