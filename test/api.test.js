@@ -33,6 +33,7 @@ describe('Menu Checker', function () {
 		}).catch(err => done(err));
 	});
 	it('should filter favorites successfully', function (done) {
+		this.timeout(8000);
 		checker.getAllMenus(TEST_DATE_STRING).then(menus => {
 			expect(menus).to.be.an('array').that.has.length(6);
 			return checker.getFilteredFavorites(menus, testFavorites);
@@ -68,6 +69,7 @@ describe('Menu API', function () {
 			chai.request(app)
 				.get('/api/account')
 				.end((err, res) => {
+					if (err) done(err);
 					res.should.have.status(401);
 					res.body.should.be.an('object').that.has.property('success').that.equals(false);
 					done();
@@ -77,6 +79,7 @@ describe('Menu API', function () {
 			chai.request(app)
 				.post('/api/auth')
 				.end((err, res) => {
+					if (err) done(err);
 					res.should.have.status(400);
 					res.body.should.be.an('object').that.has.property('success').that.equals(false);
 					done();
@@ -87,6 +90,7 @@ describe('Menu API', function () {
 				.post('/api/register')
 				.send(testUser)
 				.end((err, res) => {
+					if (err) done(err);
 					console.log(res.body);
 					res.should.have.status(200);
 					testUser.token = res.body.token;
@@ -98,6 +102,7 @@ describe('Menu API', function () {
 				.get('/api/favorites')
 				.set('x-access-token', testUser.token)
 				.end((err, res) => {
+					if (err) done(err);
 					console.log(res.body);
 					res.should.have.status(200);
 					res.body.should.be.an('object')
@@ -114,6 +119,7 @@ describe('Menu API', function () {
 				.send(testFavorite)
 				.set('x-access-token', testUser.token)
 				.end((err, res) => {
+					if (err) done(err);
 					console.log(res.body);
 					res.should.have.status(200);
 					res.body.should.be.an('object')
@@ -126,6 +132,7 @@ describe('Menu API', function () {
 				.delete('/api/account')
 				.set('x-access-token', testUser.token)
 				.end((err, res) => {
+					if (err) done(err);
 					res.should.have.status(200);
 					console.log(res.body);
 					delete testUser.token;
