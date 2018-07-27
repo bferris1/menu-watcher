@@ -1,7 +1,6 @@
 let express = require('express');
 let path = require('path');
 const config = require('./config');
-// let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
@@ -11,6 +10,9 @@ mongoose.connect(config.get('db.url'), {
 	useMongoClient: true,
 	reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
 	reconnectInterval: 5000 // Reconnect every 5 sec
+}).catch((reason) => {
+	console.error(reason);
+	process.exit(1);
 });
 
 const api = require('./routes/api');
