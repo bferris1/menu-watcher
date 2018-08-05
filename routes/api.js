@@ -2,7 +2,6 @@ let express = require('express');
 let router = express.Router();
 let config = require('../config');
 const async = require('async');
-const request = require('request').defaults({jar: true});
 const checker = require('../util/menu-checker');
 const User = require('../models/user');
 const Favorite = require('../models/favorite');
@@ -178,84 +177,30 @@ router.get('/filtered/:date', (req, res, next) => {
 	});
 });
 
-
-// todo: use promises (request-promise) to clean this up
-router.post('/import', function (req, res) {
-	const favoritesUrl = 'https://api.hfs.purdue.edu/menus/v2/favorites';
-	const ticketURL = 'https://www.purdue.edu/apps/account/cas/v1/tickets';
-
-	// user must enter username and password
-	if (!req.body.user && !req.body.password) {
-		throw new APIError('Credentials Required.', 400);
-	}
-	// options to get ticket
-	let options = {
-		method: 'POST',
-		uri: ticketURL,
-		form: {
-			username: req.body.user,
-			password: req.body.password
-		}
-	};
-	// send credentials to request a TGT
-	request(options, (err, response) => {
-		if (err || response.statusCode !== 201) return res.status(500).json({
-			success: false,
-			error: 'Incorrect Credentials'
-		});
-		console.log(response.headers.location);
-		let ticketOptions = {
-			method: 'POST',
-			uri: response.headers.location,
-			form: {
-				service: favoritesUrl
-			}
-		};
-		// send another request to the endpoint returned by the previous request (with TGT)
-		// this request sends the service for the ticket which is returned in the response body
-		request(ticketOptions, (ticketErr, ticketRes, ticketBody) => {
-			console.log(ticketRes);
-			console.log(ticketRes.statusCode);
-			if (ticketErr) throw new APIError('Unable to access Purdue favorites API.', 500);
-
-			// the ticket is sent as a query parameter with the favorites request
-			let favoriteOptions = {
-				method: 'GET',
-				uri: favoritesUrl,
-				qs: {
-					ticket: ticketBody
+router.post('/import', function (req, res, next) {
+	checker.getFavorites(req.body.username, req.body.password).then(favorites => {
+		async.forEachOf(favorites, (favorite, index, cb) => {
+			Favorite.findOneAndUpdate(
+				{itemID: favorite.ItemId, userID: req.user.id},
+				{
+					itemName: favorite.ItemName,
+					itemID: favorite.ItemId,
+					userID: req.user.id
 				},
-				headers: {
-					'Accept': 'text/json'
-				}
-			};
-
-			// finally, send a request to the dining API with the ticket
-			request(favoriteOptions, (fErr, fRes, fBody) => {
-				let favorites = JSON.parse(fBody);
-				// save each favorite to the database
-				async.forEachOf(favorites.Favorite, (favorite, index, cb) => {
-					Favorite.findOneAndUpdate(
-						{itemID: favorite.ItemId, userID: req.user.id},
-						{
-							itemName: favorite.ItemName,
-							itemID: favorite.ItemId,
-							userID: req.user.id
-						},
-						{upsert: true}
-					).then(result => {
-						console.log(result);
-						cb();
-					}).catch(err => {
-						console.error(err);
-						cb(err);
-					});
-				}, err => {
-					if (err) throw new APIError('Error saving favorites to database.', 500);
-					return res.json({success: true});
-				});
+				{upsert: true}
+			).then(() => {
+				cb();
+			}).catch(err => {
+				console.error(err);
+				cb(err);
 			});
+		}, err => {
+			if (err) throw new APIError('Error saving favorites to database.', 500);
+			return res.json({success: true});
 		});
+	}).catch(err => {
+		console.error(err);
+		next(err);
 	});
 });
 

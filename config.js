@@ -85,6 +85,18 @@ const config = convict({
 			doc: 'Token to use for testing',
 			format: '*',
 			default: ''
+		},
+		purdue: {
+			username: {
+				doc: 'Purdue username to use for testing favorites import',
+				format: '*',
+				default: ''
+			},
+			password: {
+				doc: 'Purdue password to use for testing favorites import',
+				format: '*',
+				default: ''
+			}
 		}
 	},
 

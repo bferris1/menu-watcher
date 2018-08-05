@@ -1,7 +1,8 @@
 let checker = {};
 const async = require('async');
 const request = require('request');
-const rp = require('request-promise');
+const rp = require('request-promise').defaults({jar: true});
+const APIError = require('../util/api-error');
 
 checker.getAllMenus = function (date) {
 	return new Promise((resolve, reject) => {
@@ -115,5 +116,58 @@ checker.getFilteredFavorites = (menus, favorites) => {
 
 };
 
+checker.getFavorites = function (user, password) {
+	const favoritesUrl = 'https://api.hfs.purdue.edu/menus/v2/favorites';
+	const ticketURL = 'https://www.purdue.edu/apps/account/cas/v1/tickets';
+	// user must enter username and password
+	if (!user || !password) {
+		return Promise.reject(new APIError('Credentials Required.', 400));
+	}
+
+	// options to get ticket
+	let options = {
+		method: 'POST',
+		uri: ticketURL,
+		resolveWithFullResponse: true,
+		simple: false,
+		form: {
+			username: user,
+			password: password
+		}
+	};
+
+	return rp(options).then(res => {
+		if (res.statusCode !== 201) {
+			return Promise.reject(new APIError('Incorrect Credentials', 400));
+		}
+		return res.headers.location;
+	}).then(location => {
+		// send another request to the endpoint returned by the previous request (with TGT)
+		// this request sends the service for the ticket which is returned in the response body
+		let ticketOptions = {
+			method: 'POST',
+			resolveWithFullResponse: true,
+			uri: location,
+			form: {
+				service: favoritesUrl
+			}
+		};
+		return rp(ticketOptions);
+	}).then(ticketRes => {
+		// the ticket is sent as a query parameter with the favorites request
+		let favoriteOptions = {
+			method: 'GET',
+			uri: favoritesUrl,
+			json: true,
+			qs: {
+				ticket: ticketRes.body
+			},
+			headers: {
+				'Accept': 'text/json'
+			}
+		};
+		return rp(favoriteOptions);
+	}).then(favoritesBody => favoritesBody.Favorite);
+};
 
 module.exports = checker;

@@ -47,13 +47,14 @@ export default class Import extends Component {
 					<p style={{fontSize: '14px'}} className="text-sm">
 						Your Purdue credentials are not stored and are only used to retrieve your favorites from the Purdue dining
 						favorites system
-						(<a target={'_blank'} href={'https://github.com/moufee/menu-watcher/blob/develop/routes/api.js#L183'}>See
+						(<a target={'_blank'} href={'https://github.com/moufee/menu-watcher/blob/develop/util/menu-checker.js#L119'}>See
 						for yourself</a>).
 					</p>
 					<Form>
 						<div className="row">
 							<Col sm={12}>
-								<LabeledInput name={'user'} label={'Purdue ID (username, not full email)'} value={this.state.user}
+								<LabeledInput name={'username'} label={'Purdue ID (username, not full email)'}
+															value={this.state.username}
 															onChange={this.handleChange}/>
 							</Col>
 						</div>
