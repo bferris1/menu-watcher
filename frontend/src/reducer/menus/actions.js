@@ -28,7 +28,7 @@ export function fetchMenus (date) {
 		let actualDate = getState().menus.date || date;
 		Auth.get('/api/filtered/' + actualDate.format('MM-DD-YYYY')).then(res => {
 			if (res.success) {
-				dispatch(setMenus(res.filtered));
+				dispatch(setMenus({[actualDate]: res.filtered}));
 			}
 		});
 	};

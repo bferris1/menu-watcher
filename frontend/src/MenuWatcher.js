@@ -46,15 +46,17 @@ class MenuWatcher extends Component {
 
 	render () {
 
+		let diningCourtCards;
+		if (this.props.meals[this.props.date] != null) {
+			diningCourtCards = this.props.meals[this.props.date][this.props.mealIndex].map((diningCourt, index) => {
+				return (
+					<CollapsableCard key={index} headingId={'heading-' + diningCourt.location.toLowerCase()}
+													 collapseId={'collapse-' + diningCourt.name.toLowerCase()}
+													 diningCourt={diningCourt}/>
+				);
 
-		let diningCourtCards = this.props.meals[this.props.mealIndex].map((diningCourt, index) => {
-			return (
-				<CollapsableCard key={index} headingId={'heading-' + diningCourt.location.toLowerCase()}
-												 collapseId={'collapse-' + diningCourt.name.toLowerCase()}
-												 diningCourt={diningCourt}/>
-			);
-
-		});
+			});
+		}
 
 		return (
 			<div>
