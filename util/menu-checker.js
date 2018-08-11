@@ -7,7 +7,7 @@ const APIError = require('../util/api-error');
 checker.getAllMenus = function (date) {
 	return new Promise((resolve, reject) => {
 		let baseURL = 'https://api.hfs.purdue.edu/menus/v2/locations/';
-		let locations = ['Hillenbrand', 'Earhart', 'Windsor', 'Wiley', 'Ford', 'The%20Gathering%20Place'];
+		let locations = ['Hillenbrand', 'Earhart', 'Windsor', 'Wiley', 'Ford'];
 		let results = [];
 
 		async.forEachOf(locations, (location, index, cb) => {
@@ -72,6 +72,8 @@ checker.getFilteredFavorites = (menus, favorites) => {
 
 		menus.forEach((diningCourt, courtIndex) => {
 			diningCourts[courtIndex] = {name: diningCourt.Location, meals: []};
+            console.log(diningCourt);
+            console.log(diningCourt.Meals);
 			diningCourt.Meals.forEach((meal, mealIndex) => {
 				diningCourts[courtIndex].meals[mealIndex] = {
 					location: diningCourt.Location,
