@@ -10,8 +10,8 @@ After adding or importing favorites, users can then select a date and meal time 
 [Google Assistant](https://assistant.google.com/services/a/uid/000000db69de3337?hl=en&source=web) integration is available.
 
 Things to do:
-- [ ] Add support for Pushover notifications
-- [ ] Add support for web push notifications
-- [ ] Integrate with Purdue Authentication (for user accounts)
+- [ ] Use the official [Actions on Google Library](https://github.com/actions-on-google/actions-on-google-nodejs) 
+- [x] Add support for Pushover notifications
+- [x] Integrate with Purdue Authentication (for user accounts)
 - [x] Add redux
 - [x] Dialog interface (Google Assistant / Alexa integration)
