@@ -11,9 +11,6 @@
     "test": "mocha --timeout 5000 --exit",
     "heroku-postbuild": "cd frontend && yarn --production=false && yarn run build"
   },
-  "engines": {
-    "node": "8.11.3"
-  },
   "dependencies": {
     "actions-on-google": "^2.5.0",
     "async": "^2.6.0",
